@@ -1,0 +1,340 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateModel",
+      "model": "Classes"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Classes",
+      "field": "id_turma",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Classes",
+          "field": "id_turma"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Classes",
+          "field": "id_turma"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "autoincrement()"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Classes",
+          "field": "id_turma"
+        },
+        "directive": "id"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "Classes",
+      "field": "nome",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Classes",
+      "field": "professores",
+      "type": "Teachers",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Classes",
+      "field": "id_curso",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Classes",
+      "field": "id_turno",
+      "type": "Int",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Classes",
+      "field": "Course",
+      "type": "Courses",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Classes",
+          "field": "Course"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Classes",
+          "field": "Course"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[id_curso]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Classes",
+          "field": "Course"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id_curso]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Students",
+      "field": "Mode",
+      "type": "Modes",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Students",
+          "field": "Mode"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Students",
+          "field": "Mode"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[id_modalidade]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Students",
+          "field": "Mode"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id_modalidade]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Students",
+      "field": "Course",
+      "type": "Courses",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Students",
+          "field": "Course"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Students",
+          "field": "Course"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[id_curso]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Students",
+          "field": "Course"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id_curso]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Students",
+      "field": "Class",
+      "type": "Classes",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Students",
+          "field": "Class"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Students",
+          "field": "Class"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[id_turma]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Students",
+          "field": "Class"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id_turma]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Courses",
+      "field": "Mode",
+      "type": "Modes",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Courses",
+          "field": "Mode"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Courses",
+          "field": "Mode"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[id_modalidade]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Courses",
+          "field": "Mode"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id_modalidade]"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Courses",
+      "field": "professores",
+      "type": "Teachers"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Matters",
+      "field": "id_modalidade",
+      "type": "Modes"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Matters",
+      "field": "id_curso",
+      "type": "Courses"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Matters",
+      "field": "id_turma",
+      "type": "Classes"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "Matters",
+      "field": "professores",
+      "type": "Teachers"
+    }
+  ]
+}

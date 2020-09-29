@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DEV_DATABASE")
+  url = "***"
 }
 
 model Info4{
@@ -48,20 +48,18 @@ model Users{
   email String @unique
   senha String
   nivel_de_permissao Int
-
-  @@unique([nome,id_usuario])
 }
 
 model Students{
   id_usuario Int 
-  nome String 
+  nome String
   matricula Int @unique
   id_sensor Int @unique
   id_modalidade Int
   id_curso Int
   id_turma Int
 
-  User Users @relation(fields: [id_usuario,nome],references: [id_usuario,nome])
+  User Users @relation(fields: [id_usuario],references: [id_usuario])
   Mode Modes @relation(fields: [id_modalidade],references: [id_modalidade])
   Course Courses @relation(fields: [id_curso],references: [id_curso])
   Class Classes @relation(fields: [id_turma],references: [id_turma])
@@ -93,10 +91,11 @@ model Modes{
 model Teachers{
   id_usuario Int
   nome String
+  materias String[]
   id_sensor_profesor Int @unique
   id_professor Int @default(autoincrement()) @id
 
-  User Users @relation(fields: [id_usuario,nome],references: [id_usuario,nome])
+  User Users @relation(fields: [id_usuario],references: [id_usuario])
 }
 
 model Classes{

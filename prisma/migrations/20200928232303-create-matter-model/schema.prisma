@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DEV_DATABASE")
+  url = "***"
 }
 
 model Info4{
@@ -37,8 +37,6 @@ model Info4{
   seguranca_da_informacao Int? @default(0)
   total_sociologia Int
   sociologia Int? @default(0)
-  mes Int
-
   Student Students @relation(fields: [id_sensor],references: [id_sensor])
 }
 
@@ -48,63 +46,32 @@ model Users{
   email String @unique
   senha String
   nivel_de_permissao Int
-
-  @@unique([nome,id_usuario])
 }
 
 model Students{
-  id_usuario Int 
-  nome String 
+  nome String
   matricula Int @unique
   id_sensor Int @unique
+  id_usuario Int 
   id_modalidade Int
   id_curso Int
   id_turma Int
-
-  User Users @relation(fields: [id_usuario,nome],references: [id_usuario,nome])
-  Mode Modes @relation(fields: [id_modalidade],references: [id_modalidade])
-  Course Courses @relation(fields: [id_curso],references: [id_curso])
-  Class Classes @relation(fields: [id_turma],references: [id_turma])
+  User Users @relation(fields: [id_usuario],references: [id_usuario])
 }
 
 model Courses{
-  id_curso Int @default(autoincrement()) @id
   nome String
-  professores Teachers[]
+  id_curso Int @default(autoincrement()) @id
   id_modalidade Int
-
-  Mode Modes @relation(fields: [id_modalidade],references: [id_modalidade])
+  professores Int[]
 }
 
 model Matters{
   nome String
   identificador String @unique
-  professores Teachers[]
-  id_modalidade Modes[]
-  id_curso Courses[]
-  id_turma Classes[]
+  id_modalidade Int[]
+  id_curso Int[]
+  id_turma Int[]
+  professores Int[]
 }
 
-model Modes{
-  id_modalidade Int @default(autoincrement()) @id
-  nome String
-}
-
-model Teachers{
-  id_usuario Int
-  nome String
-  id_sensor_profesor Int @unique
-  id_professor Int @default(autoincrement()) @id
-
-  User Users @relation(fields: [id_usuario,nome],references: [id_usuario,nome])
-}
-
-model Classes{
-  id_turma Int @default(autoincrement()) @id
-  nome String
-  professores Teachers[]
-  id_curso Int
-  id_turno Int
-
-  Course Courses @relation(fields: [id_curso],references: [id_curso])
-}

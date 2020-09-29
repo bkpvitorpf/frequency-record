@@ -16,7 +16,18 @@
   "devDependencies": {
     "@prisma/cli": "2.7.1",
     "commitizen": "^4.2.1",
+    "cz-conventional-changelog": "3.3.0",
     "husky": "^4.3.0",
     "nodemon": "^2.0.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
+    }
   }
 }

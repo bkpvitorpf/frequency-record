@@ -1,0 +1,119 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateModel",
+      "model": "Matters"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Matters",
+      "field": "nome",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Matters",
+      "field": "identificador",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Matters",
+          "field": "identificador"
+        },
+        "directive": "unique"
+      }
+    },
+    {
+      "tag": "CreateField",
+      "model": "Matters",
+      "field": "id_modalidade",
+      "type": "Int",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Matters",
+      "field": "id_curso",
+      "type": "Int",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Matters",
+      "field": "id_turma",
+      "type": "Int",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Matters",
+      "field": "professores",
+      "type": "Int",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Info4",
+      "field": "Student",
+      "type": "Students",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Info4",
+          "field": "Student"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Info4",
+          "field": "Student"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[id_sensor]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Info4",
+          "field": "Student"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id_sensor]"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Students",
+          "field": "id_sensor"
+        },
+        "directive": "unique"
+      }
+    }
+  ]
+}

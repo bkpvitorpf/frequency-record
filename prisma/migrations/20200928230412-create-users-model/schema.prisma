@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = "***"
+}
+
+model info4{
+  id_sensor Int @unique
+  total_asor Int 
+  asor Int? @default(0)
+  total_construcao_de_sites Int
+  construcao_de_sites Int? @default(0)
+  total_eletronica_aplicada Int
+  eletronica_aplicada Int? @default(0)
+  total_espanhol Int
+  espanhol Int? @default(0)
+  total_filosofia Int
+  filosofia Int? @default(0)
+  total_geografia Int
+  geografia Int? @default(0)
+  total_historia Int
+  historia Int? @default(0)
+  total_hst Int
+  hst Int? @default(0)
+  total_instalacoes_eletricas_aplicadas Int
+  instalacoes_eletricas_aplicadas Int? @default(0)
+  total_portugues Int
+  portugues Int? @default(0)
+  total_programacao_web Int
+  programacao_web Int? @default(0)
+  total_pcc Int
+  pcc Int? @default(0)
+  total_seguranca_da_informacao Int
+  seguranca_da_informacao Int? @default(0)
+  total_sociologia Int
+  sociologia Int? @default(0)
+}
+
+model Users{
+  id_usuario Int @id @default(autoincrement())
+  nome String
+  email String @unique
+  senha String
+  nivel_de_permissao Int
+}
+

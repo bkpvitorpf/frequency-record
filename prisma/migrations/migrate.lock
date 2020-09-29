@@ -1,3 +1,29 @@
 # Prisma Migrate lockfile v1
 
 20200927194814-create4info-model
+20200928230412-create-users-model
+20200928231307-create-student-model
+20200928231707-create-course-model
+20200928232303-create-matter-model
+20200928232911-create-mode-model
+20200928233322-create-teacher-model
+20200928234032-create-class-model
+20200928234354-create-class-model2
+20200928234744-create-class-model
+20200928234837-create-class-model
+20200928235015-create-class-model
+20200928235112-create-class-model
+20200928235215-create-class-model
+20200928235402-create-class-model
+20200928235447-create-class-model
+20200929000247-create-teacher-model
+20200929000404-create-teacher-model
+20200929000434-create-teacher-model
+20200929000505-create-teacher-model
+20200929000808-create-teacher-model
+20200929002121-create-class-model
+20200929003857-fix
+20200929005250-fix
+20200929005958-fix
+20200929010220-fix
+20200929011029-fix
