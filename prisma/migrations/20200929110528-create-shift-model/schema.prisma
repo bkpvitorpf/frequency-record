@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DEV_DATABASE")
+  url = "***"
 }
 
 model Info4{
@@ -37,7 +37,7 @@ model Info4{
   seguranca_da_informacao Int? @default(0)
   total_sociologia Int
   sociologia Int? @default(0)
-  mes String
+  mes Int
 
   @@unique([id_sensor])
 
@@ -116,17 +116,3 @@ model Shifts{
   nome String
 }
 
-model Eletronica_aplicada{
-  total_aulas Int
-  aulas_ministradas Int
-  mes String
-  id_modalidade Int
-  id_curso Int
-  id_turma Int
-
-  @@unique([total_aulas,aulas_ministradas])
-  
-  Mode Modes @relation(fields: [id_modalidade],references: [id_modalidade])
-  Course Courses @relation(fields: [id_curso],references: [id_curso])
-  Class Classes @relation(fields: [id_turma],references: [id_turma])
-}
