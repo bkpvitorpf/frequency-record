@@ -8,7 +8,7 @@ datasource db {
 }
 
 model Info4{
-  id_sensor Int @unique
+  id_sensor Int 
   total_asor Int 
   asor Int? @default(0)
   total_construcao_de_sites Int
@@ -37,7 +37,9 @@ model Info4{
   seguranca_da_informacao Int? @default(0)
   total_sociologia Int
   sociologia Int? @default(0)
-  mes Int
+  mes String
+
+  @@unique([id_sensor])
 
   Student Students @relation(fields: [id_sensor],references: [id_sensor])
 }
@@ -48,18 +50,20 @@ model Users{
   email String @unique
   senha String
   nivel_de_permissao Int
+
+  @@unique([nome,id_usuario])
 }
 
 model Students{
   id_usuario Int 
-  nome String
+  nome String 
   matricula Int @unique
   id_sensor Int @unique
   id_modalidade Int
   id_curso Int
   id_turma Int
 
-  User Users @relation(fields: [id_usuario],references: [id_usuario])
+  User Users @relation(fields: [id_usuario,nome],references: [id_usuario,nome])
   Mode Modes @relation(fields: [id_modalidade],references: [id_modalidade])
   Course Courses @relation(fields: [id_curso],references: [id_curso])
   Class Classes @relation(fields: [id_turma],references: [id_turma])
@@ -91,11 +95,10 @@ model Modes{
 model Teachers{
   id_usuario Int
   nome String
-  materias String[]
   id_sensor_profesor Int @unique
   id_professor Int @default(autoincrement()) @id
 
-  User Users @relation(fields: [id_usuario],references: [id_usuario])
+  User Users @relation(fields: [id_usuario,nome],references: [id_usuario,nome])
 }
 
 model Classes{
@@ -106,4 +109,39 @@ model Classes{
   id_turno Int
 
   Course Courses @relation(fields: [id_curso],references: [id_curso])
+}
+
+model Shifts{
+  id_turno Int @default(autoincrement()) @id
+  nome String
+}
+
+model Eletronica_aplicada{
+  total_aulas Int
+  aulas_ministradas Int
+  mes String
+  id_modalidade Int
+  id_curso Int
+  id_turma Int
+
+  @@unique([total_aulas,aulas_ministradas])
+  
+  Mode Modes @relation(fields: [id_modalidade],references: [id_modalidade])
+  Course Courses @relation(fields: [id_curso],references: [id_curso])
+  Class Classes @relation(fields: [id_turma],references: [id_turma])
+}
+
+model Quimica{
+  total_aulas Int
+  aulas_ministradas Int
+  mes String
+  id_modalidade Int
+  id_curso Int
+  id_turma Int
+
+  @@unique([total_aulas,aulas_ministradas])
+  
+  Mode Modes @relation(fields: [id_modalidade],references: [id_modalidade])
+  Course Courses @relation(fields: [id_curso],references: [id_curso])
+  Class Classes @relation(fields: [id_turma],references: [id_turma])
 }

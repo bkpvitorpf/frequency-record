@@ -8,6 +8,8 @@ datasource db {
 }
 
 model Info4{
+  id Int @default(autoincrement()) @id
+  mes String
   id_sensor Int 
   total_asor Int 
   asor Int? @default(0)
@@ -37,9 +39,8 @@ model Info4{
   seguranca_da_informacao Int? @default(0)
   total_sociologia Int
   sociologia Int? @default(0)
-  mes String
 
-  @@unique([id_sensor])
+  @@index([id_sensor])
 
   Student Students @relation(fields: [id_sensor],references: [id_sensor])
 }
@@ -49,7 +50,7 @@ model Users{
   nome String
   email String @unique
   senha String
-  nivel_de_permissao Int
+  nivel_de_permissao Int @default(1)
 
   @@unique([nome,id_usuario])
 }
@@ -117,6 +118,21 @@ model Shifts{
 }
 
 model Eletronica_aplicada{
+  total_aulas Int
+  aulas_ministradas Int
+  mes String
+  id_modalidade Int
+  id_curso Int
+  id_turma Int
+
+  @@unique([total_aulas,aulas_ministradas])
+  
+  Mode Modes @relation(fields: [id_modalidade],references: [id_modalidade])
+  Course Courses @relation(fields: [id_curso],references: [id_curso])
+  Class Classes @relation(fields: [id_turma],references: [id_turma])
+}
+
+model Quimica{
   total_aulas Int
   aulas_ministradas Int
   mes String

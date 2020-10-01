@@ -56,10 +56,10 @@
   resolved "https://registry.yarnpkg.com/@commitlint/types/-/types-11.0.0.tgz#719cf05fcc1abb6533610a2e0f5dd1e61eac14fe"
   integrity sha512-VoNqai1vR5anRF5Tuh/+SWDFk7xi7oMwHrHrbm1BprYXjB2RJsWLhUrStMssDxEl5lW/z3EUdg8RvH/IUBccSQ==
 
-"@prisma/cli@2.7.1":
-  version "2.7.1"
-  resolved "https://registry.yarnpkg.com/@prisma/cli/-/cli-2.7.1.tgz#98f2cb434bb931341e6c6292c7bab601e5f842f8"
-  integrity sha512-0uA+gWkNQ35DveVHDPltiTCTr4wcXtEhnPs463IEM+Xn8dTv9x0gtZiYHSuQM3t7uwlOxj1rurBsqSbiljynfQ==
+"@prisma/cli@^2.8.0":
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/@prisma/cli/-/cli-2.8.0.tgz#919d7f66023affa76d14823212b62a8512cfd37d"
+  integrity sha512-Kg1C47d75jdEIMmJif8TMlv/2Ihx08E1qWp0euwoZhjd807HGnjgC9tJYjTfkdf+NMJSAUbvoPXKInEX0HoOMw==
 
 "@prisma/client@2.7.1":
   version "2.7.1"
