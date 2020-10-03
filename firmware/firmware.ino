@@ -42,8 +42,7 @@ LiquidCrystal_I2C lcd(0x27, 2,1,0,4,5,6,7,3, POSITIVE);
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };     // Endereço MAC
 IPAddress ip(192,168,0,90);                             // Endereço IP
 IPAddress myDns(192, 168, 0, 4);                        // DNS
-IPAddress server(192,168,0,102);                        // IP do servidor
-int port = 80;                                          // Porta que o servidor está rodando
+IPAddress server(192,168,0,102);                        // IP do servidor                               
 EthernetClient client;                                  // Define um instância de um cliente
 
 // Configurações do teclado de membrana
@@ -60,7 +59,6 @@ byte colPins[COLS] = {44, 45, 46, 47};                                          
 Keypad myKeypad = Keypad( makeKeymap(keys), rowPins, colPins, ROWS, COLS );     // Define uma instância do teclado
 
 // Configuração do cartão SD
-File dataStorage = SD.open("registro.txt", FILE_WRITE);
 const int SDCard = 4;
 
 // Configuração do módulo buzzer
@@ -218,13 +216,19 @@ void registerFrequency(){
   int currentDay = now.dayOfTheWeek();
 
   switch(currentDay){
-    case 1:
+    case 6:
       DateTime now = rtc.now();
       int currentHour = now.hour();
 
       switch(currentHour){
-        case 7:
+        case 16:
           if(now.minute() >= 30 && now.minute() <= 40){
+            lcd.clear();
+            lcd.setCursor(3,0);
+            lcd.print("Frequencia");
+            lcd.setCursor(3,1);
+            lcd.print("habilitada");
+            
             id = getId();
 
             if(id != -1){
@@ -234,6 +238,12 @@ void registerFrequency(){
             }
             
           }else{
+            lcd.clear();
+            lcd.setCursor(3,0);
+            lcd.print("Frequencia");
+            lcd.print(5,1);
+            lcd.print("extra");
+            
             getUserInput();
             registerExtraFrequency();
           }
@@ -351,7 +361,7 @@ boolean registerExtraFrequency(){
 
           if(id != -1){
             processId(id);
-            request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[0] + "&curso=" + courses[0] + "&turma=" + schoolClassCode[3] + "&modalidade=" + modes[2] + "&aulas=2";
+            request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[0] + "&curso=" + course + "&turma=" + schoolClass + "&modalidade=" + mode + "&aulas=" + numberOfClasses;
             sendRequest(request);
           }
 
@@ -389,6 +399,8 @@ boolean registerExtraFrequency(){
 
 void createHeader(){          // Função que cria um cabeçalho informando data, mês e ano no arquivo de registro do cartão SD
   DateTime now = rtc.now();     // Obtem os valores atuais do RTC
+
+  File dataStorage = SD.open("registro.txt", FILE_WRITE);
 
   if(dataStorage){
     dataStorage.println();
@@ -444,6 +456,8 @@ void processId(int id){         // Função que recebe o id do usuário é respo
 }
 
 void setRegister(String registerData){          // Função que faz o registro no arquivo do cartão SD
+  File dataStorage = SD.open("registro.txt", FILE_WRITE);
+  
   if(dataStorage){
     dataStorage.println(registerData);
     dataStorage.close();
@@ -453,7 +467,7 @@ void setRegister(String registerData){          // Função que faz o registro n
 }
 
 void sendRequest(String request){           // Função que faz a requisição ao servidor 
-  if(client,port){
+  if(client.connect(server, 80)){
     Serial.print("connected to ");
     Serial.println(client.remoteIP());
     
@@ -489,6 +503,8 @@ void setColor(int red, int green, int blue){
 }
 
 void getUserInput(){
+  int count = 1;
+  
   Serial.println("Digite sua senha");
 
   lcd.clear();
@@ -496,22 +512,26 @@ void getUserInput(){
   lcd.print("Teclado");
   lcd.setCursor(3,1);
   lcd.print("habilitado");
-
-  delay(3000);
-  lcd.clear();
-
+  
   char key = myKeypad.getKey();
 
   while(key != '#'){
     key = myKeypad.getKey();
-    inputPassword += String(key);
-    Serial.print("*");
-    lcd.print("*");
+    if(key){
+      if(count == 1){
+        lcd.clear();
+        count = 2;
+      }
+      inputPassword += String(key);
+      Serial.print("*");
+      lcd.print("*");
+    }
   }
 
   inputPassword.replace("#","");
   key = ' ';
-  
+
+  Serial.println();
   Serial.println("Digite o código da matéria");
 
   lcd.clear();
@@ -525,14 +545,17 @@ void getUserInput(){
 
   while(key != '#'){
     key = myKeypad.getKey();
-    inputSchoolSubjectCode += String(key);
-    Serial.print("*");
-    lcd.print("*");
+    if(key){
+      inputSchoolSubjectCode += String(key);
+      Serial.print(key);
+      lcd.print(key);
+    }
   }
 
   inputSchoolSubjectCode.replace("#","");
   key = ' ';
 
+  Serial.println();
   Serial.println("Digite a quantidade de aulas");
 
   lcd.clear();
@@ -541,16 +564,22 @@ void getUserInput(){
   lcd.setCursor(4,1);
   lcd.print("de aulas");
 
+  delay(3000);
+  lcd.clear();
+
   while(key != '#'){
     key = myKeypad.getKey();
-    numberOfClasses += String(key);
-    Serial.print("*");
-    lcd.print("*");
+    if(key){
+      numberOfClasses += String(key);
+      Serial.print(key);
+      lcd.print(key);
+    }
   }
 
   numberOfClasses.replace("#","");
   key = ' ';
 
+  Serial.println();
   Serial.println("Digite o código da modalidade de ensino");
 
   lcd.clear();
@@ -559,16 +588,22 @@ void getUserInput(){
   lcd.setCursor(3,1);
   lcd.print("modalidade");
 
+  delay(3000);
+  lcd.clear();
+
   while(key != '#'){
     key = myKeypad.getKey();
-    mode += String(key);
-    Serial.print("*");
-    lcd.print("*");
+    if(key){
+      mode += String(key);
+      Serial.print(key);
+      lcd.print(key);
+    }
   }
 
   mode.replace("#","");
   key = ' ';
 
+  Serial.println();
   Serial.println("Digite o código do curso");
 
   lcd.clear();
@@ -577,16 +612,22 @@ void getUserInput(){
   lcd.setCursor(5,1);
   lcd.print("curso");
 
+  delay(3000);
+  lcd.clear();
+
   while(key != '#'){
     key = myKeypad.getKey();
-    course += String(key);
-    Serial.print("*");
-    lcd.print("*");
+    if(key){
+      course += String(key);
+      Serial.print(key);
+      lcd.print(key);
+    }
   }
 
   course.replace("#","");
   key = ' ';
 
+  Serial.println();
   Serial.println("Digite o código da turma");
 
   lcd.clear();
@@ -595,16 +636,22 @@ void getUserInput(){
   lcd.setCursor(5,1);
   lcd.print("turma");
 
+  delay(3000);
+  lcd.clear();
+
   while(key != '#'){
     key = myKeypad.getKey();
-    schoolClass += String(key);
-    Serial.print("*");
-    lcd.print("*");
+    if(key){
+      schoolClass += String(key);
+      Serial.print(key);
+      lcd.print(key);
+    }
   }
 
   schoolClass.replace("#","");
   key = ' ';
 
+  Serial.println();
   Serial.println("Informações salvas");
 
   lcd.clear();
@@ -612,4 +659,7 @@ void getUserInput(){
   lcd.print("Informacoes");
   lcd.setCursor(5,1);
   lcd.print("salvas");
+
+  delay(3000);
+  lcd.clear();
 }
