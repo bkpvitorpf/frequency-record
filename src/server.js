@@ -1,11 +1,13 @@
 const Express = require('express');
-const Routes = require('./routes');
 const Cors = require('cors');
+const Routes = require('./routes');
 
-const app = Express();
+require('./database');
 
-app.use(Cors());
-app.use(Express.json());
-app.use(Routes);
+const server = Express();
 
-app.listen(process.env.PORT || 3333);
+server.use(Cors());
+server.use(Express.json());
+server.use(Routes);
+
+server.listen(process.env.PORT || 3333);

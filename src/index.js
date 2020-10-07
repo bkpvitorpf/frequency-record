@@ -1,21 +1,11 @@
-const {PrismaClient} = require('@prisma/client');
-const prisma = new PrismaClient();
+const connection = require('./database');
+const User = require('./models/User');
+const Student = require('./models/Student');
+const Teacher = require('./models/Teacher');
 
-async function main() {
-  const response = await prisma.info4.findMany({
-    where:{
-      id_sensor:1
-    }
-  })
 
-  console.log(response)
+async function teste(){
+
 }
 
-main()
-  .catch((e) => {
-    throw e
-  })
-  .finally(async () => {
-    await prisma.$disconnect()
-    console.log("foi")
-  });
+teste();
