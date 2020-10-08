@@ -1,6 +1,5 @@
 const sequelize = require('sequelize');
 const {Model,DataTypes} = require('sequelize');
-const { model } = require('../database');
 
 class User extends Model{
     static init(sequelize){
