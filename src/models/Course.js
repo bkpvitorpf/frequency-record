@@ -6,12 +6,12 @@ class Course extends Model{
         super.init({
             name: DataTypes.STRING
         },{
-            sequelize
+            sequelize,
         });
     }
 
     static associate(models){
-        this.belongsToMany(models.Mode,{foreignKey:'course_id', through: 'courses_modes', as: 'modes'})
+        this.belongsToMany(models.Mode,{foreignKey:'course_id', through: 'courses_modes', as: 'modes'});
     }
 }
 

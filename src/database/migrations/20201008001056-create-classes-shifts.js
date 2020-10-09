@@ -9,6 +9,16 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
       },
+      class_id:{
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {model: 'classes', key: 'id'}
+      },
+      shift_id:{
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {model: 'shifts', key: 'id'}
+      },
       created_at:{
         type: Sequelize.DATE,
         allowNull: false

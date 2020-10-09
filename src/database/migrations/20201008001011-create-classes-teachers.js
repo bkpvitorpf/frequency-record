@@ -9,6 +9,16 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
       },
+      class_id:{
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {model: 'classes', key: 'id'}
+      },
+      teacher_id:{
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {model: 'teachers', key: 'id'}
+      },
       created_at:{
         type: Sequelize.DATE,
         allowNull: false

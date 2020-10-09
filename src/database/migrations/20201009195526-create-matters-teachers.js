@@ -2,21 +2,22 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('matters', {
+    await queryInterface.createTable('matters_teachers', {
       id:{
         type: Sequelize.INTEGER, 
         primaryKey: true,
         allowNull: false,
         autoIncrement: true,
       },
-      identifier:{
-        type: Sequelize.STRING,
+      matter_id:{
+        type: Sequelize.INTEGER,
         allowNull: false,
-        unique: true,
+        references: {model: 'matters', key: 'id'}
       },
-      name:{
-        type: Sequelize.STRING,
-        allowNull: false
+      teacher_id:{
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {model: 'teachers', key: 'id'}
       },
       created_at:{
         type: Sequelize.DATE,
@@ -30,6 +31,6 @@ module.exports = {
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('matters');
+    await queryInterface.dropTable('matters_teachers');
   }
 };
