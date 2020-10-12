@@ -12,12 +12,16 @@ module.exports = {
       class_id:{
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: {model: 'classes', key: 'id'}
+        references: {model: 'classes', key: 'id'},
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       shift_id:{
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: {model: 'shifts', key: 'id'}
+        references: {model: 'shifts', key: 'id'},
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       created_at:{
         type: Sequelize.DATE,

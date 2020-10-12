@@ -11,7 +11,7 @@ class Shift extends Model{
     }
 
     static associate(models){
-        this.belongsToMany(models.SchoolClass,{foreignKey:'shift_id', through: 'classes_shifts', as:'shifts'});
+        this.belongsToMany(models.SchoolClass,{foreignKey:'shift_id', through: 'classes_shifts', as:'class'});
     }
 }
 

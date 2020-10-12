@@ -12,12 +12,16 @@ module.exports = {
       course_id:{
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: {model: 'courses', key: 'id'}
+        references: {model: 'courses', key: 'id'},
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       mode_id:{
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: {model: 'modes', key: 'id'}
+        references: {model: 'modes', key: 'id'},
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       created_at:{
         type: Sequelize.DATE,

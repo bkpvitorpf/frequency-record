@@ -12,12 +12,16 @@ module.exports = {
       matter_id:{
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: {model: 'matters', key: 'id'}
+        references: {model: 'matters', key: 'id'},
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       teacher_id:{
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: {model: 'teachers', key: 'id'}
+        references: {model: 'teachers', key: 'id'},
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       created_at:{
         type: Sequelize.DATE,
