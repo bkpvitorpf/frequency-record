@@ -13,6 +13,9 @@ class Student extends Model{
 
     static associate(models){
         this.belongsTo(models.User,{foreignKey:'user_id',as: 'user'});
+        this.belongsTo(models.Mode,{foreignKey:'mode_id',as: 'mode'});
+        this.belongsTo(models.Course,{foreignKey:'course_id',as: 'course'});
+        this.belongsTo(models.SchoolClass,{foreignKey:'class_id',as: 'class'});
     }
 }
 
