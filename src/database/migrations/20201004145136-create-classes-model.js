@@ -13,9 +13,17 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      table_name:{
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
+      },
       course_id:{
         type: Sequelize.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {model: 'courses', key:'id'},
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       created_at:{
         type: Sequelize.DATE,

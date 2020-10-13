@@ -7,6 +7,8 @@ const Mode = require('../models/Mode');
 const Course = require('../models/Course');
 const SchoolClass = require('../models/SchoolClass');
 const Shift = require('../models/Shift');
+const Matter = require('../models/Matter');
+const Info4 = require('../models/Info_4');
 
 const connection = new Sequelize(DbConfig);
 
@@ -17,6 +19,8 @@ Mode.init(connection);
 Course.init(connection);
 SchoolClass.init(connection);
 Shift.init(connection);
+Matter.init(connection);
+Info4.init(connection);
 
 Student.associate(connection.models);
 Teacher.associate(connection.models);
@@ -24,5 +28,7 @@ Mode.associate(connection.models);
 Course.associate(connection.models);
 SchoolClass.associate(connection.models);
 Shift.associate(connection.models);
+Matter.associate(connection.models);
+Info4.associate(connection.models);
 
 module.exports = connection;

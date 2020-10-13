@@ -29,12 +29,24 @@ module.exports = {
       },
       mode_id:{
         type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {model: 'modes', key:'id'},
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       course_id:{
         type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {model: 'courses', key:'id'},
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       class_id:{
         type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {model: 'classes', key:'id'},
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       created_at:{
         type: Sequelize.DATE,

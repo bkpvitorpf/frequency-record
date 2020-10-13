@@ -5,7 +5,7 @@ class SchoolClass extends Model{
     static init(sequelize){
         super.init({
             name: DataTypes.STRING,
-            course_id: DataTypes.INTEGER
+            table_name: DataTypes.STRING
         },{
             sequelize,
             tableName: 'classes'
