@@ -3,6 +3,7 @@ const SchoolClass = require('../models/SchoolClass');
 const Info4 = require('../models/Info_4');
 const connection = require('../database');
 const Teacher = require('../models/Teacher');
+const Matter = require('../models/Matter');
 
 async function selectStudent(table_name,student_id){
     if(table_name == 'info_4'){
@@ -18,7 +19,7 @@ async function selectStudent(table_name,student_id){
 
 module.exports = {
     async save(req,res){
-        const { id,mode,course,schoolClass,matter,classQuanty} = req.params;
+        const { id,modeId,courseId,schoolClass,matterIdentifier,classQuanty} = req.params;
         
         const student = await Student.findOne({
             where:{
@@ -33,20 +34,34 @@ module.exports = {
         })
 
         if(teacher){
-            res.json({ok: 'true'});
+            const {matter} = await Teacher.findOne({
+                include:{
+                    association: 'matter',
+                    attributes: ['identifier'],
+                    through: {
+                        attributes: []
+                    },
+                    where:{
+                       identifier:  matterIdentifier
+                    }
+                }
+            })
+
+            const result = matter[0];
+
         }else{
             const {table_name} = await SchoolClass.findOne({
                 where:{
                     id: schoolClass,
-                    course_id: course
+                    course_id: courseId
                 }
             })
 
             const studentData = await selectStudent(table_name,student.id);
 
-            const currentFrequency = studentData.getDataValue(matter) + Number(classQuanty);
+            const currentFrequency = studentData.getDataValue(matterIdentifier) + Number(classQuanty);
 
-            await connection.query(`UPDATE ${table_name} SET ${matter} = ${currentFrequency} WHERE student_id = ${student.id}`)
+            await connection.query(`UPDATE ${table_name} SET ${matterIdentifier} = ${currentFrequency} WHERE student_id = ${student.id}`)
 
             res.json({message: 'A frequência do aluno foi registrada'})
         }

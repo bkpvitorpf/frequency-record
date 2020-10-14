@@ -7,6 +7,8 @@ const Course = require('./models/Course');
 const Shift = require('./models/Shift');
 const SchoolClass = require('./models/SchoolClass');
 const Info4 = require('./models/Info_4');
+const Matter = require('./models/Matter');
+const MedioIntegrado = require('./models/Medio_integrado');
 
 async function defaultQuery(){
     /*
@@ -71,7 +73,25 @@ async function defaultQuery(){
         sensor_id: 4,
     })
 
-        */
+    await Matter.create({
+        identifier: 'quimica',
+        name: 'Química'
+    })
+
+    const teacher = await Teacher.findByPk(1)
+    const matter = await Matter.findByPk(1)
+
+    await teacher.addMatter(matter)
+
+    await MedioIntegrado.create({
+        class_id: 2,
+        teacher_id: 1,
+        matter_id: 1,
+        month: 'Outubro',
+        monthly_classes: 8
+    })
+
+    */
 }
 
 defaultQuery();

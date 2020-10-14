@@ -9,6 +9,7 @@ const SchoolClass = require('../models/SchoolClass');
 const Shift = require('../models/Shift');
 const Matter = require('../models/Matter');
 const Info4 = require('../models/Info_4');
+const MedioIntegrado = require('../models/Medio_integrado');
 
 const connection = new Sequelize(DbConfig);
 
@@ -21,6 +22,7 @@ SchoolClass.init(connection);
 Shift.init(connection);
 Matter.init(connection);
 Info4.init(connection);
+MedioIntegrado.init(connection);
 
 Student.associate(connection.models);
 Teacher.associate(connection.models);
@@ -30,5 +32,6 @@ SchoolClass.associate(connection.models);
 Shift.associate(connection.models);
 Matter.associate(connection.models);
 Info4.associate(connection.models);
+MedioIntegrado.associate(connection.models);
 
 module.exports = connection;
