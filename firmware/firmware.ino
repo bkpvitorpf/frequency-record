@@ -20,7 +20,7 @@
 // Biblioteca do teclado de membrana
 #include <Keypad.h>
 
-// Biblioteca do display LCD
+// Biblioteca do display LCD  // NewliquidCrystal
 #include <LiquidCrystal_I2C.h>
 
 // Define os pinos do LED RGB
@@ -112,22 +112,13 @@ void setup() {
     
     while (1);
   }else{
-    if (!rtc.lostPower()) {         // Verifica se a bateria do RTC está com pouca carga
+    if (rtc.lostPower()) {         // Verifica se a bateria do RTC está com pouca carga
       // A linha a seguir define o modelo para ajuste da data e hora do módulo RTC
-      //rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+      rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
       // A linha a seguir demonstra o exemplo utilizado para definir a data e hora do RTC
       //rtc.adjust(DateTime(2020, 9, 12, 14, 18, 0));         // Esta linha pode ser comentada após a primeira execuxão
-    }else{
-      Serial.println("Bateria fraca");
-      
-      lcd.clear();
-      lcd.setCursor(4,0);
-      lcd.print("RTC com");
-      lcd.setCursor(1,1);
-      lcd.print("bateria fraca");
-      
-      while(1);
     }
+    
     Serial.println("RTC iniciado com sucesso!"); 
   }
   delay(500);
@@ -207,7 +198,8 @@ void setup() {
 
 void loop() {
   // Os códigos deste bloco serão executados repetidamente
-  registerFrequency();
+  alertBeginningEndClass();
+  //registerFrequency();
 }
 
 void registerFrequency(){
@@ -216,13 +208,18 @@ void registerFrequency(){
   int currentDay = now.dayOfTheWeek();
 
   switch(currentDay){
-    case 6:
+    case 1:
       DateTime now = rtc.now();
       int currentHour = now.hour();
 
       switch(currentHour){
-        case 16:
-          if(now.minute() >= 30 && now.minute() <= 40){
+        case 7:
+          DateTime now = rtc.now();
+          int currentMinute = now.minute();
+          
+          if(currentMinute >= 30 && currentMinute <= 50){
+            Serial.println("Frequência padrão habilitada");
+            
             lcd.clear();
             lcd.setCursor(3,0);
             lcd.print("Frequencia");
@@ -238,6 +235,8 @@ void registerFrequency(){
             }
             
           }else{
+            Serial.println("Frequência extra habilitada");
+            
             lcd.clear();
             lcd.setCursor(3,0);
             lcd.print("Frequencia");
@@ -336,8 +335,6 @@ void registerFrequency(){
 
 boolean registerExtraFrequency(){
   Serial.println("Registrando aula extra");
-
-  DateTime now = rtc.now();
 
   if(password == inputPassword){
     int schoolSubjectCode = inputSchoolSubjectCode.toInt();
@@ -662,4 +659,54 @@ void getUserInput(){
 
   delay(3000);
   lcd.clear();
+}
+
+void alertBeginningEndClass(){          // Função que vai alertar o começo e fim de cada aula
+  DateTime now = rtc.now();
+  int currentDay = now.dayOfTheWeek();
+  
+  switch(currentDay){
+    case 1:
+    break;
+    case 2:
+    break;
+    case 3:
+    break;
+    case 4:
+      DateTime now = rtc.now();
+      int currentHour = now.hour();
+      
+      switch(currentHour){
+        case 15:
+          DateTime now = rtc.now();
+          int currentMinute = now.minute();
+          
+          while(currentMinute == 4 || currentMinute == 6){
+            DateTime now = rtc.now();
+            Serial.println("Sinalizando horário");
+            
+            if(currentMinute == 4){
+              setColor(0,255,0);
+              tone(buzzer,1000);
+              delay(2000);
+              setColor(0,0,0);
+              pinMode(buzzer,INPUT);
+              delay(2000);
+            }else{
+              setColor(255,0,0);
+              tone(buzzer,500);
+              delay(2000);
+              setColor(0,0,0);
+              pinMode(buzzer,INPUT);
+              delay(2000);
+            }
+            
+            currentMinute = now.minute();
+          }
+        break;
+      }
+    break;
+    case 5:
+    break;
+  }
 }
