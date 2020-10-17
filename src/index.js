@@ -91,7 +91,17 @@ async function defaultQuery(){
         monthly_classes: 8
     })
 
-    */
+    const course = await Course.findByPk(1);
+    const mode =  await Mode.findByPk(1);
+
+    await course.addMode(mode);
+
+        */
+
+    const schoolClass = await SchoolClass.findByPk(2);
+    const teacher = await Teacher.findByPk(1);
+
+    schoolClass.addTeacher(teacher);
 }
 
 defaultQuery();

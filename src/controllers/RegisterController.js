@@ -4,66 +4,73 @@ const Info4 = require('../models/Info_4');
 const connection = require('../database');
 const Teacher = require('../models/Teacher');
 const Matter = require('../models/Matter');
+const Course = require('../models/Course');
 
 async function selectStudent(table_name,student_id){
-    if(table_name == 'info_4'){
-        const data = await Info4.findOne({
-            where:{
-                student_id
-            }
-        })
+if(table_name == 'info_4'){
+    const data = await Info4.findOne({
+        where:{
+            student_id
+        }
+    });
 
-        return data;
-    }
+    return data;
+}
 }
 
 module.exports = {
-    async save(req,res){
-        const { id,modeId,courseId,schoolClass,matterIdentifier,classQuanty} = req.params;
+async save(req,res){
+    const { id,modeId,courseId,classId,matterIdentifier,classQuanty} = req.params;
+    
+    const student = await Student.findOne({
+        where:{
+            sensor_id: id
+        },
+    });
+
+    const teacher = await Teacher.findOne({
+        where:{
+            sensor_id: id
+        },
+        include:[{
+            association: 'matter',
+            attributes: ['identifier','id'],
+            through: {
+                attributes: []
+            },
+            where:{
+                identifier:  matterIdentifier
+            }
+        },{
+            association: 'schoolClass',
+            attributes: ['course_id','id'],
+            through:{
+                attributes: []
+            },
+            where:{
+                id: classId
+            }
+        }]
+    });
+
+    if(teacher){
         
-        const student = await Student.findOne({
+        res.json(teacher);
+    }else{
+        const {table_name} = await SchoolClass.findOne({
             where:{
-                sensor_id: id
-            },
-        })
+                id: classId,
+                course_id: courseId
+            }
+        });
 
-        const teacher = await Teacher.findOne({
-            where:{
-                sensor_id: id
-            },
-        })
+        const studentData = await selectStudent(table_name,student.id);
 
-        if(teacher){
-            const {matter} = await Teacher.findOne({
-                include:{
-                    association: 'matter',
-                    attributes: ['identifier'],
-                    through: {
-                        attributes: []
-                    },
-                    where:{
-                       identifier:  matterIdentifier
-                    }
-                }
-            })
+        const currentFrequency = studentData.getDataValue(matterIdentifier) + Number(classQuanty);
 
-            const result = matter[0];
+        await connection.query(`UPDATE ${table_name} SET ${matterIdentifier} = ${currentFrequency} WHERE student_id = ${student.id}`);
 
-        }else{
-            const {table_name} = await SchoolClass.findOne({
-                where:{
-                    id: schoolClass,
-                    course_id: courseId
-                }
-            })
-
-            const studentData = await selectStudent(table_name,student.id);
-
-            const currentFrequency = studentData.getDataValue(matterIdentifier) + Number(classQuanty);
-
-            await connection.query(`UPDATE ${table_name} SET ${matterIdentifier} = ${currentFrequency} WHERE student_id = ${student.id}`)
-
-            res.json({message: 'A frequência do aluno foi registrada'})
-        }
+        res.json({message: 'A frequência do aluno foi registrada'});
     }
+} 
 }
