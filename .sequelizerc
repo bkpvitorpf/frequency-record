@@ -2,6 +2,6 @@ const { dirname } = require('path');
 const Path = require('path')
 
 module.exports ={
-    config: Path.resolve( __dirname ,'src','config','database.js'),
-    'migrations-path': Path.resolve(__dirname,'src','database','migrations'),
+  config: Path.resolve( __dirname ,'src','config','database.js'),
+  'migrations-path': Path.resolve(__dirname,'src','database','migrations'),
 };
