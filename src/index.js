@@ -96,12 +96,17 @@ async function defaultQuery(){
 
   await course.addMode(mode);
 
-  */
-
   const schoolClass = await SchoolClass.findByPk(2);
   const teacher = await Teacher.findByPk(1);
 
   schoolClass.addTeacher(teacher);
+   */
+
+   const teste = new Date();
+
+   let data2 = new Date(teste.valueOf() - teste.getTimezoneOffset() * 60000);
+
+   console.log(data2.getUTCMinutes());
 }
 
 defaultQuery();
