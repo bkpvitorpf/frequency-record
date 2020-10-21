@@ -1,7 +1,7 @@
+import Login_page from "../components/Login_page";
+
 export default function Home() {
   return (
-    <div>
-      <h1>Olá</h1>
-    </div>
+    <Login_page />
   )
 }

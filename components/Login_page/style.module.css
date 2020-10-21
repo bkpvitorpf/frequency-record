@@ -1,0 +1,69 @@
+.container{
+  width: auto;
+  height: 100vh;
+  background-color: #DCDCDD;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container form{
+  width: 550px;
+  height: 550px;
+  background-color: #252422;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container form h1{
+  width: 400px;
+  text-align: center;
+  margin: 20px 0;
+  color: #1985A1;
+}
+
+.container form .inputBlock{
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0;
+}
+
+.container form .inputBlock:nth-child(3){
+  margin-bottom: 50px;
+}
+
+.container form .inputBlock label{
+  font-size: 22px;
+  margin: 10px 0;
+  color: #1985A1;
+}
+
+.container form .inputBlock input{
+  height: 40px;
+  width: 400px;
+  background-color: #FFFCF2;
+  border-radius: 10px;
+  color: #1985A1;
+  border: none;
+  padding: 10px;
+}
+
+.container ::-webkit-input-placeholder{
+  color: #1985A1;
+}
+
+.container form .inputBlock input.emailInput{
+  background: url('../../assets/Icons/Mail.svg') no-repeat scroll 8px 10px;
+  background-color: #FFFCF2;
+  padding-left: 50px;
+}
+
+.container form .inputBlock input.passwordInput{
+  background: url('../../assets/Icons/Password.svg') no-repeat scroll 8px 6px;
+  background-color: #FFFCF2;
+  padding-left: 50px;
+}
