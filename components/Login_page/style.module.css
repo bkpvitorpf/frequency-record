@@ -8,7 +8,7 @@
 }
 
 .container form{
-  width: 550px;
+  width: 500px;
   height: 550px;
   background-color: #252422;
   border-radius: 20px;
@@ -57,13 +57,13 @@
 }
 
 .container form .inputBlock input.emailInput{
-  background: url('../../assets/Icons/Mail.svg') no-repeat scroll 8px 10px;
+  background: url('../../public/icons/Mail.svg') no-repeat scroll 8px 10px;
   background-color: #FFFCF2;
   padding-left: 50px;
 }
 
 .container form .inputBlock input.passwordInput{
-  background: url('../../assets/Icons/Password.svg') no-repeat scroll 8px 6px;
+  background: url('../../public/icons/Password.svg') no-repeat scroll 8px 6px;
   background-color: #FFFCF2;
   padding-left: 50px;
 }

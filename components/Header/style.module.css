@@ -1,0 +1,39 @@
+.container{
+  width: auto;
+  height: 60px;
+  background-color: #252422;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.container .buttonContainer:nth-child(1){
+  margin-left: 30px;
+}
+
+.container .buttonContainer:nth-child(3){
+  margin-right: 30px;
+}
+
+.container .buttonContainer button{
+  display: flex;
+  background: none;
+  border: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.container .buttonContainer button img{
+  width: 30px;
+  height: 30px;
+  margin-right: 15px;
+}
+
+.container .buttonContainer button p{
+  font-size: 30px;
+  color: #1985A1;
+}
+
+.container .buttonContainer button:hover{
+  cursor: pointer;
+}
