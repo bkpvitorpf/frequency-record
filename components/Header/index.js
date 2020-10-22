@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Styles from './style.module.css';
 import Link from 'next/link';
+import AuthContext from '../../contexts/auth';
 
 export default function Header() {
+  const {signOut} = useContext(AuthContext);
+
   return (
     <div className={Styles.container}>
       <div className={Styles.buttonContainer}>
@@ -14,7 +17,7 @@ export default function Header() {
         </Link>
       </div>
       <div className={Styles.buttonContainer}>
-        <Link href="/inicio">
+        <Link href="/dashboard">
           <button>
             <img src="icons/Home.svg" alt="Início"/>
             <p>Início</p>
@@ -22,7 +25,7 @@ export default function Header() {
         </Link>
       </div>
       <div className={Styles.buttonContainer}>
-        <button>
+        <button onClick={signOut}>
           <img src="icons/Logout.svg" alt="Sair"/>
           <p>Sair</p>
         </button>

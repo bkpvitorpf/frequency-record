@@ -1,6 +1,7 @@
 import React,{useContext, useEffect} from 'react';
 import {useRouter} from 'next/router';
 import Signin_page from '../components/Signin_page';
+import Dashboard from '../pages/dashboard';
 import AuthContext from '../contexts/auth';
 
 export default function Index() {
@@ -8,12 +9,15 @@ export default function Index() {
   const {signed} = useContext(AuthContext);
 
   useEffect(()=>{
-   if(signed){
-     route.push('/Dashboard')
-   } 
+    if(signed){
+      route.push('/dashboard');
+    }
   })
   
   return (
-    <Signin_page />
+    <>
+      {signed && <></>}
+      {!signed && <Signin_page />}
+    </>
   )
 }
