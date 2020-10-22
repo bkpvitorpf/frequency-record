@@ -57,13 +57,13 @@
 }
 
 .container form .inputBlock input.emailInput{
-  background: url('../../public/icons/Mail.svg') no-repeat scroll 8px 10px;
+  background: url('../../public/icons/Mail.svg') no-repeat scroll 10px 10px;
   background-color: #FFFCF2;
   padding-left: 50px;
 }
 
 .container form .inputBlock input.passwordInput{
-  background: url('../../public/icons/Password.svg') no-repeat scroll 8px 6px;
+  background: url('../../public/icons/Password.svg') no-repeat scroll 10px 6px;
   background-color: #FFFCF2;
   padding-left: 50px;
 }
