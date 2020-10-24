@@ -26,7 +26,7 @@ module.exports={
 
       res.json(matter);
     }else{
-      const {class_id} = req.user;
+      const {class_id,name: user_name} = req.user;
 
       const {matter} = await SchoolClass.findOne({
         where:{
@@ -41,7 +41,7 @@ module.exports={
         }
       });
 
-      res.json(matter);
+      res.json({matter,user_name});
     }
   },
   async indexCourses(req,res){
