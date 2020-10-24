@@ -1,7 +1,6 @@
 import React,{useContext, useEffect} from 'react';
 import {useRouter} from 'next/router';
 import Signin_page from '../components/Signin_page';
-import Dashboard from '../pages/dashboard';
 import AuthContext from '../contexts/auth';
 
 export default function Index() {
@@ -12,7 +11,7 @@ export default function Index() {
     if(signed){
       route.push('/dashboard');
     }
-  })
+  });
   
   return (
     <>
