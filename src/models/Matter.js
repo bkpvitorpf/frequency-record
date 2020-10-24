@@ -13,6 +13,7 @@ class Matter extends Model{
 
   static associate(models){
     this.belongsToMany(models.Teacher,{foreignKey:'matter_id', through: 'matters_teachers', as:'teacher'});
+    this.belongsToMany(models.SchoolClass,{foreignKey:'matter_id', through: 'classes_matters', as:'class'});
   }
 }
 

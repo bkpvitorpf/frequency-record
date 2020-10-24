@@ -16,6 +16,7 @@ class SchoolClass extends Model{
     this.belongsTo(models.Course,{foreignKey:'course_id',as: 'course'});
     this.belongsToMany(models.Shift,{foreignKey:'class_id', through: 'classes_shifts', as:'shift'});
     this.belongsToMany(models.Teacher,{foreignKey:'class_id', through: 'classes_teachers', as:'teacher'});
+    this.belongsToMany(models.Matter,{foreignKey:'class_id', through: 'classes_matters', as:'matter'});
   }
 }
 
