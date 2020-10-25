@@ -3,7 +3,7 @@ import {useRouter} from 'next/router';
 import Signin_page from '../components/Signin_page';
 import AuthContext from '../contexts/auth';
 
-export default function Index() {
+const Index: React.FC = () => {
   const route = useRouter();
   const {signed} = useContext(AuthContext);
 
@@ -20,3 +20,5 @@ export default function Index() {
     </>
   )
 }
+
+export default Index;

@@ -8,11 +8,15 @@ import Header from '../../components/Header';
 import Styles from './styles.module.css';
 import {useRouter} from 'next/router';
 
-export default function dashboard() {
+interface UserData{
+  user_name: string;
+}
+
+const Dashboard: React.FC = () => {
   const {signed,token} = useContext(AuthContext);
   const route = useRouter();
   const [loading,setLoading] = useState(true);
-  const [user_data,setUserData] = useState({});
+  const [user_data,setUserData] = useState({} as UserData);
   const [animation_state,setAnimationState] = useState({
     isStopped: false, isPaused: false
   });
@@ -74,3 +78,5 @@ export default function dashboard() {
     </>
   );
 }
+
+export default Dashboard;

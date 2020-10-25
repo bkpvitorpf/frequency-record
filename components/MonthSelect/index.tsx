@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function MonthSelect() {
+const MonthSelect: React.FC = () => {
   return (
     <select name="month" id="month">
       <option value="" selected disabled>Selecione o mês desejado</option>
@@ -19,3 +19,5 @@ export default function MonthSelect() {
     </select>
   );
 }
+
+export default MonthSelect;

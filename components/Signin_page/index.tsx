@@ -3,10 +3,10 @@ import Button from '../Button';
 import Styles from './style.module.css';
 import AuthContext from '../../contexts/auth';
 
-export default function Signin_page() {
+const Signin_page: React.FC = () => {
   const {signIn} = useContext(AuthContext);
-  const [email,setEmail] = useState();
-  const [password,setPassword] = useState();
+  const [email,setEmail] = useState<string>();
+  const [password,setPassword] = useState<string>();
 
   async function handleSignIn(event){
     event.preventDefault();
@@ -19,12 +19,12 @@ export default function Signin_page() {
         <h1>Faça login em nossa plataforma para continuar !</h1>
         <div className={Styles.inputBlock}>
           <label>Email</label>
-          <input 
+          <input
             className={Styles.emailInput} 
             type="email" 
             placeholder="Digite aqui o seu email" 
             required
-            onChange={(e)=> setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
         <div className={Styles.inputBlock}>
@@ -41,3 +41,5 @@ export default function Signin_page() {
     </div>
   );
 }
+
+export default Signin_page;
