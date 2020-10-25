@@ -36,7 +36,7 @@
   padding: 0 10px;
   width: 250px;
   height: 40px;
-  background: url("../../public/icons/SelectArrowDown.svg") no-repeat scroll 215px 7px;
+  background: url("../../../public/icons/SelectArrowDown.svg") no-repeat scroll 215px 7px;
   background-color: #FFFCF2;
   border: none;
   border-radius: 10px;
@@ -44,7 +44,7 @@
 }
 
 .teacherContainer form select:active, .studentContainer form select:active{
-  background: url("../../public/icons/SelectArrowUp.svg") no-repeat scroll 215px 7px;
+  background: url("../../../public/icons/SelectArrowUp.svg") no-repeat scroll 215px 7px;
   background-color: #FFFCF2;
 }
 

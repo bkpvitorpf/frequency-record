@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import Button from '../Button';
-import Styles from './style.module.css';
+import { Container, InputBlock, MailInput, PasswordInput } from './styles';
 import AuthContext from '../../contexts/auth';
 
 const Signin_page: React.FC = () => {
@@ -14,31 +14,29 @@ const Signin_page: React.FC = () => {
   }
 
   return (
-    <div className={Styles.container}>
+    <Container>
       <form onSubmit={handleSignIn}>
         <h1>Faça login em nossa plataforma para continuar !</h1>
-        <div className={Styles.inputBlock}>
+        <InputBlock>
           <label>Email</label>
-          <input
-            className={Styles.emailInput} 
+          <MailInput
             type="email" 
             placeholder="Digite aqui o seu email" 
             required
             onChange={(e) => setEmail(e.target.value)}
           />
-        </div>
-        <div className={Styles.inputBlock}>
+        </InputBlock>
+        <InputBlock>
           <label>Senha</label>
-          <input 
-            className={Styles.passwordInput} 
+          <PasswordInput 
             type="password" 
             required
             onChange={(e)=> setPassword(e.target.value)}
           />
-        </div>
+        </InputBlock>
         <Button>Entrar</Button>
       </form>
-    </div>
+    </Container>
   );
 }
 

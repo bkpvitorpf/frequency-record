@@ -6,7 +6,7 @@ import Styles from './style.module.css';
 import Button from '../Button';
 import MonthSelect from '../MonthSelect';
 
-export default function Aside() {
+export default function Aside(props) {
   const route = useRouter();
   const {user_type} = useContext(AuthContext);
 
@@ -29,8 +29,10 @@ export default function Aside() {
       <h1>Consulta de frequência</h1>
       <form>
         <MonthSelect />
-        <select name="" id="">
-          <option value="">Triste</option>
+        <select name="Matters" id="Matters">
+          {props.matters.map(matter => (
+            <option value={matter.identifier}>{matter.name}</option>
+          ))}
         </select>
         <Button>Pesquisar</Button>
       </form>

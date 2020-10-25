@@ -1,6 +1,6 @@
 import React,{useContext, useEffect, useState} from 'react';
 import Lottie from 'react-lottie';
-import AnimationData from '../../public/animations/paperplane-animation.json';
+import AnimationData from '../../../public/animations/paperplane-animation.json';
 import AuthContext from '../../contexts/auth';
 import Api from '../../services/api';
 import Aside from '../../components/Aside';
@@ -10,6 +10,7 @@ import {useRouter} from 'next/router';
 
 interface UserData{
   user_name: string;
+  matters: Array<object>;
 }
 
 const Dashboard: React.FC = () => {
@@ -38,6 +39,8 @@ const Dashboard: React.FC = () => {
           authorization: 'Bearer ' + token
         }
       });
+
+      console.log(response.data.matter);
   
       if(response){
         setLoading(false);
@@ -67,7 +70,7 @@ const Dashboard: React.FC = () => {
       {signed && <>
         <Header />
         <div className={Styles.container}>
-          <div className={Styles.aside}><Aside /></div>
+          <div className={Styles.aside}><Aside matters={user_data.matters}/></div>
           <div className={Styles.content}>
             <h1>Olá</h1>
             <h1>{user_data.user_name}</h1>
