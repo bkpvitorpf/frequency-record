@@ -3,6 +3,6 @@ import Styles from './style.module.css';
 
 export default function Button(props) {
   return (
-    <button className={Styles.button}>{props.children}</button>
+    <button className={Styles.button} onClick={props.onClick}>{props.children}</button>
   );
 }

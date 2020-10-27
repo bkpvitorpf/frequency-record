@@ -5,14 +5,18 @@ import AuthContext from '../../contexts/auth';
 import Container,{ InputBlock, MailInput, PasswordInput } from './styles';
 
 const Signin_page: React.FC = () => {
-  const {signIn} = useContext(AuthContext);
+  const {signIn,loading} = useContext(AuthContext);
   const [email,setEmail] = useState<string>();
   const [password,setPassword] = useState<string>();
   const route = useRouter();
 
   async function handleSignIn(event){
     event.preventDefault();
-    signIn(email,password);
+    await signIn(email,password);
+
+    if(!loading){
+      route.push('/dashboard');
+    }
   }
 
   return (
