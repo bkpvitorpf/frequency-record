@@ -1,3 +1,6 @@
-// Arquivo de configuração pra trabalhar com o next-images
+// Configuração do next-images
+
 const withImages = require('next-images')
-module.exports = withImages()
+module.exports = withImages({
+  esModule: true,
+})

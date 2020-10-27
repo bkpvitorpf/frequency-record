@@ -1,7 +1,7 @@
-import React, { useContext } from 'react';
-import Styles from './style.module.css';
 import Link from 'next/link';
+import React, { useContext } from 'react';
 import AuthContext from '../../contexts/auth';
+import Styles from './style.module.css';
 
 export default function Header() {
   const {signOut} = useContext(AuthContext);

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React,{createContext, useEffect, useState} from 'react';
+import React, { createContext, useEffect, useState } from 'react';
 import Api from '../services/api';
 
 interface AuthContextData{

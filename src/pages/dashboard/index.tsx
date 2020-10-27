@@ -1,16 +1,16 @@
-import React,{useContext, useEffect, useState} from 'react';
+import { useRouter } from 'next/router';
+import React, { useContext, useEffect, useState } from 'react';
 import Lottie from 'react-lottie';
 import AnimationData from '../../../public/animations/paperplane-animation.json';
-import AuthContext from '../../contexts/auth';
-import Api from '../../services/api';
 import Aside from '../../components/Aside';
 import Header from '../../components/Header';
+import AuthContext from '../../contexts/auth';
+import useAxios from '../../hooks/useAxios';
 import Styles from './styles.module.css';
-import {useRouter} from 'next/router';
 
 interface UserData{
   user_name: string;
-  matters: Array<object>;
+  matter: Array<object>[];
 }
 
 const Dashboard: React.FC = () => {
@@ -20,6 +20,12 @@ const Dashboard: React.FC = () => {
   const [user_data,setUserData] = useState({} as UserData);
   const [animation_state,setAnimationState] = useState({
     isStopped: false, isPaused: false
+  });
+
+  const { data, error } = useAxios('/data/matters',{
+    headers:{
+      authorization: 'Bearer ' + token
+    }
   });
 
   // Configurações da animação
@@ -33,27 +39,14 @@ const Dashboard: React.FC = () => {
   };
 
   useEffect(() =>{
-    async function fetchData(){
-      const response = await Api.get('/data/matters',{
-        headers:{
-          authorization: 'Bearer ' + token
-        }
-      });
-
-      console.log(response.data.matter);
-  
-      if(response){
-        setLoading(false);
-        setUserData(response.data)
-      }
-    }
-
     if(!signed){
       route.push('/');
     }
-
-    fetchData();
-  },[]);
+    if(data){
+      setLoading(false);
+      setUserData(data);
+    }
+  });
 
   if(loading) return (
     <Lottie options={defaultOptions}
@@ -61,8 +54,11 @@ const Dashboard: React.FC = () => {
       width= {400}
       isStopped={animation_state.isStopped}
       isPaused={animation_state.isPaused}
+      isClickToPauseDisabled={true}
     />
   );
+
+  console.log(user_data);
 
   return (
     <>
@@ -70,7 +66,7 @@ const Dashboard: React.FC = () => {
       {signed && <>
         <Header />
         <div className={Styles.container}>
-          <div className={Styles.aside}><Aside matters={user_data.matters}/></div>
+          <div className={Styles.aside}><Aside matters={user_data.matter}/></div>
           <div className={Styles.content}>
             <h1>Olá</h1>
             <h1>{user_data.user_name}</h1>

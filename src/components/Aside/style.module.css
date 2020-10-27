@@ -34,6 +34,7 @@
   content: "";
   margin: 20px 0;
   padding: 0 10px;
+  padding-right: 50px;
   width: 250px;
   height: 40px;
   background: url("../../../public/icons/SelectArrowDown.svg") no-repeat scroll 215px 7px;

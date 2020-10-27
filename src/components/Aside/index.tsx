@@ -1,13 +1,10 @@
-import React, { useContext, useEffect } from 'react';
-import {useRouter} from 'next/router';
-import Api from '../../services/api';
+import React, { useContext } from 'react';
 import AuthContext from '../../contexts/auth';
-import Styles from './style.module.css';
 import Button from '../Button';
 import MonthSelect from '../MonthSelect';
+import Styles from './style.module.css';
 
-export default function Aside(props) {
-  const route = useRouter();
+export default function Aside({matters}) {
   const {user_type} = useContext(AuthContext);
 
   if(user_type == 'teacher'){
@@ -30,7 +27,8 @@ export default function Aside(props) {
       <form>
         <MonthSelect />
         <select name="Matters" id="Matters">
-          {props.matters.map(matter => (
+          <option value="" selected disabled>Escolha uma disciplina</option>
+          {matters.map(matter => (
             <option value={matter.identifier}>{matter.name}</option>
           ))}
         </select>

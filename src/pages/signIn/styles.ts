@@ -1,10 +1,9 @@
 import Styled from 'styled-components';
-// Pra importar svg tem que 
+// Pra importar svg tem que instalar e configurar o next-images
 import MailIcon from '../../../public/icons/Mail.svg';
 import PasswordIcon from '../../../public/icons/Password.svg';
 
-
-export const Container = Styled.div`
+const Container = Styled.div`
   width: auto;
   height: 100vh;
   background-color: #DCDCDD;
@@ -37,7 +36,7 @@ export const InputBlock = Styled.div`
   flex-direction: column;
   margin: 20px 0;
 
-  &:nth-child(2){
+  &:nth-child(3){
     margin-bottom: 50px;
   }
 
@@ -54,7 +53,7 @@ export const MailInput = Styled.input`
   border-radius: 10px;
   color: #1985A1;
   border: none;
-  padding: 10px;
+  padding: 0 15px;
   background: url(${MailIcon}) no-repeat scroll 10px 10px;
   background-color: #FFFCF2;
   padding-left: 50px;
@@ -70,7 +69,7 @@ export const PasswordInput = Styled.input`
   border-radius: 10px;
   color: #1985A1;
   border: none;
-  padding: 10px;
+  padding: 0 15px;
   background: url(${PasswordIcon}) no-repeat scroll 10px 6px;
   background-color: #FFFCF2;
   padding-left: 50px;
@@ -79,3 +78,5 @@ export const PasswordInput = Styled.input`
     color: #1985A1;
   }
 `
+
+export default Container;
