@@ -1,3 +1,4 @@
+import { route } from 'next/dist/next-server/server/router';
 import { useRouter } from 'next/router';
 import React, { createContext, useEffect, useState } from 'react';
 import Api from '../services/api';
@@ -6,7 +7,6 @@ interface AuthContextData{
   signed: boolean,
   token: string,
   user_type: string,
-  loading: boolean,
   signIn(email:string,password:string): Promise<void>,
   signOut(): void
 }
@@ -17,7 +17,6 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 export function AuthProvider ({children}){
   const [token,setToken] = useState(String);
   const [user_type,setuserType] = useState(String);
-  const [loading,setLoading] = useState(true);
   const route = useRouter();
 
   useEffect(()=>{
@@ -37,12 +36,13 @@ export function AuthProvider ({children}){
     });
 
     if(response){
-      setToken(response.data.token);
-      setuserType(response.data.user_type);
-      setLoading(false);
+    setToken(response.data.token);
+    setuserType(response.data.user_type);
 
-      localStorage.setItem('token',response.data.token);
-      localStorage.setItem('user_type',response.data.user_type);
+    localStorage.setItem('token',response.data.token);
+    localStorage.setItem('user_type',response.data.user_type);
+
+    route.push('/dashboard');
     }
   }
 
@@ -55,7 +55,7 @@ export function AuthProvider ({children}){
 
   return (
     // !!token = Faz uma verificação, se token existir, signed recebe true, caso contrário, signed recebe false
-    <AuthContext.Provider value={{signed: !!token,token,user_type,loading,signIn,signOut}}>
+    <AuthContext.Provider value={{signed: !!token,token,user_type,signIn,signOut}}>
       {children}
     </AuthContext.Provider>
   );

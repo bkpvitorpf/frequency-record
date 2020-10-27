@@ -30,6 +30,8 @@ const Container = Styled.div`
   }
 `
 
+export default Container;
+
 export const InputBlock = Styled.div`
   width: 400px;
   display: flex;
@@ -78,5 +80,3 @@ export const PasswordInput = Styled.input`
     color: #1985A1;
   }
 `
-
-export default Container;

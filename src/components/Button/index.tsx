@@ -1,8 +1,8 @@
 import React from 'react';
-import Styles from './style.module.css';
+import ButtonElement from './styles';
 
 export default function Button(props) {
   return (
-    <button className={Styles.button} onClick={props.onClick}>{props.children}</button>
+    <ButtonElement onClick={props.onClick}>{props.children}</ButtonElement>
   );
 }
