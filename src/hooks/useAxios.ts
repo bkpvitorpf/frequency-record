@@ -6,6 +6,11 @@ const useAxios = (url,{...args}:AxiosRequestConfig) => {
   const {data,error} = useSWR(url,async url=>{
     const response = await Api.get(url,{...args});
     return response.data;
+  },{
+    errorRetryInterval: 10,
+    revalidateOnMount: true,
+    revalidateOnFocus: true,
+    revalidateOnReconnect: true
   })
   
   return {data,error}

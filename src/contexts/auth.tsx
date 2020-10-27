@@ -36,13 +36,13 @@ export function AuthProvider ({children}){
     });
 
     if(response){
-    setToken(response.data.token);
-    setuserType(response.data.user_type);
+      setToken(response.data.token);
+      setuserType(response.data.user_type);
 
-    localStorage.setItem('token',response.data.token);
-    localStorage.setItem('user_type',response.data.user_type);
+      localStorage.setItem('token',response.data.token);
+      localStorage.setItem('user_type',response.data.user_type);
 
-    route.push('/dashboard');
+      route.push('/dashboard');
     }
   }
 

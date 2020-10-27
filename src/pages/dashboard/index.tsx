@@ -15,16 +15,16 @@ interface UserData{
 
 const Dashboard: React.FC = () => {
   const {signed,token} = useContext(AuthContext);
-  const route = useRouter();
   const [loading,setLoading] = useState(true);
   const [user_data,setUserData] = useState({} as UserData);
   const [animation_state,setAnimationState] = useState({
     isStopped: false, isPaused: false
   });
+  const route = useRouter();
 
   const { data, error } = useAxios('/data/matters',{
     headers:{
-      authorization: 'Bearer ' + token
+      authorization: `Bearer ${token}`
     }
   });
 
@@ -58,26 +58,21 @@ const Dashboard: React.FC = () => {
     />
   );
 
-  console.log(user_data);
-
   return (
     <>
-      {!signed && <></>}
-      {signed && <>
-        <HeaderContainer>
-          <Header />
-        </HeaderContainer>
-        <Container>
-          <div className="asideContainer">
-            <Aside matters={user_data.matter}/>
-          </div>
-          <div>
-            <h1>Olá</h1>
-            <h1>{user_data.user_name}</h1>
-            <h1>Preencha o formulário para continuar</h1>
-          </div>
-        </Container>
-      </>}
+      <HeaderContainer>
+        <Header />
+      </HeaderContainer>
+      <Container>
+        <div className="asideContainer">
+          <Aside matters={user_data.matter}/>
+        </div>
+        <div>
+          <h1>Olá</h1>
+          <h1>{user_data.user_name}</h1>
+          <h1>Preencha o formulário para continuar</h1>
+        </div>
+      </Container>
     </>
   );
 }
