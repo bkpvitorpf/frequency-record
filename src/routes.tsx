@@ -1,0 +1,30 @@
+import React, { useContext } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import LoadingScreen from './components/LoadingScreen';
+import AuthContext from './contexts/auth';
+import Dashboard from './pages/Dashboard';
+import Login from './pages/Login';
+
+interface props{
+  Private?: any;
+  [x: string]: any;
+}
+
+function CustomRoute({ Private, ...props }:props){
+  const {loading,authenticated} = useContext(AuthContext);
+
+  if (loading) return <LoadingScreen />;
+
+  if (Private && !authenticated) return <Redirect to="/" />
+
+  return <Route {...props}/>;
+}
+
+export default function Routes(){
+  return(
+    <Switch>
+      <CustomRoute exact path="/" component={Login} />
+      <CustomRoute Private path="/dashboard" component={Dashboard} />
+    </Switch>
+  );
+}

@@ -1,5 +1,5 @@
-import LoadingAnimation from '../../public/animations/LoadingAnimation.json';
-import ErrorAnimation from '../../public/animations/ErrorAnimation.json';
+import LoadingAnimation from '../assets/animations/LoadingAnimation.json';
+import ErrorAnimation from '../assets/animations/ErrorAnimation.json';
 
 export const defaultLoadingOptions = {
   loop: true,

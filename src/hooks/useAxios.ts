@@ -1,13 +1,13 @@
-import { AxiosRequestConfig } from 'axios';
 import useSWR from 'swr';
 import Api from '../services/api';
 
-const useAxios = (url,{...args}:AxiosRequestConfig) => {
-  const {data,error} = useSWR(url,async url=>{
-    const response = await Api.get(url,{...args});
+const useAxios = (url:string) => {
+  const {data,error} = useSWR(url,async (url:string) =>{
+    const response = await Api.get(url);
     return response.data;
   },{
-    errorRetryInterval: 5,
+    errorRetryInterval: 20,
+    revalidateOnFocus: true,
     revalidateOnReconnect: true
   })
   

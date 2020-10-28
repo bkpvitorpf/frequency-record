@@ -1,10 +1,7 @@
-import { route } from 'next/dist/next-server/server/router';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Aside from '../../components/Aside';
-import ErrorScreen from '../../components/ErrorScreen';
 import Header from '../../components/Header';
 import LoadingScreen from '../../components/LoadingScreen';
-import AuthContext from '../../contexts/auth';
 import useAxios from '../../hooks/useAxios';
 import Styles from './styles.module.css';
 
@@ -14,28 +11,19 @@ interface UserData{
 }
 
 const Dashboard: React.FC = () => {
-  const {signed,token} = useContext(AuthContext);
   const [loading,setLoading] = useState(true);
   const [userData,setUserData] = useState({} as UserData);
 
-  if(!signed) return <ErrorScreen />
-
-  const { data } = useAxios('/data/matters',{
-    headers:{
-      authorization: `Bearer ${token}`
-    },
-  });
+  const { data } = useAxios('/data/matters');
   
   useEffect(() => {
     if(data){
       setLoading(false);
       setUserData(data);
-    }else{
-      
     }
-  });
+  },[data]);
 
-  if(loading) return <LoadingScreen />;
+  if(loading) return <LoadingScreen />
 
   return (
     <>

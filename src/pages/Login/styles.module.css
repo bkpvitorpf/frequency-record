@@ -25,47 +25,45 @@
   color: #1985A1;
 }
 
-.container form .inputContainer{
+.container form .inputBlock{
   width: 400px;
   display: flex;
   flex-direction: column;
   margin: 20px 0;
 }
 
-.container form .inputContainer input::placeholder{
-  color: #1985A1;
-}
-
-.container form .inputContainer:nth-child(3){
+.container form .inputBlock:nth-child(3){
   margin-bottom: 50px;
 }
 
-.container form .inputContainer label{
+.container form .inputBlock label{
   font-size: 22px;
   margin: 10px 0;
   color: #1985A1;
 }
 
-.container form .inputContainer .mailInput{
+.container form .inputBlock input{
   height: 40px;
   width: 400px;
+  background-color: #FFFCF2;
   border-radius: 10px;
   color: #1985A1;
   border: none;
-  padding: 0 15px;
-  background: url("../../../public/icons/Mail.svg") no-repeat scroll 10px 10px;
+  padding: 10px;
+}
+
+.container ::-webkit-input-placeholder{
+  color: #1985A1;
+}
+
+.container form .inputBlock input.emailInput{
+  background: url('../../assets/icons/Mail.svg') no-repeat scroll 10px 10px;
   background-color: #FFFCF2;
   padding-left: 50px;
 }
 
-.container form .inputContainer .passwordInput{
-  height: 40px;
-  width: 400px;
-  border-radius: 10px;
-  color: #1985A1;
-  border: none;
-  padding: 0 15px;
-  background: url("../../../public/icons/Password.svg") no-repeat scroll 10px 6px;
+.container form .inputBlock input.passwordInput{
+  background: url('../../assets/icons/Password.svg') no-repeat scroll 10px 6px;
   background-color: #FFFCF2;
   padding-left: 50px;
 }

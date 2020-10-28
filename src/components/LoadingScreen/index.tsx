@@ -4,7 +4,7 @@ import { defaultLoadingOptions } from '../../config/animationConfig';
 import Styles from './styles.module.css';
 
 const LoadingScreen: React.FC = () => {
-  const [animation_state,setAnimationState] = useState({
+  const [animation_state] = useState({
     isStopped: false, isPaused: false
   });
   
@@ -19,7 +19,7 @@ const LoadingScreen: React.FC = () => {
       />
       <div className={Styles.info}>
         <h4>Created by</h4>
-        <a href="https://lottiefiles.com/zeffchris" target="_blank">Jeffrey Christopher</a>
+        <a target="_blank" rel="noopener noreferrer" href="https://lottiefiles.com/zeffchris" >Jeffrey Christopher</a>
       </div>
     </div>
   );

@@ -1,28 +1,25 @@
-import Link from 'next/link';
 import React, { useContext } from 'react';
 import AuthContext from '../../contexts/auth';
 import Styles from './style.module.css';
 
-export default function Header() {
+import ProfileImage from '../../assets/icons/Profile.svg';
+
+export default function Header({history}:any) {
   const {signOut} = useContext(AuthContext);
 
   return (
     <div className={Styles.container}>
       <div className={Styles.buttonContainer}>
-        <Link href="/profile">
-          <button>
-            <img src="icons/Profile.svg" alt="Dados"/>
-            <p>Dados</p>
-          </button>
-        </Link>
+        <button onClick={()=> history.push('/profile')}>
+          <img src={ProfileImage} alt="Perfil"/>
+          <p>Dados</p>
+        </button>
       </div>
       <div className={Styles.buttonContainer}>
-        <Link href="/dashboard">
-          <button>
-            <img src="icons/Home.svg" alt="Início"/>
-            <p>Início</p>
-          </button>
-        </Link>
+        <button onClick={()=> history.push('/dashboard')}>
+          <img src="icons/Home.svg" alt="Início"/>
+          <p>Início</p>
+        </button>
       </div>
       <div className={Styles.buttonContainer}>
         <button onClick={signOut}>
