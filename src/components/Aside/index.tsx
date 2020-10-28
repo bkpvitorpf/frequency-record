@@ -5,9 +5,9 @@ import MonthSelect from '../MonthSelect';
 import Styles from './styles.module.css';
 
 export default function Aside({matters}) {
-  const {user_type} = useContext(AuthContext);
+  const {userType} = useContext(AuthContext);
 
-  if(user_type == 'teacher'){
+  if(userType == 'teacher'){
     return (<>
       <div className={Styles.teacherContainer}>
         <h1 className="title">Consulta de frequência</h1>

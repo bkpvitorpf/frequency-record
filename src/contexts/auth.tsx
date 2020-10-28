@@ -1,7 +1,5 @@
-import Axios from 'axios';
 import Router from 'next/router';
 import React, { createContext, useEffect, useState } from 'react';
-import LoadingScreen from '../components/LoadingScreen';
 import Api from '../services/api';
 
 interface AuthContextData{
@@ -21,12 +19,12 @@ export function AuthProvider ({children}){
   const [loading,setLoading] = useState(true);
 
   useEffect(()=>{
-    const stored_token = JSON.parse(localStorage.getItem('token'));
-    const stored_user_type = JSON.parse(localStorage.getItem('user_type'));
+    const storedToken = JSON.parse(localStorage.getItem('token'));
+    const storedUserType = JSON.parse(localStorage.getItem('user_type'));
 
-    if(stored_token && stored_user_type){
-      setToken(stored_token);
-      setuserType(stored_user_type);
+    if(storedToken && storedUserType){
+      setToken(storedToken);
+      setuserType(storedUserType);
     }
 
     setLoading(false);

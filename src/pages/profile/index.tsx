@@ -9,7 +9,7 @@ import Styles from './styles.module.css';
 const Profile: React.FC = () => {
   const {signed,token} = useContext(AuthContext);
   const [loading,setLoading] = useState(true);
-  const [user_data,setUserData] = useState({});
+  const [userData,setUserData] = useState({});
 
   if(!signed) return <ErrorScreen />
 

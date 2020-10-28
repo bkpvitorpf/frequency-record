@@ -16,7 +16,7 @@ interface UserData{
 const Dashboard: React.FC = () => {
   const {signed,token} = useContext(AuthContext);
   const [loading,setLoading] = useState(true);
-  const [user_data,setUserData] = useState({} as UserData);
+  const [userData,setUserData] = useState({} as UserData);
 
   if(!signed) return <ErrorScreen />
 
@@ -42,11 +42,11 @@ const Dashboard: React.FC = () => {
       <Header />
       <div className={Styles.container}>
         <div className={Styles.asideContainer}>
-          <Aside matters={user_data.matter}/>
+          <Aside matters={userData.matter}/>
         </div>
         <div className={Styles.content}>
           <h1>Olá</h1>
-          <h1>{user_data.user_name}</h1>
+          <h1>{userData.user_name}</h1>
           <h1>Preencha o formulário para continuar</h1>
         </div>
       </div>
