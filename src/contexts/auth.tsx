@@ -1,5 +1,5 @@
-import { route } from 'next/dist/next-server/server/router';
-import { useRouter } from 'next/router';
+import Axios from 'axios';
+import Router from 'next/router';
 import React, { createContext, useEffect, useState } from 'react';
 import Api from '../services/api';
 
@@ -15,9 +15,8 @@ interface AuthContextData{
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export function AuthProvider ({children}){
-  const [token,setToken] = useState(String);
-  const [user_type,setuserType] = useState(String);
-  const route = useRouter();
+  const [token,setToken] = useState<string>();
+  const [user_type,setuserType] = useState<string>();
 
   useEffect(()=>{
     const stored_token = localStorage.getItem('token');
@@ -42,7 +41,7 @@ export function AuthProvider ({children}){
       localStorage.setItem('token',response.data.token);
       localStorage.setItem('user_type',response.data.user_type);
 
-      route.push('/dashboard');
+      Router.push('/dashboard')
     }
   }
 
@@ -51,6 +50,7 @@ export function AuthProvider ({children}){
     localStorage.removeItem('user_type');
     setToken(null);
     setuserType(null);
+    Router.push('/');
   }
 
   return (

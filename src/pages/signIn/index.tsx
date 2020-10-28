@@ -1,14 +1,14 @@
-import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
 import Button from '../../components/Button';
+import LoadingScreen from '../../components/LoadingScreen';
 import AuthContext from '../../contexts/auth';
-import Container,{ InputBlock, MailInput, PasswordInput } from './styles';
+import Styles from './styles.module.css';
 
 const Signin_page: React.FC = () => {
+  const loading = true;
   const {signIn} = useContext(AuthContext);
   const [email,setEmail] = useState<string>();
   const [password,setPassword] = useState<string>();
-  const route = useRouter();
 
   function handleSignIn(event){
     event.preventDefault();
@@ -16,30 +16,32 @@ const Signin_page: React.FC = () => {
   }
 
   return (
-    <Container>
+    <div className={Styles.container}>
       <form onSubmit={handleSignIn}>
         <h1>Faça login em nossa plataforma para continuar !</h1>
-        <InputBlock>
+        <div className={Styles.inputContainer}>
           <label>Email</label>
-          <MailInput
+          <input
+            className={Styles.mailInput}
             type="email" 
             placeholder="Digite aqui o seu email" 
             required
             onChange={(e) => setEmail(e.target.value)}
           />
-        </InputBlock>
-        <InputBlock>
+        </div>
+        <div className={Styles.inputContainer}>
           <label>Senha</label>
-          <PasswordInput 
+          <input 
+            className={Styles.passwordInput}
             type="password" 
             required
             onChange={(e)=> setPassword(e.target.value)}
             placeholder='Digite aqui a sua senha'
           />
-        </InputBlock>
+        </div>
         <Button>Entrar</Button>
       </form>
-    </Container>
+    </div>
   );
 }
 

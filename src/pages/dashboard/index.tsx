@@ -1,12 +1,12 @@
-import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
-import Lottie from 'react-lottie';
-import AnimationData from '../../../public/animations/paperplane-animation.json';
 import Aside from '../../components/Aside';
+import ErrorScreen from '../../components/ErrorScreen';
 import Header from '../../components/Header';
+import LoadingScreen from '../../components/LoadingScreen';
 import AuthContext from '../../contexts/auth';
 import useAxios from '../../hooks/useAxios';
-import Container,{HeaderContainer} from './styles';
+import Api from '../../services/api';
+import Styles from './styles.module.css';
 
 interface UserData{
   user_name: string;
@@ -15,64 +15,44 @@ interface UserData{
 
 const Dashboard: React.FC = () => {
   const {signed,token} = useContext(AuthContext);
+  const [user_token,setUserToken] = useState<string>();
   const [loading,setLoading] = useState(true);
   const [user_data,setUserData] = useState({} as UserData);
-  const [animation_state,setAnimationState] = useState({
-    isStopped: false, isPaused: false
-  });
-  const route = useRouter();
+
+  const Authorization = 'Bearer ' + token;
 
   const { data, error } = useAxios('/data/matters',{
     headers:{
-      authorization: `Bearer ${token}`
+      Authorization
     }
   });
 
   useEffect(() =>{
-    if(!signed){
-      route.push('/');
-    }
     if(data){
       setLoading(false);
       setUserData(data);
     }
+    const teste = localStorage.getItem('token');
+    console.log(teste)
   });
 
-  // Configurações da animação
-  const defaultOptions = {
-    loop: true,
-    autoplay: true, 
-    animationData: AnimationData,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice'
-    }
-  };
+  if(!signed) return <ErrorScreen />
 
-  if(loading) return (
-    <Lottie options={defaultOptions}
-      height= {400}
-      width= {400}
-      isStopped={animation_state.isStopped}
-      isPaused={animation_state.isPaused}
-      isClickToPauseDisabled={true}
-    />
-  );
+  if(loading) return <LoadingScreen />;
 
   return (
     <>
-      <HeaderContainer>
-        <Header />
-      </HeaderContainer>
-      <Container>
-        <div className="asideContainer">
+      <Header />
+      <div className={Styles.container}>
+        <div className={Styles.asideContainer}>
           <Aside matters={user_data.matter}/>
         </div>
-        <div>
+        <div className={Styles.content}>
           <h1>Olá</h1>
           <h1>{user_data.user_name}</h1>
           <h1>Preencha o formulário para continuar</h1>
         </div>
-      </Container>
+      </div>
     </>
   );
 }

@@ -1,0 +1,55 @@
+.teacherContainer, .studentContainer{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #C5C3C6;
+  padding: 50px 0;
+}
+
+.teacherContainer h1, .studentContainer h1{
+  text-align: center;
+  font-size: 36px;
+  margin: 50px 0;
+  color: #1985A1;
+}
+
+.teacherContainer form, .studentContainer form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.teacherContainer form select, .studentContainer form select{
+  color:#1985A1;
+  margin: 20px 0;
+  padding: 0 10px;
+  padding-right: 50px;
+  width: 250px;
+  height: 40px;
+  background: url("./../../../public/icons/SelectArrowDown.svg") no-repeat scroll 215px 7px;
+  background-color: #FFFCF2;
+  border: none;
+  border-radius: 10px;
+  -webkit-appearance: none;
+}
+
+.teacherContainer form select:active, .studentContainer form select:active{
+  background: url("./../../../public/icons/SelectArrowUp.svg") no-repeat scroll 215px 7px;
+  background-color: #FFFCF2;
+}
+
+.teacherContainer form select option, .studentContainer form select option{
+  color:#1985A1;
+}
+
+.teacherContainer form select:nth-child(4){
+  margin-bottom: 60px;
+}
+
+.studentContainer form select:nth-child(2){
+  margin-bottom: 60px;
+}

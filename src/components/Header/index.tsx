@@ -9,7 +9,7 @@ export default function Header() {
   return (
     <div className={Styles.container}>
       <div className={Styles.buttonContainer}>
-        <Link href="">
+        <Link href="/profile">
           <button>
             <img src="icons/Profile.svg" alt="Dados"/>
             <p>Dados</p>

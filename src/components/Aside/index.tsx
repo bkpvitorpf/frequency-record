@@ -2,14 +2,14 @@ import React, { useContext } from 'react';
 import AuthContext from '../../contexts/auth';
 import Button from '../Button';
 import MonthSelect from '../MonthSelect';
-import TeacherContainer,{StudentContainer, Title} from './styles';
+import Styles from './styles.module.css';
 
 export default function Aside({matters}) {
   const {user_type} = useContext(AuthContext);
 
   if(user_type == 'teacher'){
     return (<>
-      <TeacherContainer>
+      <div className={Styles.teacherContainer}>
         <h1 className="title">Consulta de frequência</h1>
         <form>
           <MonthSelect/>
@@ -18,23 +18,23 @@ export default function Aside({matters}) {
           <select name="" id=""></select>
           <Button>Pesquisar</Button>
         </form>
-      </TeacherContainer>
+      </div>
     </>);
   }else{
     return (<>
-      <StudentContainer>
+      <div className={Styles.studentContainer}>
         <h1 className="title">Consulta de frequência</h1>
         <form>
           <MonthSelect />
           <select name="Matters" id="Matters">
             <option value="" selected disabled>Escolha uma disciplina</option>
             {matters.map(matter => (
-              <option value={matter.identifier}>{matter.name}</option>
+              <option key="" value={matter.identifier}>{matter.name}</option>
             ))}
           </select>
           <Button>Pesquisar</Button>
         </form>
-      </StudentContainer>
+      </div>
     </>);
   }
 }

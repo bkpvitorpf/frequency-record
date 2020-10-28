@@ -7,9 +7,7 @@ const useAxios = (url,{...args}:AxiosRequestConfig) => {
     const response = await Api.get(url,{...args});
     return response.data;
   },{
-    errorRetryInterval: 10,
-    revalidateOnMount: true,
-    revalidateOnFocus: true,
+    errorRetryInterval: 5,
     revalidateOnReconnect: true
   })
   

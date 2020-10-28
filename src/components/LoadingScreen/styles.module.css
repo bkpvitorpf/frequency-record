@@ -1,0 +1,27 @@
+.container{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container .info{
+  margin-top: 200px;
+  width: 400px;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.container .info h4{
+  font-size: 20px;
+  color: #4C5C68;
+}
+
+.container .info a{
+  color: #1985A1;
+  font-size: 20px;
+  margin-left: 10px;
+}

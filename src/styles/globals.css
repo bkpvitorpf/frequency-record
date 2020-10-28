@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@700&display=swap');
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  outline: none;
+  font-family: 'Rubik', sans-serif;
+}
+
+/* Estilo da animação de erro */
+
+.errorAnimationContainer{
+  display: flex;
+  flex-direction: column;
+}
+
+.errorAnimationContainer div{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.errorAnimationContainer div h2{
+  font-size: 30px;;
+}
+
+.errorAnimationContainer div p{
+  font-size: 25px;
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.errorAnimationContainer .credit h4{
+}
+
+.errorAnimationContainer .credit a{
+
+}
