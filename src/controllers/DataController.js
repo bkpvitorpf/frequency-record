@@ -4,9 +4,7 @@ const SchoolClass = require('../models/SchoolClass');
 
 module.exports={
   async indexMatters(req,res){
-    const {user_type} = req.user;
-
-    console.log(req.user);
+    const {user_type,name: user_name} = req.user;
 
     if(user_type == 'teacher'){
       const {id:teacher_id} = req.user;
@@ -24,7 +22,7 @@ module.exports={
         }
       });
 
-      res.json(matter);
+      res.json({matter,user_name});
     }else{
       const {class_id,name: user_name} = req.user;
 
