@@ -1,11 +1,11 @@
+import { useRouter } from 'next/router';
 import React, { useContext, useState } from 'react';
 import Button from '../../components/Button';
-import LoadingScreen from '../../components/LoadingScreen';
 import AuthContext from '../../contexts/auth';
 import Styles from './styles.module.css';
 
 const Signin_page: React.FC = () => {
-  const loading = true;
+  const route = useRouter();
   const {signIn} = useContext(AuthContext);
   const [email,setEmail] = useState<string>();
   const [password,setPassword] = useState<string>();
@@ -13,6 +13,7 @@ const Signin_page: React.FC = () => {
   function handleSignIn(event){
     event.preventDefault();
     signIn(email,password);
+    route.push('/dashboard');
   }
 
   return (
