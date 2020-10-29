@@ -15,11 +15,13 @@ module.exports = {
         email
       }
     }).then(async (data)=>{
-      const {password: user_password,id: user_id,permission_level,name}= data;
+      const {password: user_password,id: user_id,type: user_type,name}= data;
 
-      const status = await Bcrypt.compare(password,user_password);
+      const passwordValidate = await Bcrypt.compare(password,user_password);
     
-      if(status){
+      console.log('aqui');
+      
+      if(passwordValidate){
         const student = await Student.findOne({
           where:{
             user_id
@@ -48,20 +50,9 @@ module.exports = {
           // Armazena dentro da variável user_data o conteúdo de student ou de teacher caso um dos dois existam
           const user_data = student || teacher;
 
-          function defineType(){
-            if(student){
-              return 'student';
-            }
-            
-            return 'teacher';
-          }
-
-          const user_type = defineType();
-
           const user = {
             user_type,
-            name,
-            permission_level
+            name
           }
 
           // Coloca os dados do professor ou do aluno dentro do objeto de usuário
@@ -72,8 +63,6 @@ module.exports = {
           });
 
           res.json({token,user_type});
-        }else{
-          res.json({message: "User not exist"})
         }
       }
 
