@@ -4,6 +4,7 @@ import { defaultErrorOptions } from '../../config/animationConfig';
 import Styles from './styles.module.css';
 
 const ErrorScreen: React.FC = () => {
+  // eslint-disable-next-line
   const [animation_state,setAnimationState] = useState({
     isStopped: false, isPaused: false
   });
@@ -23,7 +24,7 @@ const ErrorScreen: React.FC = () => {
       </div>
       <div className={Styles.info}>
         <h4>Created by</h4>
-        <a href="https://lottiefiles.com/zeffchris" target="_blank">Jeffrey Christopher</a>
+        <a href="https://lottiefiles.com/zeffchris" rel="noopener noreferrer" target="_blank">Jeffrey Christopher</a>
       </div>
     </div>
   );

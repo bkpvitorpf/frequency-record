@@ -4,9 +4,8 @@ import Api from '../services/api';
 
 interface AuthContextData{
   authenticated: boolean;
-  token: string | undefined;
   userType: string | undefined;
-  loading: boolean | undefined;
+  loading: boolean;
   signIn(email:string,password:string): Promise<void>;
   signOut(): void;
 }
@@ -15,7 +14,6 @@ interface AuthContextData{
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({children}) => {
-  const [token,setToken] = useState<string | undefined>();
   const [authenticated,setAuth] = useState(false);
   const [userType,setuserType] = useState<string | undefined>();
   const [loading,setLoading] = useState(true);
@@ -25,15 +23,14 @@ export const AuthProvider: React.FC = ({children}) => {
     const storedUserType = localStorage.getItem('user_type');
 
     if(storedToken && storedUserType){
-      setToken(JSON.parse(storedToken));
       setuserType(JSON.parse(storedUserType));
       setAuth(true);
 
-      Api.defaults.headers.Authorization = `Bearer ${token}`;
+      Api.defaults.headers.Authorization = `Bearer ${JSON.parse(storedToken)}`;
     }
 
     setLoading(false);
-  },[token]);
+  },[]);
 
   async function signIn(email: string,password: string){
     const {data} = await Api.post('/login',{
@@ -42,32 +39,30 @@ export const AuthProvider: React.FC = ({children}) => {
     });
 
     if(data){
-      History.push('/dashboard');
-
-      setToken(data.token);
       setuserType(data.user_type);
       setAuth(true);
+
+      Api.defaults.headers.Authorization = `Bearer ${data.token}`;
 
       localStorage.setItem('token',JSON.stringify(data.token));
       localStorage.setItem('user_type',JSON.stringify(data.user_type));
 
-      Api.defaults.headers.Authorization = `Bearer ${token}`;
+      //History.push('/dashboard');
     }
   }
 
   function signOut(){
+    setuserType(undefined);
+
     localStorage.removeItem('token');
     localStorage.removeItem('user_type');
-
-    setToken(undefined);
-    setuserType(undefined);
 
     History.push('/');
   }
 
   return (
     // !!token = Faz uma verificação, se token existir, signed recebe true, caso contrário, signed recebe false
-    <AuthContext.Provider value={{authenticated,token,userType,loading,signIn,signOut}}>
+    <AuthContext.Provider value={{authenticated,userType,loading,signIn,signOut}}>
       {children}
     </AuthContext.Provider>
   );

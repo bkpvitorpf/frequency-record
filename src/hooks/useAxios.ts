@@ -6,7 +6,6 @@ const useAxios = (url:string) => {
     const response = await Api.get(url);
     return response.data;
   },{
-    errorRetryInterval: 20,
     revalidateOnFocus: true,
     revalidateOnReconnect: true
   })
