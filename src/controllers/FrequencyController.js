@@ -143,8 +143,6 @@ module.exports = {
 
       await connection.query(`UPDATE ${table_name} SET ${matterIdentifier} = ${currentFrequency} WHERE student_id = ${student.id} AND month = '${month}'`);
 
-      console.log(month);
-
       res.json({message: 'A frequência do aluno foi registrada'});
     }
   } 

@@ -15,7 +15,7 @@ module.exports = {
         email
       }
     }).then(async (data)=>{
-      const {password: user_password,id: user_id,type: user_type,name}= data;
+      const {password: user_password,id: user_id,type,name}= data;
 
       const passwordValidate = await Bcrypt.compare(password,user_password);
     
@@ -51,8 +51,7 @@ module.exports = {
           const user_data = student || teacher;
 
           const user = {
-            user_type,
-            name
+            user_type: type
           }
 
           // Coloca os dados do professor ou do aluno dentro do objeto de usuário
@@ -62,7 +61,7 @@ module.exports = {
             expiresIn: 432000
           });
 
-          res.json({token,user_type});
+          res.json({token,user_info: {type,name}});
         }
       }
 

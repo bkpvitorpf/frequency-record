@@ -4,12 +4,12 @@ const SchoolClass = require('../models/SchoolClass');
 
 module.exports={
   async indexMatters(req,res){
-    const {user_type,name: user_name} = req.user;
+    const {user_type} = req.user;
 
     if(user_type == 'teacher'){
       const {id:teacher_id} = req.user;
 
-      const {matter} = await Teacher.findOne({
+      const {matter:matters} = await Teacher.findOne({
         where:{
           id: teacher_id
         },
@@ -22,11 +22,11 @@ module.exports={
         }
       });
 
-      res.json({matter,user_name});
+      res.json({matters});
     }else{
-      const {class_id,name: user_name} = req.user;
+      const {class_id} = req.user;
 
-      const {matter} = await SchoolClass.findOne({
+      const {matter:matters} = await SchoolClass.findOne({
         where:{
           id: class_id
         },
@@ -39,16 +39,10 @@ module.exports={
         }
       });
 
-      res.json({matter,user_name});
+      res.json({matters});
     }
   },
-  async indexCourses(req,res){
-    const {user_type} = req.user;
-
-    if(user_type == 'teacher'){
-      
-    }else{
-
-    }
+  async mattersData(req,res){
+    
   }
 }
