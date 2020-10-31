@@ -1,27 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Aside from '../../components/Aside';
 import Header from '../../components/Header';
 import LoadingScreen from '../../components/LoadingScreen';
-import useAxios from '../../hooks/useAxios';
+import AuthContext from '../../contexts/auth';
+import api from '../../services/api';
 import Styles from './styles.module.css';
 
 interface UserData{
-  user_name: string;
-  matter: Array<object>[];
+  matters: Array<object>;
 }
 
 const Dashboard: React.FC = () => {
+  const {userInfo} = useContext(AuthContext);
   const [loading,setLoading] = useState(true);
   const [userData,setUserData] = useState({} as UserData);
+  const name = userInfo.name;
 
-  const { data } = useAxios('/data/matters');
-  
   useEffect(() => {
-    if(data){
-      setLoading(false);
-      setUserData(data);
+    async function fetchData(){
+      const {data} = await api.get('/data/matters');
+
+      if(data){
+        setUserData(data);
+        setLoading(false);
+      }
     }
-  },[data]);
+
+    fetchData();
+  },[]);
 
   if(loading) return <LoadingScreen />
 
@@ -30,11 +36,11 @@ const Dashboard: React.FC = () => {
       <Header />
       <div className={Styles.container}>
         <div className={Styles.asideContainer}>
-          <Aside matters={userData.matter}/>
+          <Aside matters={userData.matters}/>
         </div>
         <div className={Styles.content}>
           <h1>Olá</h1>
-          <h1>{userData.user_name}</h1>
+          <h1>{name}</h1>
           <h1>Preencha o formulário para continuar</h1>
         </div>
       </div>

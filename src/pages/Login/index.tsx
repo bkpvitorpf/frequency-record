@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import Button from '../../components/Button';
 import AuthContext from '../../contexts/auth';
-import History from '../../history';
 import Styles from './styles.module.css';
 
 const Signin: React.FC = () => {
@@ -12,7 +11,6 @@ const Signin: React.FC = () => {
   function handleSignIn(event:React.FormEvent){
     event.preventDefault();
     signIn(email,password);
-    History.push('/dashboard');
   }
 
   return (

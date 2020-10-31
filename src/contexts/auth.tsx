@@ -2,9 +2,14 @@ import React, { createContext, useEffect, useState } from 'react';
 import History from '../history';
 import Api from '../services/api';
 
+interface UserProps{
+  type: string;
+  name: string;
+}
+
 interface AuthContextData{
   authenticated: boolean;
-  userType: string | undefined;
+  userInfo: UserProps;
   loading: boolean;
   signIn(email:string,password:string): Promise<void>;
   signOut(): void;
@@ -15,15 +20,15 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({children}) => {
   const [authenticated,setAuth] = useState(false);
-  const [userType,setuserType] = useState<string | undefined>();
+  const [userInfo,setUserInfo] = useState<UserProps>({} as UserProps);
   const [loading,setLoading] = useState(true);
 
   useEffect(()=>{
     const storedToken = localStorage.getItem('token');
-    const storedUserType = localStorage.getItem('user_type');
+    const storedUserInfo = localStorage.getItem('userInfo');
 
-    if(storedToken && storedUserType){
-      setuserType(JSON.parse(storedUserType));
+    if(storedToken && storedUserInfo){
+      setUserInfo(JSON.parse(storedUserInfo));
       setAuth(true);
 
       Api.defaults.headers.Authorization = `Bearer ${JSON.parse(storedToken)}`;
@@ -39,30 +44,32 @@ export const AuthProvider: React.FC = ({children}) => {
     });
 
     if(data){
-      setuserType(data.user_type);
+
+      console.log(data);
+      setUserInfo(data.user_info);
       setAuth(true);
 
       Api.defaults.headers.Authorization = `Bearer ${data.token}`;
 
       localStorage.setItem('token',JSON.stringify(data.token));
-      localStorage.setItem('user_type',JSON.stringify(data.user_type));
+      localStorage.setItem('userInfo',JSON.stringify(data.user_info));
 
-      //History.push('/dashboard');
+      History.push('/dashboard');
     }
   }
 
   function signOut(){
-    setuserType(undefined);
+    setUserInfo({} as UserProps);
 
     localStorage.removeItem('token');
-    localStorage.removeItem('user_type');
+    localStorage.removeItem('userInfo');
 
     History.push('/');
   }
 
   return (
     // !!token = Faz uma verificação, se token existir, signed recebe true, caso contrário, signed recebe false
-    <AuthContext.Provider value={{authenticated,userType,loading,signIn,signOut}}>
+    <AuthContext.Provider value={{authenticated,userInfo,loading,signIn,signOut}}>
       {children}
     </AuthContext.Provider>
   );
