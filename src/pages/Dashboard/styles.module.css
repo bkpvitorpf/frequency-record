@@ -7,9 +7,51 @@
 .container .asideContainer{
   grid-column-start: 1;
   grid-row-start: 1;
+  background-color: #C5C3C6;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.container .content{
+.container .asideContainer h1{
+  text-align: center;
+  font-size: 36px;
+  margin: 20px 0;
+  color: #1985A1;
+}
+
+.container .asideContainer form{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container .asideContainer form select{
+  color:#1985A1;
+  margin: 20px 0;
+  padding: 0 10px;
+  padding-right: 50px;
+  width: 250px;
+  height: 40px;
+  background: url("../../assets/icons/SelectArrowDown.svg") no-repeat scroll 215px 7px;
+  background-color: #FFFCF2;
+  border: none;
+  border-radius: 10px;
+  -webkit-appearance: none;
+}
+
+.container .asideContainer form select:active{
+  background: url("../../assets/icons/SelectArrowUp.svg") no-repeat scroll 215px 7px;
+  background-color: #FFFCF2;
+}
+
+.container .asideContainer form select option{
+  color:#1985A1;
+}
+
+.container .contentContainer{
   grid-column-start: 2;
   grid-row-start: 1;
   display: flex;
@@ -20,16 +62,16 @@
   background-color: #DCDCDD;
 }
 
-.container .content h1{
+.container .contentContainer h1{
   font-size: 50px;
   color: #4C5C68;
 }
 
-.container .content h1:nth-child(2){
+.container .contentContainer h1:nth-child(2){
   margin: 20px 0;
 }
 
-.container .content h1:nth-child(3){
+.container .contentContainer h1:nth-child(3){
   margin: 20px 0;
   width: 600px;
 }

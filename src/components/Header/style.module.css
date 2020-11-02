@@ -29,6 +29,10 @@
   margin-right: 15px;
 }
 
+.container .buttonContainer button .home{
+  margin-top: -4px;
+}
+
 .container .buttonContainer button p{
   font-size: 30px;
   color: #1985A1;

@@ -19,7 +19,7 @@ interface AuthContextData{
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({children}) => {
-  const [authenticated,setAuth] = useState(false);
+  const [authenticated,setAuthenticated] = useState(false);
   const [userInfo,setUserInfo] = useState<UserProps>({} as UserProps);
   const [loading,setLoading] = useState(true);
 
@@ -29,7 +29,7 @@ export const AuthProvider: React.FC = ({children}) => {
 
     if(storedToken && storedUserInfo){
       setUserInfo(JSON.parse(storedUserInfo));
-      setAuth(true);
+      setAuthenticated(true);
 
       Api.defaults.headers.Authorization = `Bearer ${JSON.parse(storedToken)}`;
     }
@@ -45,9 +45,8 @@ export const AuthProvider: React.FC = ({children}) => {
 
     if(data){
 
-      console.log(data);
       setUserInfo(data.user_info);
-      setAuth(true);
+      setAuthenticated(true);
 
       Api.defaults.headers.Authorization = `Bearer ${data.token}`;
 
@@ -60,6 +59,7 @@ export const AuthProvider: React.FC = ({children}) => {
 
   function signOut(){
     setUserInfo({} as UserProps);
+    setAuthenticated(false);
 
     localStorage.removeItem('token');
     localStorage.removeItem('userInfo');

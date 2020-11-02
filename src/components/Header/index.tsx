@@ -3,6 +3,8 @@ import AuthContext from '../../contexts/auth';
 import Styles from './style.module.css';
 
 import ProfileImage from '../../assets/icons/Profile.svg';
+import HomeImage from '../../assets/icons/Home.svg';
+import LogoutImage from '../../assets/icons/Logout.svg';
 
 export default function Header({history}:any) {
   const {signOut} = useContext(AuthContext);
@@ -17,13 +19,13 @@ export default function Header({history}:any) {
       </div>
       <div className={Styles.buttonContainer}>
         <button onClick={()=> history.push('/dashboard')}>
-          <img src="icons/Home.svg" alt="Início"/>
+          <img src={HomeImage} alt="Início" className={Styles.home}/>
           <p>Início</p>
         </button>
       </div>
       <div className={Styles.buttonContainer}>
         <button onClick={signOut}>
-          <img src="icons/Logout.svg" alt="Sair"/>
+          <img src={LogoutImage} alt="Sair"/>
           <p>Sair</p>
         </button>
       </div>

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import ErrorScreen from './components/ErrorScreen';
 import LoadingScreen from './components/LoadingScreen';
 import AuthContext from './contexts/auth';
