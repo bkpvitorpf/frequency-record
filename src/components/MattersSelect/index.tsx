@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import Api from '../../services/api';
 
-// import { Container } from './styles';
+interface Matter{
+  id: string
+  identifier: string
+  name: string
+}
 
-const MattersSelect: React.FC<any> = ({matters,onChange}) => {
+const MattersSelect: React.FC<any> = ({onChange}) => {
+  const [matters,setMatters] = useState<Array<Matter> | undefined>();
+
+  useEffect(() => {
+    async function fetchData(){
+      const {data} = await Api.get('/data/matters');
+
+      if(data){
+        setMatters(data.matters);
+      }
+    }
+
+    fetchData();
+  },[]);
+
   return (
     <select 
       name="Matters" 
@@ -12,7 +31,7 @@ const MattersSelect: React.FC<any> = ({matters,onChange}) => {
       defaultValue={""}
     >
       <option value="" disabled>Escolha uma disciplina</option>
-      {matters.map((matter:any) => (
+      {matters?.map((matter:any) => (
         <option key={matter.id} value={matter.identifier}>{matter.name}</option>
       ))}
     </select>
