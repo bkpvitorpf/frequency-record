@@ -13,7 +13,7 @@ route.get('/register/:id/:mode_id/:course_id/:class_id/:matterIdentifier/:classQ
 route.post('/login',LoginController.login);
 route.get('/data/matters',AuthMiddleware,MattersController.indexMatters);
 route.get('/data/modes',AuthMiddleware,ModesController.indexModes);
-route.get('/data/courses',AuthMiddleware,CoursesController.indexCourses);
-route.get('/data/classes',AuthMiddleware,ClassesController.indexClasses);
+route.post('/data/courses',AuthMiddleware,CoursesController.indexCourses);
+route.post('/data/classes',AuthMiddleware,ClassesController.indexClasses);
 
 module.exports = route;
