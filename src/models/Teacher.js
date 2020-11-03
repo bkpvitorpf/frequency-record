@@ -14,6 +14,7 @@ class Teacher extends Model{
     this.belongsTo(models.User,{foreignKey:'user_id',as: 'user'});
     this.belongsToMany(models.SchoolClass,{foreignKey:'teacher_id', through: 'classes_teachers', as:'schoolClass'});
     this.belongsToMany(models.Matter,{foreignKey:'teacher_id', through: 'matters_teachers', as:'matter'});
+    this.belongsToMany(models.Mode,{foreignKey:'teacher_id', through: 'teachers_modes', as: 'mode'});
   }
 }
 

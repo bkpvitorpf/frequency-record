@@ -74,7 +74,7 @@ module.exports = {
             expiresIn: 432000
           });
 
-          res.json({token,user_info: {type,name},teacher});
+          res.json({token,user_info:{type,name}});
         }
       }
 

@@ -12,7 +12,7 @@ module.exports={
           attributes:[]
         },
         where:{
-          id: 2
+          id: modeId
         }
       }
     })
