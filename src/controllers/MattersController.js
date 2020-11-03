@@ -1,5 +1,4 @@
 const Teacher = require('../models/Teacher');
-const Matter = require('../models/Matter');
 const SchoolClass = require('../models/SchoolClass');
 
 module.exports={

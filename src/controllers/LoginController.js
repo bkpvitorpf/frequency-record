@@ -43,7 +43,20 @@ module.exports = {
           attributes:[
             'id',
             'sensor_id',
-          ]
+          ],
+          include:[{
+            association: 'matter',
+            attributes: ['id','identifier','name'],
+            through:{
+              attributes:[]
+            }
+          },{
+            association: 'schoolClass',
+            attributes: ['id','name'],
+            through:{
+              attributes:[]
+            }
+          }]
         })
 
         if(student || teacher){
@@ -61,7 +74,7 @@ module.exports = {
             expiresIn: 432000
           });
 
-          res.json({token,user_info: {type,name}});
+          res.json({token,user_info: {type,name},teacher});
         }
       }
 
