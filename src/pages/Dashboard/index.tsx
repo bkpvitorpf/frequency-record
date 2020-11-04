@@ -1,7 +1,9 @@
 import React, { useContext, useState } from 'react';
 import Button from '../../components/Button';
+import CourseSelect from '../../components/CourseSelect';
 import Header from '../../components/Header';
 import MattersSelect from '../../components/MattersSelect';
+import ModesSelect from '../../components/ModeSelect';
 import MonthSelect from '../../components/MonthSelect';
 import AuthContext from '../../contexts/auth';
 import Styles from './styles.module.css';
@@ -29,12 +31,12 @@ const Dashboard: React.FC = () => {
           <h1>Consulta de frequência</h1>
           <form onSubmit={handleSubmit}>
             <MonthSelect onChange={(e:any)=>{setMonth(e.target.value)}}/>
-            {userType === 'teacher' ? <>
+            {userType === 'teacher' && <>
+              <ModesSelect onChange={(e:any)=>{setMode(e.target.value)}}/>
+              <CourseSelect mode={mode}/>
               <select name="" id="" required></select>
-              <select name="" id="" required></select>
-              <select name="" id="" required></select>
-              <MattersSelect onChange={(e:any) => {setMatter(e.target.value)}}/>
-            </> : <MattersSelect onChange={(e:any) => {setMatter(e.target.value)}}/>}
+            </>}
+            <MattersSelect onChange={(e:any) => {setMatter(e.target.value)}}/>
             <Button>Pesquisar</Button>
           </form>
         </div>

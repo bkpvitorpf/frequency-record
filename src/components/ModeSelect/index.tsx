@@ -11,10 +11,10 @@ const ModesSelect: React.FC<any> = ({onChange}) => {
 
   useEffect(() => {
     async function fetchData(){
-      const {data} = await Api.get('/data/matters');
+      const {data} = await Api.get('/data/modes');
 
       if(data){
-        setModes(data.matters);
+        setModes(data.modes);
       }
     }
 
