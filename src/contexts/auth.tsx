@@ -28,10 +28,10 @@ export const AuthProvider: React.FC = ({children}) => {
     const storedUserInfo = localStorage.getItem('userInfo');
 
     if(storedToken && storedUserInfo){
+      Api.defaults.headers.Authorization = `Bearer ${JSON.parse(storedToken)}`;
+
       setUserInfo(JSON.parse(storedUserInfo));
       setAuthenticated(true);
-
-      Api.defaults.headers.Authorization = `Bearer ${JSON.parse(storedToken)}`;
     }
 
     setLoading(false);
@@ -44,14 +44,13 @@ export const AuthProvider: React.FC = ({children}) => {
     });
 
     if(data){
-
-      setUserInfo(data.user_info);
-      setAuthenticated(true);
-
       Api.defaults.headers.Authorization = `Bearer ${data.token}`;
 
       localStorage.setItem('token',JSON.stringify(data.token));
       localStorage.setItem('userInfo',JSON.stringify(data.user_info));
+
+      setUserInfo(data.user_info);
+      setAuthenticated(true);
 
       History.push('/dashboard');
     }
