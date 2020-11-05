@@ -8,9 +8,6 @@ module.exports={
       include:{
         association: 'mode',
         attributes: [],
-        through:{
-          attributes:[]
-        },
         where:{
           id: modeId
         }

@@ -1,47 +1,48 @@
 const Teacher = require('../models/Teacher');
 const SchoolClass = require('../models/SchoolClass');
+const Matter = require('../models/Matter');
 
 module.exports={
   async indexMatters(req,res){
-    const {user_type} = req.user;
+    const {class_id} = req.user;
 
-    if(user_type == 'teacher'){
-      const {id:teacher_id} = req.user;
-
-      const {matter:matters} = await Teacher.findOne({
-        where:{
-          id: teacher_id
-        },
-        include:{
-          association: 'matter',
-          attributes: ['id','identifier','name'],
-          through:{
-            attributes:[]
-          }
+    const {matter:matters} = await SchoolClass.findOne({
+      where:{
+        id: class_id
+      },
+      include:{
+        association: 'matter',
+        attributes: ['id','identifier','name'],
+        through:{
+          attributes:[]
         }
-      });
+      }
+    });
 
-      res.json({matters});
-    }else{
-      const {class_id} = req.user;
-
-      const {matter:matters} = await SchoolClass.findOne({
-        where:{
-          id: class_id
-        },
-        include:{
-          association: 'matter',
-          attributes: ['id','identifier','name'],
-          through:{
-            attributes:[]
-          }
-        }
-      });
-
-      res.json({matters});
-    }
+    res.json({matters});
   },
-  async mattersData(req,res){
-    
+  async customIndexMatters(req,res){
+    const {classId} = req.body;
+    const {id:teacher_id} = req.user;
+
+    const matters = await Matter.findAll({
+      include:[
+        {
+          association: 'class',
+          attributes: [],
+          where:{
+            id: classId
+          }
+        },{
+          association: 'teacher',
+          attributes: [],
+          where:{
+            id: teacher_id
+          }
+        }
+      ]
+    })
+
+    res.json({matters});
   }
 }

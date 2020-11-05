@@ -12,6 +12,7 @@ const route = Express.Router();
 route.get('/register/:id/:mode_id/:course_id/:class_id/:matterIdentifier/:classQuanty', FrequencyController.save);
 route.post('/login',LoginController.login);
 route.get('/data/matters',AuthMiddleware,MattersController.indexMatters);
+route.post('/data/matters',AuthMiddleware,MattersController.customIndexMatters);
 route.get('/data/modes',AuthMiddleware,ModesController.indexModes);
 route.post('/data/courses',AuthMiddleware,CoursesController.indexCourses);
 route.post('/data/classes',AuthMiddleware,ClassesController.indexClasses);

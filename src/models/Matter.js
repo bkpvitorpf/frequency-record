@@ -7,7 +7,8 @@ class Matter extends Model{
       identifier: DataTypes.STRING,
       name: DataTypes.STRING
     },{
-      sequelize
+      sequelize,
+      tableName: 'matters'
     });
   }
 
