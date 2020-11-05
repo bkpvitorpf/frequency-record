@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import Button from '../../components/Button';
+import ClassesSelect from '../../components/ClassesSelect';
 import CourseSelect from '../../components/CourseSelect';
 import Header from '../../components/Header';
 import MattersSelect from '../../components/MattersSelect';
@@ -33,10 +34,10 @@ const Dashboard: React.FC = () => {
             <MonthSelect onChange={(e:any)=>{setMonth(e.target.value)}}/>
             {userType === 'teacher' && <>
               <ModesSelect onChange={(e:any)=>{setMode(e.target.value)}}/>
-              <CourseSelect mode={mode}/>
-              <select name="" id="" required></select>
+              <CourseSelect onChange={(e:any)=>{setCourse(e.target.value)}} mode={mode}/>
+              <ClassesSelect onChange={(e:any)=>{setClass(e.target.value)}} course={course} />
             </>}
-            <MattersSelect onChange={(e:any) => {setMatter(e.target.value)}}/>
+            <MattersSelect onChange={(e:any) => {setMatter(e.target.value)}} schoolClass={schoolClass}/>
             <Button>Pesquisar</Button>
           </form>
         </div>

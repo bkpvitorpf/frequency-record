@@ -8,15 +8,29 @@ interface Matter{
   name: string
 }
 
-const MattersSelect: React.FC<any> = ({onChange}) => {
+const MattersSelect: React.FC<any> = ({onChange,schoolClass}) => {
   const [matters,setMatters] = useState<Array<Matter> | undefined>();
+  const {userInfo} = useContext(AuthContext);
+  const userType = userInfo.type;
 
   useEffect(() => {
     async function fetchData(){
-      const {data} = await Api.get('/data/matters');
+      if(userType === 'teacher'){
+        const {data} = await Api.post('/data/matters',{
+          classId: schoolClass
+        });
 
-      if(data){
-        setMatters(data.matters);
+        console.log(data);
+
+        if(data){
+          setMatters(data.matters);
+        }
+      }else{
+        const {data} = await Api.get('/data/matters');
+
+        if(data){
+          setMatters(data.matters);
+        }
       }
     }
 
