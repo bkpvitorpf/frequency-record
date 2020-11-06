@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
-import AuthContext from '../../contexts/auth';
+import React, { useEffect, useState } from 'react';
 import Api from '../../services/api';
 
 interface Matter{

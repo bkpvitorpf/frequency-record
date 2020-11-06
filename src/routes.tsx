@@ -5,6 +5,7 @@ import LoadingScreen from './components/LoadingScreen';
 import AuthContext from './contexts/auth';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
+import Profile from './pages/Profile';
 
 interface props{
   Private?: any;
@@ -26,6 +27,7 @@ export default function Routes(){
     <Switch>
       <CustomRoute exact path="/" component={Login} />
       <CustomRoute Private path="/dashboard" component={Dashboard} />
+      <CustomRoute Private path="/profile" component={Profile} />
     </Switch>
   );
 }

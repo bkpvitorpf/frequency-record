@@ -1,5 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
-import AuthContext from '../../contexts/auth';
+import React, { useEffect, useState } from 'react';
 import Api from '../../services/api';
 
 interface Matter{
@@ -8,34 +7,20 @@ interface Matter{
   name: string
 }
 
-const MattersSelect: React.FC<any> = ({onChange,schoolClass}) => {
+const TeacherMattersSelect: React.FC<any> = ({onChange,schoolClass}) => {
   const [matters,setMatters] = useState<Array<Matter> | undefined>();
-  const {userInfo} = useContext(AuthContext);
-  const userType = userInfo.type;
 
   useEffect(() => {
     async function fetchData(){
-      if(userType === 'teacher'){
-        const {data} = await Api.post('/data/matters',{
-          classId: schoolClass
-        });
+      const {data} = await Api.post('/data/matters',{
+        classId: schoolClass
+      });
 
-        console.log(data);
-
-        if(data){
-          setMatters(data.matters);
-        }
-      }else{
-        const {data} = await Api.get('/data/matters');
-
-        if(data){
-          setMatters(data.matters);
-        }
-      }
-    }
+      if(data) setMatters(data.matters);
+    }  
 
     fetchData();
-  },[]);
+  },[schoolClass]);
 
   return (
     <select 
@@ -53,4 +38,4 @@ const MattersSelect: React.FC<any> = ({onChange,schoolClass}) => {
   );
 }
 
-export default MattersSelect;
+export default TeacherMattersSelect;

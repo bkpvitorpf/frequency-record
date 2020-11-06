@@ -6,6 +6,7 @@ import Header from '../../components/Header';
 import MattersSelect from '../../components/MattersSelect';
 import ModesSelect from '../../components/ModeSelect';
 import MonthSelect from '../../components/MonthSelect';
+import TeacherMattersSelect from '../../components/TeacherMattersSelect';
 import AuthContext from '../../contexts/auth';
 import Styles from './styles.module.css';
 
@@ -36,8 +37,11 @@ const Dashboard: React.FC = () => {
               <ModesSelect onChange={(e:any)=>{setMode(e.target.value)}}/>
               <CourseSelect onChange={(e:any)=>{setCourse(e.target.value)}} mode={mode}/>
               <ClassesSelect onChange={(e:any)=>{setClass(e.target.value)}} course={course} />
+              <TeacherMattersSelect onChange={(e:any) => {setMatter(e.target.value)}} schoolClass={schoolClass} />
             </>}
-            <MattersSelect onChange={(e:any) => {setMatter(e.target.value)}} schoolClass={schoolClass}/>
+            {userType === 'student' && <>
+              <MattersSelect onChange={(e:any) => {setMatter(e.target.value)}}/>
+            </>}
             <Button>Pesquisar</Button>
           </form>
         </div>

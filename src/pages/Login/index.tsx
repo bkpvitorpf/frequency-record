@@ -1,10 +1,9 @@
 import React, { useContext, useState } from 'react';
-import { Redirect } from 'react-router-dom';
 import Button from '../../components/Button';
 import AuthContext from '../../contexts/auth';
 import Styles from './styles.module.css';
 
-const Signin: React.FC = () => {
+const Signin: React.FC = ({history}:any) => {
   const {signIn,authenticated} = useContext(AuthContext);
   const [email,setEmail] = useState<string>('');
   const [password,setPassword] = useState<string>('');
@@ -14,7 +13,7 @@ const Signin: React.FC = () => {
     signIn(email,password);
   }
 
-  if(authenticated) return <Redirect to="/dashboard" />
+  if(authenticated) history.push('/dashboard')
 
   return (
     <div className={Styles.container}>
