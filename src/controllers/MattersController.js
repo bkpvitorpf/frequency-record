@@ -1,4 +1,3 @@
-const Teacher = require('../models/Teacher');
 const SchoolClass = require('../models/SchoolClass');
 const Matter = require('../models/Matter');
 
@@ -23,7 +22,7 @@ module.exports={
   },
   async customIndexMatters(req,res){
     const {classId} = req.body;
-    const {id:teacher_id} = req.user;
+    const {id:teacherId} = req.user;
 
     const matters = await Matter.findAll({
       include:[
@@ -37,7 +36,7 @@ module.exports={
           association: 'teacher',
           attributes: [],
           where:{
-            id: teacher_id
+            id: teacherId
           }
         }
       ]

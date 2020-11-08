@@ -12,6 +12,7 @@ class Course extends Model{
 
   static associate(models){
     this.belongsToMany(models.Mode,{foreignKey:'course_id', through: 'courses_modes', as: 'mode'});
+    this.belongsToMany(models.Teacher,{foreignKey:'course_id', through: 'teachers_courses', as: 'teacher'});
   }
 }
 

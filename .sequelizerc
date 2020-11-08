@@ -1,6 +1,7 @@
 const { dirname } = require('path');
 const Path = require('path')
 
+// Configuração de onde estão armazenadas as credenciais de conexão com a base de dados e onde devem ser salvas as migrations
 module.exports ={
   config: Path.resolve( __dirname ,'src','config','database.js'),
   'migrations-path': Path.resolve(__dirname,'src','database','migrations'),

@@ -1,5 +1,6 @@
 require('dotenv/config');
 
+// Credenciais da base de dados
 module.exports={
   dialect:'postgres',
   host: process.env.PRODUCTION_HOST,
