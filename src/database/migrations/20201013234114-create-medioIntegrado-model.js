@@ -35,7 +35,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
-      monthly_classes:{
+      total_classes:{
         type: Sequelize.INTEGER,
         allowNull: false
       },
