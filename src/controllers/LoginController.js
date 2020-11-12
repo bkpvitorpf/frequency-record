@@ -19,8 +19,6 @@ module.exports = {
 
       const passwordValidate = await Bcrypt.compare(password,user_password);
     
-      console.log('aqui');
-      
       if(passwordValidate){
         const student = await Student.findOne({
           where:{

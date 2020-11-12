@@ -4,10 +4,8 @@ const Course = require('../models/Course');
 const Shift = require('../models/Shift');
 const Matter = require('../models/Matter');
 const Info4 = require('../models/Info_4');
-const Op = require('sequelize').Op;
 const connection = require('../database');
 const { QueryTypes } = require('sequelize');
-const { all } = require('sequelize/types/lib/operators');
 
 module.exports={
   async indexData(req,res){
@@ -75,10 +73,11 @@ module.exports={
     if(user_type == 'teacher'){
 
     }else{
-      const {registration,mode_id,course_id,class_id,id} = req.user;
+      const {class_id,id} = req.user;
 
       const mattersFrequency = [];
       const mattersData = [];
+      const frequencyData = [];
       
       const matters = await Matter.findAll({
         include:{
@@ -99,38 +98,47 @@ module.exports={
       }
 
       for(let count = 0; count < mattersData.length; count++){
-        // Precisei fazer uma série de desestruturações para obter o valor desejado
-
         const stage1 = mattersData[count];
+        
+        // Inicia o valor da posição como 0, para que possa haver um valor para iniciar a soma da frequência
+        mattersFrequency[count] = 0;
 
-        for(let count2 = 0; count2 < stage1.length; count ++){
+        for(let count2 = 0; count2 < stage1.length; count2 ++){
+          // Desestruturando o objeto
           const stage2 = stage1[count2];
 
+          // Pegando o valor do objeto
           const value = Number(Object.values(stage2));
 
           mattersFrequency[count] += value;
         }
+
+        // Atualizando o valor anual de aulas assistidas da matéria na base de dados
+        await connection.query(`UPDATE ${tableName} SET ${matters[count].identifier} = ${mattersFrequency[count]} WHERE student_id = ${id} AND month = 'Anual'`);
       }
 
-      res.json(mattersFrequency);
-
-      const studentMatters = await Info4.findAll({
+      const anualFrequency = await Info4.findAll({
         where:{
           student_id: id,
-          month:{
-            [Op.ne]: 'Anual'
-          }
+          month: 'Anual',
         }
       });
 
-      const teste = await Info4.findAll({
-        where:{
-          student_id: id,
-          month: 'Anual'
-        }
-      });
+      const totalAnualFrequency = anualFrequency[0];
 
-      res.json(matters);
+      for(let count = 0; count < matters.length; count++){
+        const frequency = mattersFrequency[count];
+        const name = matters[count].name;
+        const totalFrequency = totalAnualFrequency.getDataValue(`total_${matters[count].identifier}`);
+
+        frequencyData[count] = {
+          name,
+          frequency,
+          totalFrequency
+        }
+      }
+
+      res.json(frequencyData);
     }
   }
 }
