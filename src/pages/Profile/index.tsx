@@ -4,6 +4,7 @@ import Styles from './styles.module.css';
 import Avatar from '../../assets/icons/Avatar.svg';
 import Api from '../../services/api';
 import AuthContext from '../../contexts/auth';
+import LoadingScreen from '../../components/LoadingScreen';
 
 interface DataProps{
   name: string;
@@ -20,23 +21,36 @@ interface UserData{
   shift: DataProps | undefined;
 }
 
+interface FrequencyData{
+  name: string | undefined;
+  percentFrequency: number | undefined;
+}
+
 const Profile: React.FC = () => {
   const {userInfo} = useContext(AuthContext);
-  const [userData,setUserData] = useState<UserData>({} as UserData);
+  const [userData,setUserData] = useState<UserData | null>(null);
+  const [userFrequency,setUserFrequency] = useState<Array<FrequencyData> | null>(null);
+  const [loading,setLoading] = useState(true);
   const userName = userInfo.name;
   const userType = userInfo.type;
 
   useEffect(() =>{
     async function fetchData(){
       const {data} = await Api.get('/data/user');
+      const {data: frequency} = await Api.get('/data/user/frequency');
 
-      if(data){
+      if(data && frequency){
         setUserData(data);
+        setUserFrequency(frequency);
+        setLoading(false);
       }
     }
 
     fetchData();
   },[]);
+
+  console.log(loading)
+  if(loading) return <LoadingScreen />
 
   return (
     <>
@@ -48,25 +62,31 @@ const Profile: React.FC = () => {
           <div className={Styles.userData}>
             {userType === 'teacher' ? <>
               
-            </> : <>
-              <h3>Matrícula: {userData.registration}</h3>
-              <h3>Curso: {userData.course?.name}</h3>
-              <h3>Turma: {userData.schoolClass?.name}</h3>
-              <h3>Modalidade: {userData.mode?.name}</h3>
-              <h3>Turno: {userData.shift?.name}</h3>
+            </> : /*O ? depois da variável significa "se existir" */<>
+              <h3>Matrícula: {userData?.registration}</h3>
+              <h3>Curso: {userData?.course?.name}</h3>
+              <h3>Turma: {userData?.schoolClass?.name}</h3>
+              <h3>Modalidade: {userData?.mode?.name}</h3>
+              <h3>Turno: {userData?.shift?.name}</h3>
             </>}
           </div>
         </aside>
         <section className={Styles.contentContainer}>
           <header><h1>Progressão anual das disciplinas</h1></header>
-          <div className={Styles.dataContainer}>
-            <div className={Styles.dataBackground}>
-              <div className={Styles.dataContent}>
-                <h4>Administração de sistemas operacionais de rede</h4>
-                <h4>78%</h4>
-              </div>
+          {!userFrequency ? <LoadingScreen />:
+            <div className={Styles.dataContainer}>
+              {userType === 'teacher' ? <>
+
+              </> : userFrequency?.map(matter =>(
+                <div className={Styles.dataBackground} key={matter.name}>
+                  <div className={Styles.dataContent}>
+                    <h4>{matter.name}</h4>
+                    <h4>{matter.percentFrequency}%</h4>
+                  </div>
+                </div>
+              ))}
             </div>
-          </div>
+          }
         </section>
       </div>
     </>
