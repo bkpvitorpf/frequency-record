@@ -130,11 +130,17 @@ module.exports={
         const frequency = mattersFrequency[count];
         const name = matters[count].name;
         const totalFrequency = totalAnualFrequency.getDataValue(`total_${matters[count].identifier}`);
+        var percentFrequency = 0;
+
+        if(frequency > totalAnualFrequency){
+          percentFrequency = 100;
+        }else{
+          percentFrequency = (frequency / totalFrequency) * 100;
+        }
 
         frequencyData[count] = {
           name,
-          frequency,
-          totalFrequency
+          percentFrequency
         }
       }
 
