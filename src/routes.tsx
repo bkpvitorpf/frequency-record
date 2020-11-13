@@ -25,7 +25,7 @@ function CustomRoute({ Private, ...props }:props){
 export default function Routes(){
   return(
     <Switch>
-      <CustomRoute exact path="/" component={Login} />
+      <Route exact path="/" component={Login} />
       <CustomRoute Private path="/dashboard" component={Dashboard} />
       <CustomRoute Private path="/profile" component={Profile} />
     </Switch>

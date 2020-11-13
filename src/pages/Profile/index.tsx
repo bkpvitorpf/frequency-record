@@ -5,20 +5,21 @@ import Avatar from '../../assets/icons/Avatar.svg';
 import Api from '../../services/api';
 import AuthContext from '../../contexts/auth';
 import LoadingScreen from '../../components/LoadingScreen';
+import LoadingAnimation from '../../components/LoadingAnimation';
 
 interface DataProps{
   name: string;
 }
 
 interface UserData{
-  matters: Array<DataProps> | undefined;
-  courses: Array<DataProps> | undefined;
-  classes: Array<DataProps> | undefined;
-  registration: string | undefined;
-  course: DataProps | undefined;
-  mode: DataProps | undefined;
-  schoolClass: DataProps | undefined;
-  shift: DataProps | undefined;
+  matters: Array<DataProps>;
+  courses: Array<DataProps>;
+  classes: Array<DataProps>;
+  registration: string;
+  course: DataProps;
+  mode: DataProps;
+  schoolClass: DataProps;
+  shift: DataProps;
 }
 
 interface FrequencyData{
@@ -37,19 +38,22 @@ const Profile: React.FC = () => {
   useEffect(() =>{
     async function fetchData(){
       const {data} = await Api.get('/data/user');
-      const {data: frequency} = await Api.get('/data/user/frequency');
-
-      if(data && frequency){
+      
+      if(data){
         setUserData(data);
-        setUserFrequency(frequency);
         setLoading(false);
+      }
+
+      const {data:frequency} = await Api.get('/data/user/frequency');
+
+      if(frequency){
+        setUserFrequency(frequency);
       }
     }
 
     fetchData();
   },[]);
 
-  console.log(loading)
   if(loading) return <LoadingScreen />
 
   return (
@@ -64,16 +68,16 @@ const Profile: React.FC = () => {
               
             </> : /*O ? depois da variável significa "se existir" */<>
               <h3>Matrícula: {userData?.registration}</h3>
-              <h3>Curso: {userData?.course?.name}</h3>
-              <h3>Turma: {userData?.schoolClass?.name}</h3>
-              <h3>Modalidade: {userData?.mode?.name}</h3>
-              <h3>Turno: {userData?.shift?.name}</h3>
+              <h3>Curso: {userData?.course.name}</h3>
+              <h3>Turma: {userData?.schoolClass.name}</h3>
+              <h3>Modalidade: {userData?.mode.name}</h3>
+              <h3>Turno: {userData?.shift.name}</h3>
             </>}
           </div>
         </aside>
         <section className={Styles.contentContainer}>
           <header><h1>Progressão anual das disciplinas</h1></header>
-          {!userFrequency ? <LoadingScreen />:
+          {!userFrequency ? <LoadingAnimation />:
             <div className={Styles.dataContainer}>
               {userType === 'teacher' ? <>
 
