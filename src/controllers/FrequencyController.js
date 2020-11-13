@@ -126,7 +126,7 @@ module.exports = {
 
       await registerClass(Number(mode_id),class_id,teacher.id,teacher.matter[0].id,classQuanty,month);
 
-      res.json({message: "A aula foi registrada com sucesso"});
+      return res.json({message: "A aula foi registrada com sucesso"});
     }else{
       const {table_name} = await SchoolClass.findOne({
         where:{
@@ -143,7 +143,7 @@ module.exports = {
 
       await connection.query(`UPDATE ${table_name} SET ${matterIdentifier} = ${currentFrequency} WHERE student_id = ${student.id} AND month = '${month}'`);
 
-      res.json({message: 'A frequência do aluno foi registrada'});
+      return res.json({message: 'A frequência do aluno foi registrada'});
     }
   } 
 }

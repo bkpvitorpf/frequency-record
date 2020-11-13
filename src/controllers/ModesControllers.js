@@ -20,7 +20,7 @@ module.exports={
         }
       });
 
-      res.json({modes});
+      return res.json({modes});
     }
   }
 }

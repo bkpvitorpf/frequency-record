@@ -10,6 +10,6 @@ module.exports={
       }
     })
 
-    res.json({classes});
+    return res.json({classes});
   }
 }

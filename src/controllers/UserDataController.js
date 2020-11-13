@@ -44,7 +44,7 @@ module.exports={
         }
       })
 
-      res.json({matters,courses,classes});
+      return res.json({matters,courses,classes});
     }else{
       const {registration,mode_id,course_id,class_id} = req.user;
 
@@ -64,7 +64,7 @@ module.exports={
         }
       })
 
-      res.json({registration,course,mode,schoolClass,shift});
+      return res.json({registration,course,mode,schoolClass,shift});
     }
   },
   async indexFrequency(req,res){
@@ -144,7 +144,7 @@ module.exports={
         }
       }
 
-      res.json(frequencyData);
+      return res.json(frequencyData);
     }
   }
 }

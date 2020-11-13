@@ -14,6 +14,6 @@ module.exports={
       }
     })
 
-    res.json({courses});
+    return res.json({courses});
   }
 }

@@ -18,7 +18,7 @@ module.exports={
       }
     });
 
-    res.json({matters});
+    return res.json({matters});
   },
   async customIndexMatters(req,res){
     const {classId} = req.body;
@@ -42,6 +42,6 @@ module.exports={
       ]
     })
 
-    res.json({matters});
+    return res.json({matters});
   }
 }

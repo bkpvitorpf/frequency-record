@@ -59,11 +59,13 @@ module.exports = {
             expiresIn: 432000
           });
 
-          res.json({token,user_info:{type,name}});
+          return res.json({token,user_info:{type,name}});
         }
       }
 
-      res.status(401).json({message:'Unauthorized user'});
-    }).catch(()=>res.json({message: 'User not found'}));
+      return res.status(401).json("Unauthorized user");
+    }).catch(() => {
+      return res.json({error: "User not found",status: 404})
+    });
   }
 }
