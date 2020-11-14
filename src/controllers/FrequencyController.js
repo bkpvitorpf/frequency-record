@@ -3,45 +3,29 @@ const SchoolClass = require('../models/SchoolClass');
 const Info4 = require('../models/Info_4');
 const connection = require('../database');
 const Teacher = require('../models/Teacher');
-const MedioIntegrado = require('../models/Medio_integrado');
+const { QueryTypes } = require('sequelize');
 
-async function selectStudent(table_name,student_id){
-  if(table_name == 'info_4'){
-    const data = await Info4.findOne({
-      where:{
-        student_id
-      }
-    });
-
-    return data;
-  }
+async function selectStudent(tableName,studentId,matterIdentifier,month){
+  const data = await connection.query(`SELECT ${matterIdentifier} FROM ${tableName} WHERE student_id = ${studentId} AND month = '${month}'`,{
+    type: QueryTypes.SELECT
+  });
+  
+  return data[0];
 }
 
-async function registerClass(mode_id,class_id,teacher_id,matter_id,classQuanty,month){
-  switch(mode_id){
-    case 1:
-      const data = await MedioIntegrado.findOne({
-        where:{
-          class_id,
-          teacher_id,
-          matter_id,
-          month
-        }
-      });
+async function registerClass(tableName,classId,teacherId,matterId,classQuanty,month){
 
-      const currentFrequency = data.getDataValue('classes_taught') + Number(classQuanty);
+  const data = await connection.query(`SELECT classes_taught FROM ${tableName} WHERE class_id = ${classId} AND teacher_id = ${teacherId} AND matter_id = ${matterId} AND month = '${month}'`,{
+    type: QueryTypes.SELECT
+  })
 
-      await MedioIntegrado.update({classes_taught: currentFrequency},{
-        where:{
-          class_id,
-          teacher_id,
-          matter_id,
-          month
-        }
-      })
+  const frequency = data[0];
 
-    break;
-  }
+  const currentFrequency = Number(Object.values(frequency)) + Number(classQuanty);
+
+  await connection.query(`UPDATE ${tableName} SET classes_taught = ${currentFrequency} WHERE class_id = ${classId} AND teacher_id = ${teacherId} AND matter_id = ${matterId} AND month = '${month}'`);
+
+  await connection.query(`UPDATE ${tableName} SET classes_taught = ${currentFrequency} WHERE class_id = ${classId} AND teacher_id = ${teacherId} AND matter_id = ${matterId} AND month = 'Anual'`);
 }
 
 function getMonth(){
@@ -109,7 +93,7 @@ module.exports = {
       where:{
         sensor_id: id
       },
-      include:{
+      include:[{
         association: 'matter',
         attributes: ['id'],
         through:{
@@ -118,16 +102,27 @@ module.exports = {
         where:{
           identifier: matterIdentifier
         }
-      }
+      },{
+        association: 'mode',
+        attributes: ['id','table_name'],
+        through:{
+          attributes: []
+        },
+        where:{
+          id: mode_id
+        }
+      }]
     });
 
     if(teacher){
       const month = getMonth();
 
-      await registerClass(Number(mode_id),class_id,teacher.id,teacher.matter[0].id,classQuanty,month);
+      await registerClass(teacher.mode[0].table_name,class_id,teacher.id,teacher.matter[0].id,classQuanty,month);
 
       return res.json({message: "A aula foi registrada com sucesso"});
     }else{
+      const month = getMonth();
+
       const {table_name} = await SchoolClass.findOne({
         where:{
           id: class_id,
@@ -135,13 +130,13 @@ module.exports = {
         }
       });
 
-      const studentData = await selectStudent(table_name,student.id);
+      const frequency = await selectStudent(table_name,student.id,matterIdentifier,month);
 
-      const currentFrequency = studentData.getDataValue(matterIdentifier) + Number(classQuanty);
-
-      const month = getMonth();
+      const currentFrequency = Number(Object.values(frequency)) + Number(classQuanty);
 
       await connection.query(`UPDATE ${table_name} SET ${matterIdentifier} = ${currentFrequency} WHERE student_id = ${student.id} AND month = '${month}'`);
+
+      await connection.query(`UPDATE ${table_name} SET ${matterIdentifier} = ${currentFrequency} WHERE student_id = ${student.id} AND month = 'Anual'`);
 
       return res.json({message: 'A frequência do aluno foi registrada'});
     }

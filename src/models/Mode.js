@@ -4,7 +4,8 @@ const {Model,DataTypes} = require('sequelize');
 class Mode extends Model{
   static init(sequelize){
     super.init({
-      name: DataTypes.STRING
+      name: DataTypes.STRING,
+      table_name: DataTypes.STRING
     },{
       sequelize
     });

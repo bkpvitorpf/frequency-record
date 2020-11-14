@@ -71,7 +71,112 @@ module.exports={
     const {user_type} = req.user;
 
     if(user_type == 'teacher'){
+      const {id: teacherId} = req.user;
 
+      const courses = [];
+      const schoolClasses = [];
+      const schoolClassesMatters = [];
+      const mattersData = [];
+
+      const matters = [];
+      //const mattersFrequency = [];
+      const schoolClassData = [];
+      const frequencyData = [];
+
+      const modes = await Mode.findAll({
+        include:{
+          association: 'teacher',
+          attributes: [],
+          where:{
+            id: teacherId
+          }
+        }
+      });
+
+      for(let count = 0; count < modes.length; count++){
+        courses[count] = await Course.findAll({
+          include: [{
+            association: 'mode',
+            attributes: [],
+            where:{
+              id: modes[count].id
+            }
+          },{
+            association: 'teacher',
+            attributes: [],
+            where:{
+              id: teacherId
+            }
+          }]
+        })
+      }
+
+      for (let count = 0; count < courses.length; count++) {
+        const stage1 = courses[count];
+
+        for (let count2 = 0; count2 < stage1.length; count2++){
+          const data = await SchoolClass.findAll({
+            include:{
+              association: 'teacher',
+              attributes: [],
+              where:{
+                id: teacherId
+              }
+            },
+            where:{
+              course_id: stage1[count2].id
+            }
+          })
+
+          schoolClasses.push(data);
+        }
+
+        schoolClassData[count] = schoolClasses;
+      }
+
+      for (let count = 0; count < schoolClasses.length; count++) {
+        const stage1 = schoolClasses[count];
+
+        for (let count2 = 0; count2 < stage1.length; count2++){
+          const data = await Matter.findAll({
+            include:[{
+              association: 'class',
+              attributes:[],
+              where:{
+                id: stage1[count].id
+              }
+            },{
+              association: 'teacher',
+              attributes:[],
+              where:{
+                id: teacherId
+              }
+            }]
+          })
+
+          matters.push(data);
+        }
+
+        schoolClassesMatters[count] = matters
+      }
+
+      for (let count = 0; count < schoolClassData.length; count++) {
+        
+      }
+
+      for(let count = 0; count < modes.length; count++){
+        for (let count2 = 0; count2 < courses.length; count2++) {
+          for (let count3 = 0; count3 < schoolClasses.length; count3++) {
+            for (let count4 = 0; count4 < matters.length; count4++) {
+              mattersData[count4] = await connection.query(`SELECT total_classes,classes_taught FROM ${modes[count].table_name} WHERE teacher_id = ${teacherId} AND class_id = ${schoolClasses[count3].id} AND matter_id = ${matters[count4].id} and month != 'Anual'`,{
+                type: QueryTypes.SELECT
+              });
+            }
+          }
+        }
+      }
+
+      return res.json(mattersData);
     }else{
       const {class_id,id} = req.user;
 
