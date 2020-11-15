@@ -73,15 +73,7 @@ module.exports={
     if(user_type == 'teacher'){
       const {id: teacherId} = req.user;
 
-      const courses = [];
-      const schoolClasses = [];
-      const schoolClassesMatters = [];
-      const mattersData = [];
-
-      const matters = [];
-      //const mattersFrequency = [];
-      const schoolClassData = [];
-      const frequencyData = [];
+      const mattersFrequency = [];
 
       const modes = await Mode.findAll({
         include:{
@@ -94,7 +86,7 @@ module.exports={
       });
 
       for(let count = 0; count < modes.length; count++){
-        courses[count] = await Course.findAll({
+        const courses = await Course.findAll({
           include: [{
             association: 'mode',
             attributes: [],
@@ -108,14 +100,10 @@ module.exports={
               id: teacherId
             }
           }]
-        })
-      }
+        });
 
-      for (let count = 0; count < courses.length; count++) {
-        const stage1 = courses[count];
-
-        for (let count2 = 0; count2 < stage1.length; count2++){
-          const data = await SchoolClass.findAll({
+        for (let count2 = 0; count2 < courses.length; count2++) {
+          const schoolClasses = await SchoolClass.findAll({
             include:{
               association: 'teacher',
               attributes: [],
@@ -124,66 +112,59 @@ module.exports={
               }
             },
             where:{
-              course_id: stage1[count2].id
+              course_id: courses[count2].id
             }
-          })
+          });
 
-          schoolClasses.push(data);
-        }
-
-        schoolClassData[count] = schoolClasses;
-      }
-
-      for (let count = 0; count < schoolClasses.length; count++) {
-        const stage1 = schoolClasses[count];
-
-        for (let count2 = 0; count2 < stage1.length; count2++){
-          const data = await Matter.findAll({
-            include:[{
-              association: 'class',
-              attributes:[],
-              where:{
-                id: stage1[count].id
-              }
-            },{
-              association: 'teacher',
-              attributes:[],
-              where:{
-                id: teacherId
-              }
-            }]
-          })
-
-          matters.push(data);
-        }
-
-        schoolClassesMatters[count] = matters
-      }
-
-      for (let count = 0; count < schoolClassData.length; count++) {
-        
-      }
-
-      for(let count = 0; count < modes.length; count++){
-        for (let count2 = 0; count2 < courses.length; count2++) {
           for (let count3 = 0; count3 < schoolClasses.length; count3++) {
+            const matters = await Matter.findAll({
+              include:[{
+                association: 'teacher',
+                attributes: [],
+                where:{
+                  id: teacherId
+                }
+              },{
+                association: 'class',
+                attributes: [],
+                where:{
+                  id: schoolClasses[count3].id
+                }
+              }]
+            });
+
             for (let count4 = 0; count4 < matters.length; count4++) {
-              mattersData[count4] = await connection.query(`SELECT total_classes,classes_taught FROM ${modes[count].table_name} WHERE teacher_id = ${teacherId} AND class_id = ${schoolClasses[count3].id} AND matter_id = ${matters[count4].id} and month != 'Anual'`,{
+              const data = await connection.query(`SELECT classes_taught,total_classes FROM ${modes[count].table_name} WHERE teacher_id = ${teacherId} AND class_id = ${schoolClasses[count3].id} AND matter_id = ${matters[count4].id} AND month = 'Anual'`,{
                 type: QueryTypes.SELECT
               });
+
+              const mode = modes[count].name;
+              const course = courses[count2].name;
+              const schoolClass = schoolClasses[count3].name;
+              const name = matters[count4].name;
+            
+              const values = Object.values(data[0]);
+
+              const percentFrequency = (Number(values[0]) / Number(values[1])) * 100;
+      
+              mattersFrequency[count] = {
+                mode,
+                course,
+                schoolClass,
+                name,
+                percentFrequency
+              }
             }
           }
         }
       }
 
-      return res.json(mattersData);
+      return res.json(mattersFrequency);
     }else{
       const {class_id,id} = req.user;
 
       const mattersFrequency = [];
-      const mattersData = [];
-      const frequencyData = [];
-      
+
       const matters = await Matter.findAll({
         include:{
           association: 'class',
@@ -197,59 +178,23 @@ module.exports={
       const {table_name: tableName} = await SchoolClass.findByPk(class_id);
 
       for(let count = 0; count < matters.length; count++){
-        mattersData[count] = await connection.query(`SELECT ${matters[count].identifier} FROM ${tableName} WHERE student_id = ${id} AND month != 'Anual'`,{
+        const data = await connection.query(`SELECT ${matters[count].identifier},total_${matters[count].identifier} FROM ${tableName} WHERE student_id = ${id} AND month = 'Anual'`,{
           type: QueryTypes.SELECT
         });
-      }
 
-      for(let count = 0; count < mattersData.length; count++){
-        const stage1 = mattersData[count];
-        
-        // Inicia o valor da posição como 0, para que possa haver um valor para iniciar a soma da frequência
-        mattersFrequency[count] = 0;
-
-        for(let count2 = 0; count2 < stage1.length; count2 ++){
-          // Desestruturando o objeto
-          const stage2 = stage1[count2];
-
-          // Pegando o valor do objeto
-          const value = Number(Object.values(stage2));
-
-          mattersFrequency[count] += value;
-        }
-
-        // Atualizando o valor anual de aulas assistidas da matéria na base de dados
-        await connection.query(`UPDATE ${tableName} SET ${matters[count].identifier} = ${mattersFrequency[count]} WHERE student_id = ${id} AND month = 'Anual'`);
-      }
-
-      const anualFrequency = await Info4.findAll({
-        where:{
-          student_id: id,
-          month: 'Anual',
-        }
-      });
-
-      const totalAnualFrequency = anualFrequency[0];
-
-      for(let count = 0; count < matters.length; count++){
-        const frequency = mattersFrequency[count];
         const name = matters[count].name;
-        const totalFrequency = totalAnualFrequency.getDataValue(`total_${matters[count].identifier}`);
-        var percentFrequency = 0;
 
-        if(frequency > totalAnualFrequency){
-          percentFrequency = 100;
-        }else{
-          percentFrequency = (frequency / totalFrequency) * 100;
-        }
+        const values = Object.values(data[0]);
 
-        frequencyData[count] = {
+        const percentFrequency = (Number(values[0]) / Number(values[1])) * 100;
+
+        mattersFrequency[count] = {
           name,
           percentFrequency
         }
       }
 
-      return res.json(frequencyData);
+      return res.json(mattersFrequency);
     }
   }
 }
