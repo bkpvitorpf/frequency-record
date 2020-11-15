@@ -65,15 +65,29 @@
   overflow-y: scroll;
 }
 
+.container .contentContainer .dataContainer .infoContent{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
 .container .contentContainer .dataContainer .dataBackground{
   margin: 20px 0;
   width: 550px;
-  height: 80px;
+  height: 90px;
   border-radius: 10px;
   background-color: #EEECE8;
 }
 
+.container .contentContainer .dataContainer .dataBackground h3{
+  margin-top: 10px;
+  text-align: center;
+}
+
 .container .contentContainer .dataContainer .dataBackground .dataContent{
+  margin-top: -20px;
   height: 100%;
   display: flex;
   justify-content: space-between;

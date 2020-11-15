@@ -25,6 +25,9 @@ interface UserData{
 interface FrequencyData{
   name: string | undefined;
   percentFrequency: number | undefined;
+  schoolClass: string | undefined;
+  mode: string | undefined;
+  course: string | undefined;
 }
 
 const Profile: React.FC = () => {
@@ -48,6 +51,7 @@ const Profile: React.FC = () => {
 
       if(frequency){
         setUserFrequency(frequency);
+        console.log(frequency);
       }
     }
 
@@ -79,9 +83,20 @@ const Profile: React.FC = () => {
           <header><h1>Progressão anual das disciplinas</h1></header>
           {!userFrequency ? <LoadingAnimation />:
             <div className={Styles.dataContainer}>
-              {userType === 'teacher' ? <>
-
-              </> : userFrequency?.map(matter =>(
+              {userType === 'teacher' ? userFrequency?.map(matter => (
+                <>
+                  <div className={Styles.infoContent}>
+                    <h3>{matter.course} - {matter.mode}</h3>
+                  </div>
+                  <div className={Styles.dataBackground} key={matter.name}>
+                    <h3>{matter.name}</h3>
+                    <div className={Styles.dataContent}>
+                      <h4>{matter.schoolClass}</h4>
+                      <h4>{matter.percentFrequency}%</h4>
+                    </div>
+                  </div>
+                </>
+              )) : userFrequency?.map(matter =>(
                 <div className={Styles.dataBackground} key={matter.name}>
                   <div className={Styles.dataContent}>
                     <h4>{matter.name}</h4>
