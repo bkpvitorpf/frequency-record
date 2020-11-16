@@ -3,7 +3,6 @@ const SchoolClass = require('../models/SchoolClass');
 const Course = require('../models/Course');
 const Shift = require('../models/Shift');
 const Matter = require('../models/Matter');
-const Info4 = require('../models/Info_4');
 const connection = require('../database');
 const { QueryTypes } = require('sequelize');
 
@@ -13,6 +12,17 @@ module.exports={
 
     if(user_type == 'teacher'){
       const {id: teacherId} = req.user;
+
+      const modes = await Mode.findAll({
+        attributes: ['name'],
+        include:{
+          association: 'teacher',
+          attributes: [],
+          where:{
+            id: teacherId
+          }
+        }
+      });
 
       const matters = await Matter.findAll({
         include:{
@@ -32,7 +42,7 @@ module.exports={
             id: teacherId
           }
         }
-      })
+      });
 
       const classes = await SchoolClass.findAll({
         include:{
@@ -42,9 +52,9 @@ module.exports={
             id: teacherId
           }
         }
-      })
+      });
 
-      return res.json({matters,courses,classes});
+      return res.json({matters,courses,classes,modes});
     }else{
       const {registration,mode_id,course_id,class_id} = req.user;
 
@@ -184,6 +194,7 @@ module.exports={
 
         const name = matters[count].name;
 
+        // Pega os valores do objeto retornado pela query na posição 0 do array
         const values = Object.values(data[0]);
 
         const percentFrequency = (Number(values[0]) / Number(values[1])) * 100;
