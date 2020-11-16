@@ -71,9 +71,8 @@ const Profile: React.FC = () => {
           <div className={Styles.userData}>
             {userType === 'teacher' ? <>
               <div className={Styles.infoContainer}>
-                <h3>Disciplinas: </h3>
-                <h3>{userData?.matters.map((matter,index) =>(
-                  index === userData.matters.length ? matter.name + "," : matter.name
+                <h3>Disciplinas: {userData?.matters.map((matter,index) =>(
+                  index !== userData.matters.length - 1 ? matter.name + ", " : matter.name
                 ))}.</h3>
               </div>
               <div className={Styles.infoContainer}>
