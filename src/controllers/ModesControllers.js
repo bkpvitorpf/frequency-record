@@ -5,11 +5,11 @@ module.exports={
     const {user_type} = req.user;
 
     if(user_type == 'teacher'){
-      const {id:teacher_id} = req.user;
+      const {id:teacherId} = req.user;
 
       const {mode:modes} = await Teacher.findOne({
         where:{
-          id: teacher_id
+          id: teacherId
         },
         include:{
           association: 'mode',
