@@ -32,7 +32,21 @@
 
 .container .asideContainer .userData h3{
   margin: 10px 30px;
-  font-size: 24px;
+  font-size: 22px;
+}
+
+.container .asideContainer .userData .infoContainer{
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.container .asideContainer .userData .infoContainer h3:first-child{
+  margin-right: 0;
+}
+
+.container .asideContainer .userData .infoContainer h3:last-child{
+  margin-left: 10px;
 }
 
 .container .contentContainer{
@@ -65,7 +79,7 @@
   overflow-y: scroll;
 }
 
-.container .contentContainer .dataContainer .infoContent{
+.container .contentContainer .dataContainer .matterInfo{
   display: flex;
   flex-direction: column;
   justify-content: center;

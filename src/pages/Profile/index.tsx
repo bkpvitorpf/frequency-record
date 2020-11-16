@@ -15,6 +15,7 @@ interface UserData{
   matters: Array<DataProps>;
   courses: Array<DataProps>;
   classes: Array<DataProps>;
+  modes: Array<DataProps>;
   registration: string;
   course: DataProps;
   mode: DataProps;
@@ -23,11 +24,11 @@ interface UserData{
 }
 
 interface FrequencyData{
-  name: string | undefined;
-  percentFrequency: number | undefined;
-  schoolClass: string | undefined;
-  mode: string | undefined;
-  course: string | undefined;
+  name: string;
+  percentFrequency: number;
+  schoolClass: string;
+  mode: string;
+  course: string;
 }
 
 const Profile: React.FC = () => {
@@ -69,7 +70,30 @@ const Profile: React.FC = () => {
           <h1>{userName}</h1>
           <div className={Styles.userData}>
             {userType === 'teacher' ? <>
-              
+              <div className={Styles.infoContainer}>
+                <h3>Disciplinas: </h3>
+                <h3>{userData?.matters.map((matter,index) =>(
+                  index === userData.matters.length ? matter.name + "," : matter.name
+                ))}.</h3>
+              </div>
+              <div className={Styles.infoContainer}>
+                <h3>Modalidades de ensino: </h3>
+                <h3>{userData?.modes.map(mode =>(
+                  mode.name
+                ))}.</h3>
+              </div>
+              <div className={Styles.infoContainer}>
+                <h3>Cursos: </h3>
+                <h3>{userData?.courses.map(course =>(
+                  course.name
+                ))}.</h3>
+              </div>
+              <div className={Styles.infoContainer}>
+                <h3>Turmas: </h3>
+                <h3>{userData?.classes.map(schoolClass =>(
+                  schoolClass.name
+                ))}.</h3>
+              </div>
             </> : /*O ? depois da variável significa "se existir" */<>
               <h3>Matrícula: {userData?.registration}</h3>
               <h3>Curso: {userData?.course.name}</h3>
@@ -85,7 +109,7 @@ const Profile: React.FC = () => {
             <div className={Styles.dataContainer}>
               {userType === 'teacher' ? userFrequency?.map(matter => (
                 <>
-                  <div className={Styles.infoContent}>
+                  <div className={Styles.matterInfo}>
                     <h3>{matter.course} - {matter.mode}</h3>
                   </div>
                   <div className={Styles.dataBackground} key={matter.name}>
