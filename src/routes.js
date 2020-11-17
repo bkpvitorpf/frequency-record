@@ -7,6 +7,7 @@ const ModesController = require('./controllers/ModesControllers');
 const CoursesController = require('./controllers/CoursesController');
 const ClassesController = require('./controllers/ClassesController');
 const UserDataController = require('./controllers/UserDataController');
+const FrequencyDataController = require('./controllers/FrequencyDataController');
 
 const route = Express.Router();
 
@@ -15,6 +16,7 @@ route.get('/data/matters',AuthMiddleware,MattersController.indexMatters);
 route.get('/data/modes',AuthMiddleware,ModesController.indexModes);
 route.get('/data/user',AuthMiddleware,UserDataController.indexData);
 route.get('/data/user/frequency',AuthMiddleware,UserDataController.indexFrequency);
+route.get('/data/frequency',AuthMiddleware,FrequencyDataController.fetchData);
 
 route.post('/login',LoginController.login);
 route.post('/data/matters',AuthMiddleware,MattersController.customIndexMatters);

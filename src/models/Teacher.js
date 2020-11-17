@@ -12,7 +12,7 @@ class Teacher extends Model{
 
   static associate(models){
     this.belongsTo(models.User,{foreignKey:'user_id',as: 'user'});
-    this.belongsToMany(models.SchoolClass,{foreignKey:'teacher_id', through: 'classes_teachers', as:'schoolClass'});
+    this.belongsToMany(models.SchoolClass,{foreignKey:'teacher_id', through: 'classes_teachers', as:'class'});
     this.belongsToMany(models.Matter,{foreignKey:'teacher_id', through: 'matters_teachers', as:'matter'});
     this.belongsToMany(models.Mode,{foreignKey:'teacher_id', through: 'teachers_modes', as: 'mode'});
     this.belongsToMany(models.Course,{foreignKey:'teacher_id', through: 'teachers_courses', as: 'course'});
