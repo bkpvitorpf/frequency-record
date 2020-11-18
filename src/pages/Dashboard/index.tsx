@@ -9,6 +9,7 @@ import MonthSelect from '../../components/MonthSelect';
 import TeacherMattersSelect from '../../components/TeacherMattersSelect';
 import AuthContext from '../../contexts/auth';
 import Styles from './styles.module.css';
+import {Helmet} from "react-helmet";
 
 const Dashboard: React.FC = () => {
   const {userInfo} = useContext(AuthContext);
@@ -27,6 +28,9 @@ const Dashboard: React.FC = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Início</title>
+      </Helmet>
       <Header />
       <div className={Styles.container}>
         <div className={Styles.asideContainer}>

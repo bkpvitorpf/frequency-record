@@ -1,27 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Header from '../../components/Header';
-import Styles from './styles.module.css';
+import { Helmet } from 'react-helmet';
 import Avatar from '../../assets/icons/Avatar.svg';
-import Api from '../../services/api';
-import AuthContext from '../../contexts/auth';
-import LoadingScreen from '../../components/LoadingScreen';
+import Header from '../../components/Header';
 import LoadingAnimation from '../../components/LoadingAnimation';
-
-interface DataProps{
-  name: string;
-}
-
-interface UserData{
-  matters: Array<DataProps>;
-  courses: Array<DataProps>;
-  classes: Array<DataProps>;
-  modes: Array<DataProps>;
-  registration: string;
-  course: DataProps;
-  mode: DataProps;
-  schoolClass: DataProps;
-  shift: DataProps;
-}
+import AuthContext from '../../contexts/auth';
+import Api from '../../services/api';
+import Styles from './styles.module.css';
 
 interface FrequencyData{
   name: string;
@@ -33,72 +17,61 @@ interface FrequencyData{
 
 const Profile: React.FC = () => {
   const {userInfo} = useContext(AuthContext);
-  const [userData,setUserData] = useState<UserData | null>(null);
   const [userFrequency,setUserFrequency] = useState<Array<FrequencyData> | null>(null);
-  const [loading,setLoading] = useState(true);
-  const userName = userInfo.name;
-  const userType = userInfo.type;
 
   useEffect(() =>{
     async function fetchData(){
-      const {data} = await Api.get('/data/user');
-      
+      const {data} = await Api.get('/data/user/frequency');
+
       if(data){
-        setUserData(data);
-        setLoading(false);
-      }
-
-      const {data:frequency} = await Api.get('/data/user/frequency');
-
-      if(frequency){
-        setUserFrequency(frequency);
-        console.log(frequency);
+        setUserFrequency(data);
       }
     }
 
     fetchData();
   },[]);
 
-  if(loading) return <LoadingScreen />
-
   return (
     <>
+      <Helmet>
+        <title>Perfil</title>
+      </Helmet>
       <Header />
       <div className={Styles.container}>
         <aside className={Styles.asideContainer}>
           <img src={Avatar} alt="Avatar"/>
-          <h1>{userName}</h1>
+          <h1>{userInfo.name}</h1>
           <div className={Styles.userData}>
-            {userType === 'teacher' ? <>
+            {userInfo.type === 'teacher' ? <>
               <div className={Styles.infoContainer}>
-                <h3>Disciplinas: {userData?.matters.map((matter,index) =>(
-                  index !== userData.matters.length - 1 ? matter.name + ", " : matter.name
+                <h3>Disciplinas: {userInfo.matters.map((matter,index) =>(
+                  index !== userInfo.matters.length - 1 ? matter.name + ", " : matter.name
                 ))}.</h3>
               </div>
               <div className={Styles.infoContainer}>
                 <h3>Modalidades de ensino: </h3>
-                <h3>{userData?.modes.map(mode =>(
+                <h3>{userInfo.modes.map(mode =>(
                   mode.name
                 ))}.</h3>
               </div>
               <div className={Styles.infoContainer}>
                 <h3>Cursos: </h3>
-                <h3>{userData?.courses.map(course =>(
+                <h3>{userInfo.courses.map(course =>(
                   course.name
                 ))}.</h3>
               </div>
               <div className={Styles.infoContainer}>
                 <h3>Turmas: </h3>
-                <h3>{userData?.classes.map(schoolClass =>(
+                <h3>{userInfo.classes.map(schoolClass =>(
                   schoolClass.name
                 ))}.</h3>
               </div>
-            </> : /*O ? depois da variável significa "se existir" */<>
-              <h3>Matrícula: {userData?.registration}</h3>
-              <h3>Curso: {userData?.course.name}</h3>
-              <h3>Turma: {userData?.schoolClass.name}</h3>
-              <h3>Modalidade: {userData?.mode.name}</h3>
-              <h3>Turno: {userData?.shift.name}</h3>
+            </> : <>
+              <h3>Matrícula: {userInfo.registration}</h3>
+              <h3>Curso: {userInfo.course}</h3>
+              <h3>Turma: {userInfo.schoolClass}</h3>
+              <h3>Modalidade: {userInfo.mode}</h3>
+              <h3>Turno: {userInfo.shift}</h3>
             </>}
           </div>
         </aside>
@@ -106,14 +79,14 @@ const Profile: React.FC = () => {
           <header><h1>Progressão anual das disciplinas</h1></header>
           {!userFrequency ? <LoadingAnimation />:
             <div className={Styles.dataContainer}>
-              {userType === 'teacher' ? userFrequency?.map(matter => (
+              {userInfo.type === 'teacher' ? userFrequency?.map(matter => (
                 <>
                   <div className={Styles.matterInfo}>
                     <h3>{matter.course} - {matter.mode}</h3>
                   </div>
-                  <div className={Styles.dataBackground} key={matter.name}>
+                  <div className={Styles.teacherDataBackground} key={matter.name}>
                     <h3>{matter.name}</h3>
-                    <div className={Styles.dataContent}>
+                    <div className={Styles.teacherDataContent}>
                       <h4>{matter.schoolClass}</h4>
                       <h4>{matter.percentFrequency}%</h4>
                     </div>

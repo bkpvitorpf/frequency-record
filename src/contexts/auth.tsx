@@ -2,9 +2,23 @@ import React, { createContext, useEffect, useState } from 'react';
 import History from '../history';
 import Api from '../services/api';
 
+interface DataProps{
+  name: string;
+}
+
 interface UserProps{
   type: string;
   name: string;
+  registration: string;
+  mode: string;
+  modes: Array<DataProps>;
+  course: string;
+  courses: Array<DataProps>;
+  classes: Array<DataProps>;
+  schoolClass: string;
+  matter: string;
+  matters: Array<DataProps>;
+  shift: string;
 }
 
 interface AuthContextData{
@@ -32,9 +46,11 @@ export const AuthProvider: React.FC = ({children}) => {
 
       setUserInfo(JSON.parse(storedUserInfo));
       setAuthenticated(true);
-    }
 
-    setLoading(false);
+      History.push(History.location);
+
+      setLoading(false);
+    }
   },[]);
 
   async function signIn(email: string,password: string){
@@ -44,15 +60,17 @@ export const AuthProvider: React.FC = ({children}) => {
     });
 
     if(data){
-      Api.defaults.headers.Authorization = `Bearer ${data.token}`;
-
-      localStorage.setItem('token',JSON.stringify(data.token));
-      localStorage.setItem('userInfo',JSON.stringify(data.user_info));
-
-      setUserInfo(data.user_info);
       setAuthenticated(true);
 
       History.push('/dashboard');
+
+      Api.defaults.headers.Authorization = `Bearer ${data.token}`;
+
+      localStorage.setItem('token',JSON.stringify(data.token));
+      localStorage.setItem('userInfo',JSON.stringify(data.userInfo));
+
+      setUserInfo(data.userInfo);
+      setLoading(false);
     }
   }
 
@@ -67,7 +85,6 @@ export const AuthProvider: React.FC = ({children}) => {
   }
 
   return (
-    // !!token = Faz uma verificação, se token existir, signed recebe true, caso contrário, signed recebe false
     <AuthContext.Provider value={{authenticated,userInfo,loading,signIn,signOut}}>
       {children}
     </AuthContext.Provider>

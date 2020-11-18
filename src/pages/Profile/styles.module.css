@@ -73,6 +73,7 @@
 }
 
 .container .contentContainer header h1{
+  margin: 10px 0;
   color: #FFFCF2;
   font-size: 30px;
 }
@@ -96,17 +97,33 @@
 .container .contentContainer .dataContainer .dataBackground{
   margin: 20px 0;
   width: 550px;
-  height: 90px;
+  height: 60px;
   border-radius: 10px;
   background-color: #EEECE8;
 }
 
-.container .contentContainer .dataContainer .dataBackground h3{
+.container .contentContainer .dataContainer .teacherDataBackground{
+  margin: 20px 0;
+  width: 550px;
+  height: 80px;
+  border-radius: 10px;
+  background-color: #EEECE8;
+}
+
+.container .contentContainer .dataContainer .teacherDataBackground h3{
   margin-top: 10px;
   text-align: center;
 }
 
 .container .contentContainer .dataContainer .dataBackground .dataContent{
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+}
+
+.container .contentContainer .dataContainer .teacherDataBackground .teacherDataContent{
   margin-top: -20px;
   height: 100%;
   display: flex;

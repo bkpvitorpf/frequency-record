@@ -23,7 +23,7 @@ const Signin: React.FC = ({history}:any) => {
           <label>Email</label>
           <input
             className={Styles.emailInput} 
-            type="email" 
+            type="email"
             placeholder="Digite aqui o seu email" 
             required
             onChange={(e)=> setEmail(e.target.value)}
