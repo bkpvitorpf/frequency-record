@@ -3,6 +3,7 @@
   grid-template-columns: 2.5fr 3fr;
   grid-template-rows: 90.7vh;
   overflow-x: hidden;
+  color: #4C5C68;
 }
 
 .container .asideContainer{

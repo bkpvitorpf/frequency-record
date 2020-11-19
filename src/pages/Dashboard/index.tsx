@@ -10,20 +10,41 @@ import TeacherMattersSelect from '../../components/TeacherMattersSelect';
 import AuthContext from '../../contexts/auth';
 import Styles from './styles.module.css';
 import {Helmet} from "react-helmet";
+import Api from '../../services/api';
+import UserFrequencyData from '../../components/UserFrequencyData';
 
 const Dashboard: React.FC = () => {
   const {userInfo} = useContext(AuthContext);
   const [month,setMonth] = useState<string | null>(null);
-  const [matter,setMatter] = useState<string | null>(null);
-  const [mode,setMode] = useState<string | null>(null);
-  const [course,setCourse] = useState<string | null>(null);
-  const [schoolClass,setClass] = useState<string | null>(null);
-  const userType = userInfo.type;
-  const UserName = userInfo.name;
+  const [matterIdentifier,setMatterIdentifier] = useState<string | null>(null);
+  const [modeId,setModeId] = useState<string | null>(null);
+  const [courseId,setCourseId] = useState<string | null>(null);
+  const [classId,setClassId] = useState<string | null>(null);
+  const [frequencyData,setFrequencyData] = useState<string | null>(null);
+  const [searched,setSearchedStatus] = useState<boolean>(false);
 
   async function handleSubmit(event:React.FormEvent){
     event.preventDefault();
-    console.log(month,matter);
+    setSearchedStatus(true);
+
+    if(userInfo.type === 'teacher'){
+      const {data} = await Api.post('/data/frequency',{
+        month,
+        matterIdentifier,
+        modeId,
+        courseId,
+        classId
+      });
+
+      if(data) setFrequencyData(data);
+    }else{
+      const {data} = await Api.post('/data/frequency',{
+        month,
+        matterIdentifier
+      });
+
+      if(data) setFrequencyData(data);
+    }
   }
 
   return (
@@ -37,22 +58,24 @@ const Dashboard: React.FC = () => {
           <h1>Consulta de frequência</h1>
           <form onSubmit={handleSubmit}>
             <MonthSelect onChange={(e:any)=>{setMonth(e.target.value)}}/>
-            {userType === 'teacher' && <>
-              <ModesSelect onChange={(e:any)=>{setMode(e.target.value)}}/>
-              <CourseSelect onChange={(e:any)=>{setCourse(e.target.value)}} mode={mode}/>
-              <ClassesSelect onChange={(e:any)=>{setClass(e.target.value)}} course={course} />
-              <TeacherMattersSelect onChange={(e:any) => {setMatter(e.target.value)}} schoolClass={schoolClass} />
+            {userInfo.type === 'teacher' && <>
+              <ModesSelect onChange={(e:any)=>{setModeId(e.target.value)}}/>
+              <CourseSelect onChange={(e:any)=>{setCourseId(e.target.value)}} mode={modeId}/>
+              <ClassesSelect onChange={(e:any)=>{setClassId(e.target.value)}} course={courseId} />
+              <TeacherMattersSelect onChange={(e:any) => {setMatterIdentifier(e.target.value)}} schoolClass={classId} />
             </>}
-            {userType === 'student' && <>
-              <MattersSelect onChange={(e:any) => {setMatter(e.target.value)}}/>
+            {userInfo.type === 'student' && <>
+              <MattersSelect onChange={(e:any) => {setMatterIdentifier(e.target.value)}}/>
             </>}
             <Button>Pesquisar</Button>
           </form>
         </div>
         <div className={Styles.contentContainer}>
-          <h1>Olá</h1>
-          <h1>{UserName}</h1>
-          <h1>Preencha o formulário para continuar</h1>
+          {searched ? <UserFrequencyData frequencyData = {frequencyData} /> : <>
+            <h1>Olá</h1>
+            <h1>{userInfo.name}</h1>
+            <h1>Preencha o formulário para continuar</h1>
+          </>}
         </div>
       </div>
     </>

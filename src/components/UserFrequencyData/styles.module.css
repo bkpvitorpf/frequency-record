@@ -1,0 +1,76 @@
+.container{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #4C5C68;
+}
+
+.container h3{
+  font-size: 32px;
+  margin: 28px 0;
+}
+
+.container .info{
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin-bottom: 30px;
+}
+
+.container .info h3{
+  text-align: left;
+  margin: 10px 0;
+  font-size: 26px;
+}
+
+.container .classInfo{
+  width: 90%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.container .classInfo .monthlyAttendedClasses{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container .classInfo .monthlyClasses{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container .classInfo .monthlyAttendedClasses h3, .container .classInfo .monthlyClasses h3{
+  margin: 10px 0;
+}
+
+.container .progressBar{
+  height: 50;
+  background-color: aqua;
+  width: 60%;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.container .generalInfo{
+  width: 60%;
+}
+
+.container .generalInfo h3{
+  font-size: 22px;
+}
+
+@keyframes progressBarAnimation{
+  to{
+
+  }
+  from{
+    
+  }
+}

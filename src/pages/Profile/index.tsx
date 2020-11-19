@@ -23,9 +23,7 @@ const Profile: React.FC = () => {
     async function fetchData(){
       const {data} = await Api.get('/data/user/frequency');
 
-      if(data){
-        setUserFrequency(data);
-      }
+      if(data) setUserFrequency(data);
     }
 
     fetchData();

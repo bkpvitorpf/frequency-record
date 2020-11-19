@@ -12,7 +12,7 @@ const MonthSelect: React.FC<any> = ({onChange}) => {
       <option value="" disabled>Selecione o mês desejado</option>
       <option value="Janeiro">Janeiro</option>
       <option value="Fevereiro">Fevereiro</option>
-      <option value="Marco">Março</option>
+      <option value="Março">Março</option>
       <option value="Abril">Abril</option>
       <option value="Maio">Maio</option>
       <option value="Junho">Junho</option>
