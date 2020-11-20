@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
+import Styled, { keyframes } from "styled-components";
+import LoadingAnimation from '../../components/LoadingAnimation';
 import AuthContext from '../../contexts/auth';
 import Styles from './styles.module.css';
-import LoadingAnimation from '../../components/LoadingAnimation';
 
 interface IFrequencyData{
   matterName: string;
@@ -14,15 +15,30 @@ interface IFrequencyData{
   anualRemainingClasses: number;
 }
 
-// Estilo da barra de progresso da disciplina
-const progressBarStyle = {
-  
-}
-
-
 const UserFrequencyData: React.FC<any> = ({frequencyData}) => {
   const {userInfo} = useContext(AuthContext);
   const userFrequencyData: IFrequencyData = frequencyData;
+
+  // Estilo da barra de progresso da disciplina
+  const progressBarAnimation = keyframes`
+    from{
+      width: 0%;
+    }
+    to{
+    width: ${userFrequencyData?.percentFrequency}%;
+    }
+  `
+  const ProgressBar = Styled.div`
+  position: absolute;
+  z-index: 2;
+  height: 100%;
+  background-color: #1985A1;
+  border-radius: 25px;
+  animation-name: ${progressBarAnimation};
+  animation-duration: 2s;
+  animation-delay: 1s;
+  animation-fill-mode: both;
+  `;
 
   return (
     <>
@@ -45,8 +61,11 @@ const UserFrequencyData: React.FC<any> = ({frequencyData}) => {
                 <h3>{userFrequencyData.monthlyClasses}</h3>
               </div>
             </div>
-            <div style={progressBarStyle} className={Styles.progressBarStyle}>
-              <h3>{userFrequencyData.percentFrequency}</h3>
+            <div className={Styles.progressBarContainer}>
+              <div className={Styles.background}>
+                <ProgressBar/>
+              </div>
+              <h3>{userFrequencyData.percentFrequency} %</h3>
             </div>
             <div className={Styles.generalInfo}>
               <h3>Restam {userFrequencyData.monthlyRemainingClasses} aulas de {userFrequencyData.matterName} em {userFrequencyData.month} e {userFrequencyData.anualRemainingClasses} em 2020</h3>
