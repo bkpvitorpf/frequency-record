@@ -1,7 +1,6 @@
 const Mode = require('../models/Mode');
 const SchoolClass = require('../models/SchoolClass');
 const Course = require('../models/Course');
-const Shift = require('../models/Shift');
 const Matter = require('../models/Matter');
 const connection = require('../database');
 const { QueryTypes } = require('sequelize');
@@ -127,7 +126,13 @@ module.exports={
         // Pega os valores do objeto retornado pela query na posição 0 do array
         const values = Object.values(data[0]);
 
-        const percentFrequency = (Number(values[0]) / Number(values[1])) * 100;
+        var percentFrequency;
+
+        if(values[0] > values[1]){
+          percentFrequency = 100;
+        }else{
+          percentFrequency = (Number(values[0]) / Number(values[1])) * 100;
+        }
 
         mattersFrequency[count] = {
           name,

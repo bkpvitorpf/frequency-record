@@ -105,14 +105,20 @@ module.exports={
       const {class_id,id} = req.user;
       const {month,matterIdentifier} = req.body;
 
-      const {id: teacherId} = await Teacher.findOne({
-        include:{
+      const {user_id: teacherId} = await Teacher.findOne({
+        include: [{
           association: 'class',
           attributes: [],
           where:{
             id: class_id
           }
-        }
+        },{
+          association: 'matter',
+          attributes: [],
+          where:{
+            identifier: matterIdentifier
+          }
+        }]
       });
 
       const {name: matterName} = await Matter.findOne({
@@ -137,7 +143,13 @@ module.exports={
 
       const monthlyRemainingClasses = Number(monthlyValues[1]) - Number(monthlyValues[0]);
 
-      const percentFrequency = (Number(monthlyValues[0]) / Number(monthlyValues[1])) * 100;
+      var percentFrequency;
+
+      if(monthlyValues[0] > monthlyValues[1]){
+        percentFrequency = 100;
+      }else{
+        percentFrequency = (Number(monthlyValues[0]) / Number(monthlyValues[1])) * 100;
+      }
 
       const anualValues = Object.values(anualData[0]);
 

@@ -1,6 +1,5 @@
 const Student = require('../models/Student');
 const SchoolClass = require('../models/SchoolClass');
-const Info4 = require('../models/Info_4');
 const connection = require('../database');
 const Teacher = require('../models/Teacher');
 const { QueryTypes } = require('sequelize');
