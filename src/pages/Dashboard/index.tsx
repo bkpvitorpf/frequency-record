@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { Helmet } from "react-helmet";
 import Button from '../../components/Button';
 import ClassesSelect from '../../components/ClassesSelect';
 import CourseSelect from '../../components/CourseSelect';
@@ -7,11 +8,10 @@ import MattersSelect from '../../components/MattersSelect';
 import ModesSelect from '../../components/ModeSelect';
 import MonthSelect from '../../components/MonthSelect';
 import TeacherMattersSelect from '../../components/TeacherMattersSelect';
-import AuthContext from '../../contexts/auth';
-import Styles from './styles.module.css';
-import {Helmet} from "react-helmet";
-import Api from '../../services/api';
 import UserFrequencyData from '../../components/UserFrequencyData';
+import AuthContext from '../../contexts/auth';
+import Api from '../../services/api';
+import Styles from './styles.module.css';
 
 const Dashboard: React.FC = () => {
   const {userInfo} = useContext(AuthContext);

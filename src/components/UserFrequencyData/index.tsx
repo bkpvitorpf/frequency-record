@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Styled, { keyframes } from "styled-components";
 import LoadingAnimation from '../../components/LoadingAnimation';
 import AuthContext from '../../contexts/auth';
@@ -19,7 +19,9 @@ const UserFrequencyData: React.FC<any> = ({frequencyData}) => {
   const {userInfo} = useContext(AuthContext);
   const userFrequencyData: IFrequencyData = frequencyData;
 
-  // Estilo da barra de progresso da disciplina
+  useEffect(()=>{},[frequencyData]);
+
+  // Animação da barra de progresso da disciplina
   const progressBarAnimation = keyframes`
     from{
       width: 0%;
@@ -28,6 +30,8 @@ const UserFrequencyData: React.FC<any> = ({frequencyData}) => {
     width: ${userFrequencyData?.percentFrequency}%;
     }
   `
+
+  // Estilo da barra de progresso da disciplina
   const ProgressBar = Styled.div`
   position: absolute;
   z-index: 2;
@@ -37,7 +41,7 @@ const UserFrequencyData: React.FC<any> = ({frequencyData}) => {
   animation-name: ${progressBarAnimation};
   animation-duration: 2s;
   animation-delay: 1s;
-  animation-fill-mode: both;
+  animation-fill-mode: forwards;
   `;
 
   return (
