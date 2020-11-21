@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { Helmet } from "react-helmet";
 import Button from '../../components/Button';
 import ClassesSelect from '../../components/ClassesSelect';
@@ -21,11 +21,13 @@ const Dashboard: React.FC = () => {
   const [courseId,setCourseId] = useState<string | null>(null);
   const [classId,setClassId] = useState<string | null>(null);
   const [frequencyData,setFrequencyData] = useState<string | null>(null);
-  const [searched,setSearchedStatus] = useState<boolean>(false);
+  const [formSubmitted,setFormSubmitted] = useState<boolean>(false);
 
   async function handleSubmit(event:React.FormEvent){
     event.preventDefault();
-    setSearchedStatus(true);
+    // Setando os dados de frequência como nulo pra que quando o componente UserFrequencyData for chamado, a animação de loading apareça
+    setFrequencyData(null);
+    setFormSubmitted(true);
 
     if(userInfo.type === 'teacher'){
       const {data} = await Api.post('/data/frequency',{
@@ -46,6 +48,9 @@ const Dashboard: React.FC = () => {
       if(data) setFrequencyData(data);
     }
   }
+
+  // Usando o useMemo eu informo pro react que o componente UserFrequencyData só deve ser renderizado novamente caso haja uma mudança na variável frequencyData
+  const userFrequencyDataComponent = useMemo(()=> <UserFrequencyData frequencyData = {frequencyData} />,[frequencyData]);
 
   return (
     <>
@@ -71,7 +76,7 @@ const Dashboard: React.FC = () => {
           </form>
         </div>
         <div className={Styles.contentContainer}>
-          {searched ? <UserFrequencyData frequencyData = {frequencyData} /> : <>
+          {formSubmitted ? userFrequencyDataComponent : <>
             <h1>Olá</h1>
             <h1>{userInfo.name}</h1>
             <h1>Preencha o formulário para continuar</h1>

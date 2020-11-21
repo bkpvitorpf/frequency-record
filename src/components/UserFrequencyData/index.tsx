@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import Styled, { keyframes } from "styled-components";
 import LoadingAnimation from '../../components/LoadingAnimation';
 import AuthContext from '../../contexts/auth';
@@ -18,8 +18,6 @@ interface IFrequencyData{
 const UserFrequencyData: React.FC<any> = ({frequencyData}) => {
   const {userInfo} = useContext(AuthContext);
   const userFrequencyData: IFrequencyData = frequencyData;
-
-  useEffect(()=>{},[frequencyData]);
 
   // Animação da barra de progresso da disciplina
   const progressBarAnimation = keyframes`
