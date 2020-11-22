@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Route, Switch } from 'react-router-dom';
-import ErrorScreen from './components/ErrorScreen';
+import UnauthorizedScreen from './components/UnauthorizedUserScreen';
 import LoadingScreen from './components/LoadingScreen';
 import AuthContext from './contexts/auth';
 import Dashboard from './pages/Dashboard';
@@ -17,7 +17,7 @@ function CustomRoute({ Private, ...props }:props){
 
   if (loading) return <LoadingScreen />;
 
-  if (Private && !authenticated) return <ErrorScreen />;
+  if (Private && !authenticated) return <UnauthorizedScreen />;
 
   return <Route {...props}/>;
 }
