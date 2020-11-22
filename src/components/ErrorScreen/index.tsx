@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Lottie from 'react-lottie';
+import History from '../../history';
 import { defaultErrorOptions } from '../../config/animationConfig';
 import Styles from './styles.module.css';
 
@@ -12,8 +13,8 @@ const ErrorScreen: React.FC = () => {
   return (
     <div className={Styles.container}>
       <Lottie options={defaultErrorOptions}
-        height= {400}
-        width= {400}
+        height= {300}
+        width= {300}
         isStopped={animation_state.isStopped}
         isPaused={animation_state.isPaused}
         isClickToPauseDisabled={true}
@@ -22,6 +23,9 @@ const ErrorScreen: React.FC = () => {
         <h2>OOOPPS!</h2>
         <p>Parece que você não tem autorização para acessar essa página, faça o login e tente novamente.</p>
       </div>
+      <button className={Styles.button} onClick={()=> History.push('/')}>
+        Ir para a tela de login
+      </button>
       <div className={Styles.info}>
         <h4>Created by</h4>
         <a href="https://lottiefiles.com/zeffchris" rel="noopener noreferrer" target="_blank">Jeffrey Christopher</a>

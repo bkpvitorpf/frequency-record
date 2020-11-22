@@ -38,6 +38,7 @@ export const AuthProvider: React.FC = ({children}) => {
   const [loading,setLoading] = useState(true);
 
   useEffect(()=>{
+    // Verifica se tem informações armazenadas no local storage pra que o usuário não precise fazer login novamente
     const storedToken = localStorage.getItem('token');
     const storedUserInfo = localStorage.getItem('userInfo');
 
@@ -48,12 +49,17 @@ export const AuthProvider: React.FC = ({children}) => {
       setAuthenticated(true);
 
       History.push(History.location);
-
-      setLoading(false);
     }
+
+    setLoading(false);
   },[]);
 
   async function signIn(email: string,password: string){
+    // Seta o loading como true para que apareça a tela de carregamento
+    setLoading(true);
+
+    History.push('/dashboard');
+
     const {data} = await Api.post('/login',{
       email,
       password,
@@ -61,8 +67,6 @@ export const AuthProvider: React.FC = ({children}) => {
 
     if(data){
       setAuthenticated(true);
-
-      History.push('/dashboard');
 
       Api.defaults.headers.Authorization = `Bearer ${data.token}`;
 

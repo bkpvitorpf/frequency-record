@@ -17,7 +17,7 @@ function CustomRoute({ Private, ...props }:props){
 
   if (loading) return <LoadingScreen />;
 
-  if (Private && !authenticated) return <ErrorScreen />
+  if (Private && !authenticated) return <ErrorScreen />;
 
   return <Route {...props}/>;
 }
