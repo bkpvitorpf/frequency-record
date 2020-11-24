@@ -66,8 +66,6 @@ module.exports={
         }
       } 
 
-      return res.json(studentsFrequency);
-
       const monthlyData = await connection.query(`SELECT classes_taught,total_classes FROM ${modeTableName} WHERE teacher_id = ${teacherId} AND class_id = ${classId} AND matter_id = ${matterId} AND month = '${month}'`,{
         type: QueryTypes.SELECT
       });
@@ -100,7 +98,7 @@ module.exports={
         anualRemainingClasses
       }
 
-      return res.json({});
+      return res.json({studentsFrequency,frequencyData});
     }else{
       const {class_id,id} = req.user;
       const {month,matterIdentifier} = req.body;
