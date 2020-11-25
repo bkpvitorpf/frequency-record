@@ -86,7 +86,7 @@ module.exports={
 
               const percentFrequency = (Number(values[0]) / Number(values[1])) * 100;
       
-              mattersFrequency[count] = {
+              mattersFrequency[count4] = {
                 mode,
                 course,
                 schoolClass,
