@@ -47,21 +47,15 @@ const Profile: React.FC = () => {
                 ))}.</h3>
               </div>
               <div className={Styles.infoContainer}>
-                <h3>Modalidades de ensino: </h3>
-                <h3>{userInfo.modes.map(mode =>(
-                  mode.name
+                <h3>Modalidades de ensino: {userInfo.modes.map((mode,index) =>(index !== userInfo.modes.length - 1 ? mode.name + ", " : mode.name
                 ))}.</h3>
               </div>
               <div className={Styles.infoContainer}>
-                <h3>Cursos: </h3>
-                <h3>{userInfo.courses.map(course =>(
-                  course.name
+                <h3>Cursos: {userInfo.courses.map((course,index) =>(index !== userInfo.courses.length - 1 ? course.name + ", " : course.name
                 ))}.</h3>
               </div>
               <div className={Styles.infoContainer}>
-                <h3>Turmas: </h3>
-                <h3>{userInfo.classes.map(schoolClass =>(
-                  schoolClass.name
+                <h3>Turmas: {userInfo.classes.map((schoolClass,index) =>(index !== userInfo.classes.length - 1 ? schoolClass.name + ", " : schoolClass.name
                 ))}.</h3>
               </div>
             </> : <>

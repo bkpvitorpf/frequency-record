@@ -24,7 +24,7 @@
 
 .container .asideContainer h1{
   margin: 40px 0;
-  font-size: 34px;
+  font-size: 30px;
 }
 
 .container .asideContainer .userData{
@@ -32,28 +32,20 @@
 }
 
 .container .asideContainer .userData h3{
-  margin: 10px 30px;
-  font-size: 22px;
+  margin: 8px 30px;
+  font-size: 24px;
 }
 
 .container .asideContainer .userData .infoContainer{
   display: flex;
-  justify-content: left;
+  justify-content: flex-start;
   align-items: center;
 }
 
-.container .asideContainer .userData .infoContainer h3:first-child{
-  margin-right: 0;
-}
-
-.container .asideContainer .userData .infoContainer h3:last-child{
-  margin-left: 10px;
-}
-
-.container .asideContainer .userData .infoContainer:first-child h3{
+.container .asideContainer .userData .infoContainer h3{
   text-align: justify;
-  width: 80%;
-  margin-left: 30px;
+  width: 90%;
+  font-size: 22px;
 }
 
 .container .contentContainer{
