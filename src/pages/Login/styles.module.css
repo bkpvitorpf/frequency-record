@@ -3,6 +3,7 @@
   height: 100vh;
   background-color: #DCDCDD;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -61,6 +62,14 @@
   background: url('../../assets/icons/Mail.svg') no-repeat scroll 10px 10px;
   background-color: #FFFCF2;
   padding-left: 50px;
+}
+
+.container form .inputBlock input.wrongEmailInput{
+  background: url('../../assets/icons/Mail.svg') no-repeat scroll 10px 10px;
+  background-color: #FFFCF2;
+  padding-left: 50px;
+  border: 1px solid red;
+  color: red;
 }
 
 .container form .inputBlock input.passwordInput{

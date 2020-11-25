@@ -25,6 +25,7 @@ interface AuthContextData{
   authenticated: boolean;
   userInfo: UserProps;
   loading: boolean;
+  status: number;
   signIn(email:string,password:string): Promise<void>;
   signOut(): void;
 }
@@ -34,6 +35,7 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({children}) => {
   const [authenticated,setAuthenticated] = useState(false);
+  const [status,setStatus] = useState(0);
   const [userInfo,setUserInfo] = useState<UserProps>({} as UserProps);
   const [loading,setLoading] = useState(true);
 
@@ -60,13 +62,14 @@ export const AuthProvider: React.FC = ({children}) => {
 
     History.push('/dashboard');
 
-    const {data} = await Api.post('/login',{
+    await Api.post('/login',{
       email,
       password,
-    });
+    }).then(response => {
+      const data = response.data;
 
-    if(data){
       setAuthenticated(true);
+      setStatus(response.status);
 
       Api.defaults.headers.Authorization = `Bearer ${data.token}`;
 
@@ -75,7 +78,13 @@ export const AuthProvider: React.FC = ({children}) => {
 
       setUserInfo(data.userInfo);
       setLoading(false);
-    }
+    }).catch(error => {
+      const response = error.response;
+
+      History.push('/');
+
+      setStatus(response.status);
+    });
   }
 
   function signOut(){
@@ -89,7 +98,7 @@ export const AuthProvider: React.FC = ({children}) => {
   }
 
   return (
-    <AuthContext.Provider value={{authenticated,userInfo,loading,signIn,signOut}}>
+    <AuthContext.Provider value={{authenticated,userInfo,loading,status,signIn,signOut}}>
       {children}
     </AuthContext.Provider>
   );

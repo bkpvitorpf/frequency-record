@@ -1,10 +1,11 @@
 import React, { useContext, useState } from 'react';
 import Button from '../../components/Button';
+import WarningAnimation from '../../components/WarningAnimation';
 import AuthContext from '../../contexts/auth';
 import Styles from './styles.module.css';
 
 const Signin: React.FC = ({history}:any) => {
-  const {signIn,authenticated} = useContext(AuthContext);
+  const {signIn,authenticated,status} = useContext(AuthContext);
   const [email,setEmail] = useState<string>('');
   const [password,setPassword] = useState<string>('');
 
@@ -13,10 +14,14 @@ const Signin: React.FC = ({history}:any) => {
     signIn(email,password);
   }
 
-  if(authenticated) history.push('/dashboard')
+  if(authenticated) history.push('/dashboard');
 
   return (
     <div className={Styles.container}>
+      { 
+        // Verifica o status da requisição pra ver se as credenciais estão corretas
+        status === 404 || status === 401 ? <WarningAnimation status={status} /> : <> </>
+      }
       <form onSubmit={handleSignIn}>
         <h1>Faça login em nossa plataforma para continuar !</h1>
         <div className={Styles.inputBlock}>
