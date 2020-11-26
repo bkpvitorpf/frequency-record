@@ -66,6 +66,12 @@ module.exports={
         }
       } 
 
+      // Organiza a array de frequência de alunos de acordo com a ordem alfabética
+      const orderStudentsFrequency = studentsFrequency.sort(function (a, b) {
+        // Analisa a posição da primeira letra e retorna de acordo com a que vem antes no alfabeto
+        return (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0);
+      });
+
       const monthlyData = await connection.query(`SELECT classes_taught,total_classes FROM ${modeTableName} WHERE teacher_id = ${teacherId} AND class_id = ${classId} AND matter_id = ${matterId} AND month = '${month}'`,{
         type: QueryTypes.SELECT
       });
@@ -98,7 +104,7 @@ module.exports={
         anualRemainingClasses
       }
 
-      return res.json({studentsFrequency,frequencyData});
+      return res.json({orderStudentsFrequency,frequencyData});
     }else{
       const {class_id,id} = req.user;
       const {month,matterIdentifier} = req.body;
