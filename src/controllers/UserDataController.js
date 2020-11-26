@@ -85,14 +85,15 @@ module.exports={
               const values = Object.values(data[0]);
 
               const percentFrequency = (Number(values[0]) / Number(values[1])) * 100;
-      
-              mattersFrequency[count4] = {
+
+              mattersFrequency.push({
                 mode,
                 course,
                 schoolClass,
                 name,
                 percentFrequency
-              }
+              });
+
             }
           }
         }
@@ -134,10 +135,10 @@ module.exports={
           percentFrequency = (Number(values[0]) / Number(values[1])) * 100;
         }
 
-        mattersFrequency[count] = {
+        mattersFrequency.push({
           name,
           percentFrequency
-        }
+        });
       }
 
       return res.json(mattersFrequency);
