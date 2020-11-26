@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import Button from '../../components/Button';
 import WarningAnimation from '../../components/WarningAnimation';
 import AuthContext from '../../contexts/auth';
@@ -16,11 +16,13 @@ const Signin: React.FC = ({history}:any) => {
 
   if(authenticated) history.push('/dashboard');
 
+  const warningAnimationComponent = useMemo(()=> <WarningAnimation status={status} />,[status]);
+
   return (
     <div className={Styles.container}>
       { 
-        // Verifica o status da requisição pra ver se as credenciais estão corretas
-        status === 404 || status === 401 ? <WarningAnimation status={status} /> : <> </>
+        // Verifica o status não é nulo e se é diferente de 200, caso ambas sejam verdadeiras, chama o componente de aviso para mostrar o que aconteceu com a requisição
+        status && status !== 200 ? warningAnimationComponent : <> </>
       }
       <form onSubmit={handleSignIn}>
         <h1>Faça login em nossa plataforma para continuar !</h1>

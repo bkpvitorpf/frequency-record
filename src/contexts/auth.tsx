@@ -25,7 +25,7 @@ interface AuthContextData{
   authenticated: boolean;
   userInfo: UserProps;
   loading: boolean;
-  status: number;
+  status: number | null;
   signIn(email:string,password:string): Promise<void>;
   signOut(): void;
 }
@@ -35,7 +35,7 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({children}) => {
   const [authenticated,setAuthenticated] = useState(false);
-  const [status,setStatus] = useState(0);
+  const [status,setStatus] = useState<number | null>(null);
   const [userInfo,setUserInfo] = useState<UserProps>({} as UserProps);
   const [loading,setLoading] = useState(true);
 
