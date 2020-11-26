@@ -101,10 +101,11 @@ module.exports={
         monthlyClasses: monthlyValues[1],
         monthlyRemainingClasses,
         percentFrequency,
-        anualRemainingClasses
+        anualRemainingClasses,
+        studentsList: orderStudentsFrequency
       }
 
-      return res.json({orderStudentsFrequency,frequencyData});
+      return res.json(frequencyData);
     }else{
       const {class_id,id} = req.user;
       const {month,matterIdentifier} = req.body;
