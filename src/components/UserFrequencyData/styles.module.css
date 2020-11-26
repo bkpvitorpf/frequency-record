@@ -85,3 +85,128 @@
 }
 
 /* Estilo da tela do professor */
+
+.container .teacherContainer{
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 100%;
+}
+
+.container .teacherContainer .classData{
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #4C5C68;
+}
+
+.container .teacherContainer .classData h3{
+  font-size: 30px;
+  margin: 10px 0;
+}
+
+.container .teacherContainer .classData .info{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0;
+  padding: 0 35px;
+}
+
+.container .teacherContainer .classData .info h3{
+  font-size: 24px;
+}
+
+.container .teacherContainer .classData .info .box{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.container .teacherContainer .classData .classInfo h3{
+  font-size: 24px;
+}
+
+.container .teacherContainer .classData .progressBarContainer{
+  margin: 20px 0;
+}
+
+.container .teacherContainer .classData .generalInfo{
+  margin: 20px 0;
+}
+
+.container .teacherContainer .classData .generalInfo h3{
+  font-size: 20px;
+}
+
+.container .teacherContainer .studentsList{
+  grid-column-start: 2;
+  grid-row-start: 1;
+  width: 100%;
+  height: 100%;
+  background-color: #C4C4C4;
+  display: flex;
+  flex-direction: column;
+}
+
+.container .teacherContainer .studentsList .header{
+  height: 50px;
+  width: 100%;
+  background-color: #46494C;
+  color: #FFFCF2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container .teacherContainer .studentsList .header h3{
+  font-size: 22px;
+}
+
+.container .teacherContainer .studentsList .content{
+  width: 100%;
+  height: 100%;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.container .teacherContainer .studentsList .content .studentData{
+  width: 90%;
+  border-radius: 25px;
+  background-color: #EEECE8;
+  color: #4C5C68;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+  padding: 5px 15px;
+}
+
+.container .teacherContainer .studentsList .content .studentData h3{
+  font-size: 16px;
+  text-align: left;
+  margin: 0;
+}
+
+.container .teacherContainer .studentsList .content .studentData h3:nth-child(1){
+  width: 200px;
+}
+
+::-webkit-scrollbar{
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb{
+  background-color: rgba(37, 36, 34, 0.3);
+  border-radius: 10px;
+}
