@@ -84,7 +84,16 @@ module.exports={
 
       const monthlyRemainingClasses = Number(monthlyValues[1]) - Number(monthlyValues[0]);
 
-      const percentFrequency = (Number(monthlyValues[0]) / Number(monthlyValues[1])) * 100;
+      var percentFrequency;
+
+      if(monthlyValues[0] > monthlyValues[1]){
+        percentFrequency = 100;
+      }else{
+        percentFrequency = Number(
+          // A função toFixed determina o número de casas decimais no número
+          ((Number(monthlyValues[0]) / Number(monthlyValues[1])) * 100).toFixed(1)
+        );
+      }
 
       const anualValues = Object.values(anualData[0]);
 
@@ -153,7 +162,9 @@ module.exports={
       if(monthlyValues[0] > monthlyValues[1]){
         percentFrequency = 100;
       }else{
-        percentFrequency = (Number(monthlyValues[0]) / Number(monthlyValues[1])) * 100;
+        percentFrequency = Number(
+          ((Number(monthlyValues[0]) / Number(monthlyValues[1])) * 100).toFixed(1)
+        );
       }
 
       const anualValues = Object.values(anualData[0]);

@@ -84,7 +84,16 @@ module.exports={
             
               const values = Object.values(data[0]);
 
-              const percentFrequency = (Number(values[0]) / Number(values[1])) * 100;
+              var percentFrequency;
+
+              if(values[0] > values[1]){
+                percentFrequency = 100;
+              }else{
+                percentFrequency = Number(
+                  // A função toFixed determina o número de casas decimais no número
+                  ((Number(values[0]) / Number(values[1])) * 100).toFixed(1)
+                );
+              }
 
               mattersFrequency.push({
                 mode,
@@ -132,7 +141,9 @@ module.exports={
         if(values[0] > values[1]){
           percentFrequency = 100;
         }else{
-          percentFrequency = (Number(values[0]) / Number(values[1])) * 100;
+          percentFrequency = Number(
+            ((Number(values[0]) / Number(values[1])) * 100).toFixed(1)
+          );
         }
 
         mattersFrequency.push({
