@@ -201,12 +201,3 @@
 .container .teacherContainer .studentsList .content .studentData h3:nth-child(1){
   width: 200px;
 }
-
-::-webkit-scrollbar{
-  width: 8px;
-}
-
-::-webkit-scrollbar-thumb{
-  background-color: rgba(37, 36, 34, 0.3);
-  border-radius: 10px;
-}
