@@ -19,15 +19,13 @@
 
 #include <Adafruit_Fingerprint.h>
 
-// On Leonardo/Micro or others with hardware serial, use those! #0 is green wire, #1 is white
-// uncomment this line:
-// #define mySerial Serial1
+// Para Arduino Leonardo / Micro ou outros com portas seriais presentes no hardware do dispositivo, remova o comentário da linha abaixo. As portas onde o RX e o TX do sensor variam de acordo com o hardware utilizado, no caso do Arduino Mega, o Serial1 encontra-se nas portas digitais 18 e 19. 
 
-// For UNO and others without hardware serial, we must use software serial...
-// pin #2 is IN from sensor (GREEN wire)
-// pin #3 is OUT from arduino  (WHITE wire)
-// comment these two lines if using hardware serial
-SoftwareSerial mySerial(2, 3);
+#define mySerial Serial1
+
+// Para Arduino Uno e outros que não possuem portas seriais em seu hardware, utilizamos o software para simular portas seriais, portanto, remova o comentário da linha abaixo. Os números informados equivalem às portas utilizadas.
+
+//SoftwareSerial mySerial(2, 3);
 
 Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 
@@ -44,7 +42,7 @@ void setup()
   if (finger.verifyPassword()) {
     Serial.println("Sensor biométrico encontrado!");
   } else {
-    Serial.println("Não foi possivel encontrar o sensor biométrico, tente novamente");
+    Serial.println("Não foi possível encontrar o sensor biométrico, tente novamente");
     while (1);
   }
 }
@@ -62,13 +60,13 @@ uint8_t readnumber(void) {
 
 void loop()                     // run over and over again
 {
-  Serial.println("Insira o ID# de usuário que você deseja deletar ...");
+  Serial.println("Insira o id do usuário que você deseja deletar ...");
   uint8_t id = readnumber();
   if (id == 0) {// ID #0 not allowed, try again!
      return;
   }
 
-  Serial.print("Deletando o ID#");
+  Serial.print("Deletando o id ");
   Serial.println(id);
   
   deleteFingerprint(id);
@@ -80,12 +78,12 @@ uint8_t deleteFingerprint(uint8_t id) {
   p = finger.deleteModel(id);
 
   if (p == FINGERPRINT_OK) {
-    Serial.println("O ID foi deletado com sucesso!");
+    Serial.println("O id foi deletado com sucesso!");
   } else if (p == FINGERPRINT_PACKETRECIEVEERR) {
     Serial.println("Erro de comunicação com o sensor!");
     return p;
   } else if (p == FINGERPRINT_BADLOCATION) {
-    Serial.println("Não foi possivel apagar a digital informada!");
+    Serial.println("Não foi possível apagar a digital informada!");
     return p;
   } else if (p == FINGERPRINT_FLASHERR) {
     Serial.println("Erro de escrita!");

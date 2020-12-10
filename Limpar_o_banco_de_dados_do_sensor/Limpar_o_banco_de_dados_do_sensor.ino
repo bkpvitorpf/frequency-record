@@ -16,15 +16,13 @@
 
 #include <Adafruit_Fingerprint.h>
 
-// On Leonardo/Micro or others with hardware serial, use those! #0 is green wire, #1 is white
-// uncomment this line:
-// #define mySerial Serial1
+// Para Arduino Leonardo / Micro ou outros com portas seriais presentes no hardware do dispositivo, remova o comentário da linha abaixo. As portas onde o RX e o TX do sensor variam de acordo com o hardware utilizado, no caso do Arduino Mega, o Serial1 encontra-se nas portas digitais 18 e 19. 
 
-// For UNO and others without hardware serial, we must use software serial...
-// pin #2 is IN from sensor (GREEN wire)
-// pin #3 is OUT from arduino  (WHITE wire)
-// comment these two lines if using hardware serial
-SoftwareSerial mySerial(2, 3);
+#define mySerial Serial1
+
+// Para Arduino Uno e outros que não possuem portas seriais em seu hardware, utilizamos o software para simular portas seriais, portanto, remova o comentário da linha abaixo. Os números informados equivalem às portas utilizadas.
+
+//SoftwareSerial mySerial(2, 3);
 
 Adafruit_Fingerprint finger = Adafruit_Fingerprint(&mySerial);
 
