@@ -47,13 +47,13 @@ void setup()
   if (finger.verifyPassword()) {
     Serial.println("Sensor biométrico encontrado!");
   } else {
-    Serial.println("Não foi possivel encontrar o sensor biométrico, tente novamente!");
+    Serial.println("Não foi possível encontrar o sensor biométrico, tente novamente!");
     while (1);
   }
   
   finger.emptyDatabase();
 
-  Serial.println("Limpeza concluida! Todos os dados foram apagados com sucesso!");
+  Serial.println("Limpeza concluída! Todos os dados foram apagados com sucesso!");
 }
 
 void loop() {

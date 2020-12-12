@@ -36,7 +36,7 @@ void setup()
   Serial.begin(9600);
   while (!Serial);  // For Yun/Leo/Micro/Zero/...
   delay(100);
-  Serial.println("\n\nAdafruit Fingerprint, cadastro de digitais");
+  Serial.println("\n\nCadastro de digitais");
 
   // set the data rate for the sensor serial port
   finger.begin(57600);
@@ -44,7 +44,7 @@ void setup()
   if (finger.verifyPassword()) {
     Serial.println("Sensor biométrico encontrado!");
   } else {
-    Serial.println("Não foi possivel encontrar o sensor biométrico, tente novamente!");
+    Serial.println("Não foi possível encontrar o sensor biométrico, tente novamente!");
     while (1) { delay(1); }
   }
 }
@@ -62,12 +62,12 @@ uint8_t readnumber(void) {
 void loop()                     // run over and over again
 {
   Serial.println("Pronto para cadastrar uma digital!");
-  Serial.println("Por favor insira o ID# que você deseja salvar para a digital ...");
+  Serial.println("Por favor insira o id que você deseja salvar para a digital ...");
   id = readnumber();
   if (id == 0) {// ID #0 not allowed, try again!
      return;
   }
-  Serial.print("O ID# de cadastro é: ");
+  Serial.print("O id de cadastro é: ");
   Serial.println(id);
   
   while (!  getFingerprintEnroll() );
