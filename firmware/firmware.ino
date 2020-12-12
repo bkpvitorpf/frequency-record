@@ -66,10 +66,11 @@ int buzzer = 8;
 
 // Variáveis globais;
 String requestBody = "GET /PCC/PHPServer/sendData.php?";
-String schoolSubjects[] = {"Historia","Espanhol","Sociologia","Filosofia","ConstrucaoDeSites","PCC","EletronicaAplicada","HST",
-"Portugues","Geografia","ASOR","IntalacoesEletricasAplicadas","SegurancaDaInformacao","ProgramacaoWEB"};
+String schoolSubjects[] = {"historia","espanhol","sociologia","filosofia","construcao_de_sites","pcc",
+"eletronica_aplicada","hst","portugues","geografia","asor","instalacoes_eletricas","seguranca_da_informacao",
+"programacao_web"};
 String modes[] = {"1","2","3"};
-String courses[] = {"1","2","3","4"};
+String courses[] = {"1","2","3"};
 String schoolClassCode[] = {"1","2","3","4"};
 String password = "40028922";
 String registerData;
@@ -80,6 +81,7 @@ String numberOfClasses;
 String schoolClass;
 String course;
 String mode;
+int classNumber = 2; // Quantidade de aulas, Como o horário utilizado para a criação do firmware foi o da minha turma, todas as disciplinas possuiam 2 ou um numéro de aulas divisivel por 2, por isso resolvi deixar esse valor como uma variável no código
 
 int id;
 
@@ -229,8 +231,8 @@ void registerFrequency(){
             id = getId();
 
             if(id != -1){
-              processId(id);
-              request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[0] + "&curso=" + courses[0] + "&turma=" + schoolClassCode[3] + "&modalidade=" + modes[2] + "&aulas=2";
+              processId(id,modes[2],courses[0],schoolClassCode[0],schoolSubjects[13],classNumber);
+              request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[13] + "&curso=" + courses[0] + "&turma=" + schoolClassCode[0] + "&modalidade=" + modes[2] + "&aulas=2";
               sendRequest(request);
             }
             
@@ -253,12 +255,20 @@ void registerFrequency(){
             id = getId();
 
             if(id != -1){
-              processId(id);
-              request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[0] + "&curso=" + courses[0] + "&turma=" + schoolClassCode[3] + "&modalidade=" + modes[2] + "&aulas=2";
+              processId(id,modes[2],courses[0],schoolClassCode[0],schoolSubjects[13],classNumber);
+              request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[13] + "&curso=" + courses[0] + "&turma=" + schoolClassCode[0] + "&modalidade=" + modes[2] + "&aulas=2";
               sendRequest(request);
             }
             
           }else{
+            Serial.println("Frequência extra habilitada");
+            
+            lcd.clear();
+            lcd.setCursor(3,0);
+            lcd.print("Frequencia");
+            lcd.print(5,1);
+            lcd.print("extra");
+            
             getUserInput();
             registerExtraFrequency();
           }
@@ -269,12 +279,20 @@ void registerFrequency(){
             id = getId();
 
             if(id != -1){
-              processId(id);
-              request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[0] + "&curso=" + courses[0] + "&turma=" + schoolClassCode[3] + "&modalidade=" + modes[2] + "&aulas=2";
+              processId(id,modes[2],courses[0],schoolClassCode[0],schoolSubjects[13],classNumber);
+              request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[13] + "&curso=" + courses[0] + "&turma=" + schoolClassCode[0] + "&modalidade=" + modes[2] + "&aulas=2";
               sendRequest(request);
             }
             
           }else{
+            Serial.println("Frequência extra habilitada");
+            
+            lcd.clear();
+            lcd.setCursor(3,0);
+            lcd.print("Frequencia");
+            lcd.print(5,1);
+            lcd.print("extra");
+            
             getUserInput();
             registerExtraFrequency();
           }
@@ -285,8 +303,8 @@ void registerFrequency(){
             id = getId();
 
             if(id != -1){
-              processId(id);
-              request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[0] + "&curso=" + courses[0] + "&turma=" + schoolClassCode[3] + "&modalidade=" + modes[2] + "&aulas=2";
+              processId(id,modes[2],courses[0],schoolClassCode[0],schoolSubjects[13],classNumber);
+              request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[13] + "&curso=" + courses[0] + "&turma=" + schoolClassCode[0] + "&modalidade=" + modes[2] + "&aulas=2";
               sendRequest(request);
             }
             
@@ -294,11 +312,19 @@ void registerFrequency(){
             id = getId();
 
               if(id != -1){
-                processId(id);
-                request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[0] + "&curso=" + courses[0] + "&turma=" + schoolClassCode[3] + "&modalidade=" + modes[2] + "&aulas=2";
+                processId(id,modes[2],courses[0],schoolClassCode[0],schoolSubjects[0],classNumber);
+                request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[0] + "&curso=" + courses[0] + "&turma=" + schoolClassCode[0] + "&modalidade=" + modes[2] + "&aulas=2";
                 sendRequest(request);
               }
           }else{
+            Serial.println("Frequência extra habilitada");
+            
+            lcd.clear();
+            lcd.setCursor(3,0);
+            lcd.print("Frequencia");
+            lcd.print(5,1);
+            lcd.print("extra");
+            
             getUserInput();
             registerExtraFrequency();
           }
@@ -309,26 +335,25 @@ void registerFrequency(){
             id = getId();
 
             if(id != -1){
-              processId(id);
-              request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[0] + "&curso=" + courses[0] + "&turma=" + schoolClassCode[3] + "&modalidade=" + modes[2] + "&aulas=2";
+              processId(id,modes[2],courses[0],schoolClassCode[3],schoolSubjects[0],classNumber);
+              request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[0] + "&curso=" + courses[0] + "&turma=" + schoolClassCode[0] + "&modalidade=" + modes[2] + "&aulas=2";
               sendRequest(request);
             }
             
           }else{
+            Serial.println("Frequência extra habilitada");
+            
+            lcd.clear();
+            lcd.setCursor(3,0);
+            lcd.print("Frequencia");
+            lcd.print(5,1);
+            lcd.print("extra");
+            
             getUserInput();
             registerExtraFrequency();
           }
         break;
       }
-    break;
-    case 2:
-    break;
-    case 3:
-    break;
-    case 4:
-    break;
-    case 5:
-    break;
   }
   
 }
@@ -357,7 +382,7 @@ boolean registerExtraFrequency(){
           id = getId();
 
           if(id != -1){
-            processId(id);
+            processId(id,mode,course,schoolClass,schoolSubjects[0],classNumber);
             request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[0] + "&curso=" + course + "&turma=" + schoolClass + "&modalidade=" + mode + "&aulas=" + numberOfClasses;
             sendRequest(request);
           }
@@ -409,7 +434,7 @@ void createHeader(){          // Função que cria um cabeçalho informando data
 
     Serial.println("Header criado com sucesso");
   }else{
-    Serial.println("Não foi possivel encontrar o arquivo");
+    Serial.println("Não foi possível encontrar o arquivo");
   }
 }
 
@@ -431,11 +456,11 @@ int getId(){        // Função que reconhece a digital e retorna o id dela
   return finger.fingerID;         // Retorna o id caso a digital seja reconhecida 
 }
 
-void processId(int id){         // Função que recebe o id do usuário é responsável por indicar que a digital foi reconhecida e armazenar essa informação no cartão SD
+void processId(int id, String modeId, String courseId, String classId, String matter, int classNumber){         // Função que recebe o id do usuário é responsável por indicar que a digital foi reconhecida e armazenar essa informação no cartão SD
   DateTime now = rtc.now();
 
-  registerData = " -> ID: " + String(id) + " | Hora de registro: " + String(now.hour()) + ":" + String(now.minute()) + ":" + String(now.second());
-  
+  registerData = "-> O id " + String(id) + " registrou frequência em " + String(classNumber) + " aula(s) de " + matter + " , na turma de id " + String(classId) + ", pertencente ao curso de id " + String(courseId) + ", da modalidade de ensino de id " + String(modeId) + ". Hora do registro: " + String(now.hour()) + ":" + String(now.minute()) + ":" + String(now.second());
+
   setRegister(registerData);
   
   lcd.clear();
