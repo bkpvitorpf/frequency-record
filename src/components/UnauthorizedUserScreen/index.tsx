@@ -27,8 +27,8 @@ const ErrorScreen: React.FC = () => {
         Ir para a tela de login
       </button>
       <div className={Styles.info}>
-        <h4>Created by</h4>
-        <a href="https://lottiefiles.com/zeffchris" rel="noopener noreferrer" target="_blank">Jeffrey Christopher</a>
+        <h4>Available in</h4>
+        <a href="https://lottiefiles.com" rel="noopener noreferrer" target="_blank">Lottie Files</a>
       </div>
     </div>
   );
