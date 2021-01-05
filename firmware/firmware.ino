@@ -2,7 +2,7 @@
      Projeto de Conclusão de Curso
      AUTOR:   Vitor Pereira Fontes
      DATA:    27/03/2020
-     OBS:     A incialização do cartão SD deve ocorrer antes da inicialização da shieldde Ethernet W5100
+     OBS:     A inicialização do cartão SD deve ocorrer antes da inicialização da shield de Ethernet W5100
 */
 
 // Bibliotecas da Ethernet Shield e do cartão SD
@@ -102,7 +102,7 @@ void setup() {
   pinMode(pinB,OUTPUT);
 
   if (!rtc.begin()) {         // Verifica se foi possível estabelecer a comunicação com o módulo RTC
-    Serial.println("Não foi possivel localizar o RTC");
+    Serial.println("Não foi possível localizar o RTC");
 
     lcd.clear();
     lcd.setCursor(2,0);
@@ -168,7 +168,7 @@ void setup() {
       
       Ethernet.begin(mac, ip, myDns);     // Tenta configurar um endereço de IP estático em vez de usar o DHCP
     } else {
-      Serial.print("IP atribuido pelo DHCP: ");
+      Serial.print("IP atribuído pelo DHCP: ");
       Serial.println(Ethernet.localIP());
     }
     delay(500);
@@ -420,7 +420,7 @@ boolean registerExtraFrequency(){
 }
 
 void createHeader(){          // Função que cria um cabeçalho informando data, mês e ano no arquivo de registro do cartão SD
-  DateTime now = rtc.now();     // Obtem os valores atuais do RTC
+  DateTime now = rtc.now();     // Obtém os valores atuais do RTC
 
   File dataStorage = SD.open("registro.txt", FILE_WRITE);
 
@@ -450,7 +450,7 @@ int getId(){        // Função que reconhece a digital e retorna o id dela
   
   Serial.print("ID #");
   Serial.print(finger.fingerID); 
-  Serial.print(" Encontrado com precisao de "); 
+  Serial.print(" Encontrado com precisão de "); 
   Serial.println(finger.confidence);
 
   return finger.fingerID;         // Retorna o id caso a digital seja reconhecida 
@@ -484,7 +484,7 @@ void setRegister(String registerData){          // Função que faz o registro n
     dataStorage.println(registerData);
     dataStorage.close();
   }else{
-    Serial.println("Não foi possivel encontrar o arquivo");
+    Serial.println("Não foi possível encontrar o arquivo");
   }
 }
 
@@ -510,7 +510,7 @@ void sendRequest(String request){           // Função que faz a requisição a
     lcd.clear();
     
   }else{
-    Serial.println("Não foi possivel conectar-se ao servidor");
+    Serial.println("Não foi possível conectar-se ao servidor");
   }
 }
 
