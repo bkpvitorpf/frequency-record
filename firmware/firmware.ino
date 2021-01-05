@@ -81,7 +81,7 @@ String numberOfClasses;
 String schoolClass;
 String course;
 String mode;
-int classNumber = 2; // Quantidade de aulas, Como o horário utilizado para a criação do firmware foi o da minha turma, todas as disciplinas possuiam 2 ou um numéro de aulas divisivel por 2, por isso resolvi deixar esse valor como uma variável no código
+int classNumber = 2; // Quantidade de aulas, Como o horário utilizado para a criação do firmware foi o da minha turma, todas as disciplinas possuíam 2 ou um numéro de aulas divisível por 2, por isso resolvi deixar esse valor como uma variável no código
 
 int id;
 
@@ -89,11 +89,11 @@ void setup() {
   // Os códigos deste bloco serão executados apenas na inicialização do Arduino
 
   Serial.begin(9600);         // Inicia a comunicação serial
-
+  
   while (!Serial) {         // Aguarda o hardware estabelecer a comunicação com a porta serial
       ; 
   }
-
+  
   lcd.begin (16,2);         // Inicia o Display LCD, informando o número de linhas e colunas
   delay(500);
 
@@ -101,7 +101,7 @@ void setup() {
   pinMode(pinG,OUTPUT);
   pinMode(pinB,OUTPUT);
 
-  if (!rtc.begin()) {         // Verifica se foi possivel estabelecer a comunicação com o módulo RTC
+  if (!rtc.begin()) {         // Verifica se foi possível estabelecer a comunicação com o módulo RTC
     Serial.println("Não foi possivel localizar o RTC");
 
     lcd.clear();
@@ -118,7 +118,7 @@ void setup() {
       // A linha a seguir define o modelo para ajuste da data e hora do módulo RTC
       rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
       // A linha a seguir demonstra o exemplo utilizado para definir a data e hora do RTC
-      //rtc.adjust(DateTime(2020, 9, 12, 14, 18, 0));         // Esta linha pode ser comentada após a primeira execuxão
+      //rtc.adjust(DateTime(2020, 9, 12, 14, 18, 0));         // Esta linha pode ser comentada após a primeira execução
     }
     
     Serial.println("RTC iniciado com sucesso!"); 
@@ -144,7 +144,7 @@ void setup() {
   }
 
   Serial.println("Inicializando Ethernet com DHCP");
-  
+
   if (Ethernet.begin(mac) == 0) {         // Verifica se a shield conseguiu obter um endereço mac
       Serial.println("Falha ao configurar o  Ethernet usando DHCP");
       
@@ -166,7 +166,7 @@ void setup() {
         Serial.println("O Cabo de internet não está conectado!");
       }
       
-      Ethernet.begin(mac, ip, myDns);     // Tenta configurar um endereço de IP estático em vez de usaro DHCP
+      Ethernet.begin(mac, ip, myDns);     // Tenta configurar um endereço de IP estático em vez de usar o DHCP
     } else {
       Serial.print("IP atribuido pelo DHCP: ");
       Serial.println(Ethernet.localIP());
@@ -177,7 +177,7 @@ void setup() {
   
     finger.begin(57600);     // Define a velocidade da comunicação serial com o sensor biométrico
   
-    if (finger.verifyPassword()) {     // Verifica se foi possivel encontrar o sensor biométrico
+    if (finger.verifyPassword()) {     // Verifica se foi possível encontrar o sensor biométrico
       Serial.println("Leitor Biometrico Encontrado");
     }else {
       Serial.println("Leitor Biometrico nao encontrado");
@@ -200,8 +200,8 @@ void setup() {
 
 void loop() {
   // Os códigos deste bloco serão executados repetidamente
-  alertBeginningEndClass();
-  //registerFrequency();
+  //alertBeginningEndClass();
+  registerFrequency();
 }
 
 void registerFrequency(){
@@ -526,164 +526,199 @@ void setColor(int red, int green, int blue){
 
 void getUserInput(){
   int count = 1;
-  
-  Serial.println("Digite sua senha");
 
-  lcd.clear();
-  lcd.setCursor(4,0);
-  lcd.print("Teclado");
-  lcd.setCursor(3,1);
-  lcd.print("habilitado");
+  lcd.setCursor(1,0);
+  lcd.print("Tecla A: Habi-");
+  lcd.setCursor(2,1);
+  lcd.print("litar teclado");
   
   char key = myKeypad.getKey();
 
-  while(key != '#'){
-    key = myKeypad.getKey();
-    if(key){
-      if(count == 1){
-        lcd.clear();
-        count = 2;
+  if(key == 'A'){
+    Serial.println("Digite sua senha");
+
+    lcd.clear();
+    lcd.setCursor(4,0);
+    lcd.print("Senha do");
+    lcd.setCursor(4,1);
+    lcd.print("usuario");
+
+    delay(3000);
+    lcd.clear();
+    
+    while(key != '#'){
+      key = myKeypad.getKey();
+      if(key){
+        if(count == 1){
+          lcd.clear();
+          count = 2;
+        }
+        
+        if(key == '*'){
+          break;
+        }
+        
+        inputPassword += String(key);
+        Serial.print("*");
+        lcd.print("*");
       }
-      inputPassword += String(key);
-      Serial.print("*");
-      lcd.print("*");
     }
-  }
 
-  inputPassword.replace("#","");
-  key = ' ';
-
-  Serial.println();
-  Serial.println("Digite o código da matéria");
-
-  lcd.clear();
-  lcd.setCursor(3,0);
-  lcd.print("Codigo da");
-  lcd.setCursor(4,1);
-  lcd.print("materia");
-
-  delay(3000);
-  lcd.clear();
-
-  while(key != '#'){
-    key = myKeypad.getKey();
-    if(key){
-      inputSchoolSubjectCode += String(key);
-      Serial.print(key);
-      lcd.print(key);
+    inputPassword.replace("#","");
+    key = ' ';
+  
+    Serial.println();
+    Serial.println("Digite o código da matéria");
+  
+    lcd.clear();
+    lcd.setCursor(3,0);
+    lcd.print("Codigo da");
+    lcd.setCursor(4,1);
+    lcd.print("materia");
+  
+    delay(3000);
+    lcd.clear();
+  
+    while(key != '#'){
+      key = myKeypad.getKey();
+      if(key){
+        if(key == '*'){
+          break;
+        }
+        
+        inputSchoolSubjectCode += String(key);
+        Serial.print(key);
+        lcd.print(key);
+      }
     }
-  }
-
-  inputSchoolSubjectCode.replace("#","");
-  key = ' ';
-
-  Serial.println();
-  Serial.println("Digite a quantidade de aulas");
-
-  lcd.clear();
-  lcd.setCursor(3,0);
-  lcd.print("Quantidade");
-  lcd.setCursor(4,1);
-  lcd.print("de aulas");
-
-  delay(3000);
-  lcd.clear();
-
-  while(key != '#'){
-    key = myKeypad.getKey();
-    if(key){
-      numberOfClasses += String(key);
-      Serial.print(key);
-      lcd.print(key);
+  
+    inputSchoolSubjectCode.replace("#","");
+    key = ' ';
+  
+    Serial.println();
+    Serial.println("Digite a quantidade de aulas");
+  
+    lcd.clear();
+    lcd.setCursor(3,0);
+    lcd.print("Quantidade");
+    lcd.setCursor(4,1);
+    lcd.print("de aulas");
+  
+    delay(3000);
+    lcd.clear();
+  
+    while(key != '#'){
+      key = myKeypad.getKey();
+      if(key){
+        if(key == '*'){
+          break;
+        }
+        
+        numberOfClasses += String(key);
+        Serial.print(key);
+        lcd.print(key);
+      }
     }
-  }
-
-  numberOfClasses.replace("#","");
-  key = ' ';
-
-  Serial.println();
-  Serial.println("Digite o código da modalidade de ensino");
-
-  lcd.clear();
-  lcd.setCursor(3,0);
-  lcd.print("Codigo da");
-  lcd.setCursor(3,1);
-  lcd.print("modalidade");
-
-  delay(3000);
-  lcd.clear();
-
-  while(key != '#'){
-    key = myKeypad.getKey();
-    if(key){
-      mode += String(key);
-      Serial.print(key);
-      lcd.print(key);
+  
+    numberOfClasses.replace("#","");
+    key = ' ';
+  
+    Serial.println();
+    Serial.println("Digite o código da modalidade de ensino");
+  
+    lcd.clear();
+    lcd.setCursor(3,0);
+    lcd.print("Codigo da");
+    lcd.setCursor(3,1);
+    lcd.print("modalidade");
+  
+    delay(3000);
+    lcd.clear();
+  
+    while(key != '#'){
+      key = myKeypad.getKey();
+      if(key){
+        if(key == '*'){
+          break;
+        }
+        
+        mode += String(key);
+        Serial.print(key);
+        lcd.print(key);
+      }
     }
-  }
-
-  mode.replace("#","");
-  key = ' ';
-
-  Serial.println();
-  Serial.println("Digite o código do curso");
-
-  lcd.clear();
-  lcd.setCursor(3,0);
-  lcd.print("Codigo do");
-  lcd.setCursor(5,1);
-  lcd.print("curso");
-
-  delay(3000);
-  lcd.clear();
-
-  while(key != '#'){
-    key = myKeypad.getKey();
-    if(key){
-      course += String(key);
-      Serial.print(key);
-      lcd.print(key);
+  
+    mode.replace("#","");
+    key = ' ';
+  
+    Serial.println();
+    Serial.println("Digite o código do curso");
+  
+    lcd.clear();
+    lcd.setCursor(3,0);
+    lcd.print("Codigo do");
+    lcd.setCursor(5,1);
+    lcd.print("curso");
+  
+    delay(3000);
+    lcd.clear();
+  
+    while(key != '#'){
+      key = myKeypad.getKey();
+      if(key){
+        if(key == '*'){
+          break;
+        }
+        
+        course += String(key);
+        Serial.print(key);
+        lcd.print(key);
+      }
     }
-  }
-
-  course.replace("#","");
-  key = ' ';
-
-  Serial.println();
-  Serial.println("Digite o código da turma");
-
-  lcd.clear();
-  lcd.setCursor(3,0);
-  lcd.print("Codigo da");
-  lcd.setCursor(5,1);
-  lcd.print("turma");
-
-  delay(3000);
-  lcd.clear();
-
-  while(key != '#'){
-    key = myKeypad.getKey();
-    if(key){
-      schoolClass += String(key);
-      Serial.print(key);
-      lcd.print(key);
+  
+    course.replace("#","");
+    key = ' ';
+  
+    Serial.println();
+    Serial.println("Digite o código da turma");
+  
+    lcd.clear();
+    lcd.setCursor(3,0);
+    lcd.print("Codigo da");
+    lcd.setCursor(5,1);
+    lcd.print("turma");
+  
+    delay(3000);
+    lcd.clear();
+  
+    while(key != '#'){
+      key = myKeypad.getKey();
+      if(key){
+        if(key == '*'){
+          break;
+        }
+        
+        schoolClass += String(key);
+        Serial.print(key);
+        lcd.print(key);
+      }
     }
+  
+    schoolClass.replace("#","");
+    key = ' ';
+  
+    Serial.println();
+    Serial.println("Informações salvas");
+  
+    lcd.clear();
+    lcd.setCursor(2,0);
+    lcd.print("Informacoes");
+    lcd.setCursor(5,1);
+    lcd.print("salvas");
+  
+    delay(3000);
+    lcd.clear();
   }
-
-  schoolClass.replace("#","");
-  key = ' ';
-
-  Serial.println();
-  Serial.println("Informações salvas");
-
-  lcd.clear();
-  lcd.setCursor(2,0);
-  lcd.print("Informacoes");
-  lcd.setCursor(5,1);
-  lcd.print("salvas");
-
-  delay(3000);
-  lcd.clear();
 }
 
 void alertBeginningEndClass(){          // Função que vai alertar o começo e fim de cada aula
