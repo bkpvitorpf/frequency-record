@@ -8,6 +8,7 @@ const CoursesController = require('./controllers/CoursesController');
 const ClassesController = require('./controllers/ClassesController');
 const UserDataController = require('./controllers/UserDataController');
 const FrequencyDataController = require('./controllers/FrequencyDataController');
+const LogsController = require('./controllers/LogsController');
 
 const route = Express.Router();
 
@@ -15,6 +16,7 @@ route.get('/register/:id/:mode_id/:course_id/:class_id/:matterIdentifier/:classQ
 route.get('/data/matters',AuthMiddleware,MattersController.indexMatters);
 route.get('/data/modes',AuthMiddleware,ModesController.indexModes);
 route.get('/data/user/frequency',AuthMiddleware,UserDataController.indexFrequency);
+route.get('/register/logs/:hour/:minute',LogsController.clear);
 
 route.post('/data/frequency',AuthMiddleware,FrequencyDataController.fetchData);
 route.post('/login',LoginController.login);
