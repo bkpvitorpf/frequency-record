@@ -10,6 +10,7 @@ const Shift = require('../models/Shift');
 const Matter = require('../models/Matter');
 const Info4 = require('../models/Info_4');
 const MedioIntegrado = require('../models/Medio_integrado');
+const Log = require("../models/Log");
 
 const connection = new Sequelize(DbConfig);
 
@@ -24,6 +25,7 @@ Shift.init(connection);
 Matter.init(connection);
 Info4.init(connection);
 MedioIntegrado.init(connection);
+Log.init(connection);
 
 // Passa todos os models existentes pra dentro de cada model, para que possam ser feitos os relacionamentos
 Student.associate(connection.models);

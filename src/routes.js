@@ -16,7 +16,7 @@ route.get('/register/:id/:mode_id/:course_id/:class_id/:matterIdentifier/:classQ
 route.get('/data/matters',AuthMiddleware,MattersController.indexMatters);
 route.get('/data/modes',AuthMiddleware,ModesController.indexModes);
 route.get('/data/user/frequency',AuthMiddleware,UserDataController.indexFrequency);
-route.get('/register/logs/:hour/:minute',LogsController.clear);
+route.get('/logs/:stringHour/:stringMinute',LogsController.clear);
 
 route.post('/data/frequency',AuthMiddleware,FrequencyDataController.fetchData);
 route.post('/login',LoginController.login);
