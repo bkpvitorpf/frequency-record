@@ -81,8 +81,8 @@ String numberOfClasses;
 String schoolClass;
 String course;
 String mode;
-int classNumber = 2; // Quantidade de aulas, Como o horário utilizado para a criação do firmware foi o da minha turma, todas as disciplinas possuíam 2 ou um numéro de aulas divisível por 2, por isso resolvi deixar esse valor como uma variável no código
 
+int classNumber = 2; // Quantidade de aulas, Como o horário utilizado para a criação do firmware foi o da minha turma, todas as disciplinas possuíam 2 ou um numéro de aulas divisível por 2, por isso resolvi deixar esse valor como uma variável no código
 int id;
 
 void setup() {
@@ -193,14 +193,13 @@ void setup() {
       while (1);
     }
 
-    createHeader();
-
     setColor(0,0,255);
 }
 
 void loop() {
   // Os códigos deste bloco serão executados repetidamente
-  //alertBeginningEndClass();
+  updateTime();
+  alertBeginningEndClass();
   registerFrequency();
 }
 
@@ -419,25 +418,6 @@ boolean registerExtraFrequency(){
   }
 }
 
-void createHeader(){          // Função que cria um cabeçalho informando data, mês e ano no arquivo de registro do cartão SD
-  DateTime now = rtc.now();     // Obtém os valores atuais do RTC
-
-  File dataStorage = SD.open("registro.txt", FILE_WRITE);
-
-  if(dataStorage){
-    dataStorage.println();
-    dataStorage.print("=========================");
-    dataStorage.print(" " + String(now.day()) + " / " + String(now.month()) + " / " + String(now.year()) + " ");
-    dataStorage.println("=========================");
-    dataStorage.println();
-    dataStorage.close();
-
-    Serial.println("Header criado com sucesso");
-  }else{
-    Serial.println("Não foi possível encontrar o arquivo");
-  }
-}
-
 int getId(){        // Função que reconhece a digital e retorna o id dela
   uint8_t p = finger.getImage();
   if (p != FINGERPRINT_OK)  return -1;        // Verificações da biblioteca do sensor biométrico
@@ -489,6 +469,32 @@ void setRegister(String registerData){          // Função que faz o registro n
 }
 
 void sendRequest(String request){           // Função que faz a requisição ao servidor 
+  if(client.connect(server, 80)){
+    Serial.print("connected to ");
+    Serial.println(client.remoteIP());
+    
+    client.println(request);     // Faz a requisição HTTP
+    client.println("Connection: close");
+    client.println();
+    
+    Serial.println("Requisição feita com sucesso");
+    Serial.println(request);
+
+    lcd.clear();
+    lcd.setCursor(3,0);
+    lcd.print("Requisicao");
+    lcd.setCursor(4,1);
+    lcd.print("enviada");
+
+    delay(2000);
+    lcd.clear();
+    
+  }else{
+    Serial.println("Não foi possível conectar-se ao servidor");
+  }
+}
+
+void sendFrequencyRequest(String request){           // Função que faz a requisição ao servidor 
   if(client.connect(server, 80)){
     Serial.print("connected to ");
     Serial.println(client.remoteIP());
@@ -769,4 +775,14 @@ void alertBeginningEndClass(){          // Função que vai alertar o começo e 
     case 5:
     break;
   }
+}
+
+void updateTime(){
+  DateTime now = rtc.now();
+  int currentHour = now.hour();
+  int currentMinute = now.minute();
+
+  request = requestBody + "/logs/" + String(currentHour) + "/" + String(currentMinute);
+
+  sendRequest(request);
 }
