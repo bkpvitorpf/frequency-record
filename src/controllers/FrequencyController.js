@@ -3,6 +3,7 @@ const SchoolClass = require('../models/SchoolClass');
 const connection = require('../database');
 const Teacher = require('../models/Teacher');
 const { QueryTypes } = require('sequelize');
+const Log = require("../models/Log");
 
 async function selectStudent(tableName,studentId,matterIdentifier,month){
   const data = await connection.query(`SELECT ${matterIdentifier} FROM ${tableName} WHERE student_id = ${studentId} AND month = '${month}'`,{
@@ -116,28 +117,74 @@ module.exports = {
     if(teacher){
       const month = getMonth();
 
-      await registerClass(teacher.mode[0].table_name,class_id,teacher.id,teacher.matter[0].id,classQuanty,month);
-
-      return res.json({message: "A aula foi registrada com sucesso"});
-    }else{
-      const month = getMonth();
-
-      const {table_name} = await SchoolClass.findOne({
+      const logs = await Log.findAll({
         where:{
-          id: class_id,
+          sensor_id: id,
+          mode_id,
           course_id,
+          class_id,
+          matter_identifier: matterIdentifier
         }
       });
 
-      const frequency = await selectStudent(table_name,student.id,matterIdentifier,month);
+      if(logs.length != 0){
+        return res.status(403).json({message: "O usuário já registrou a aula"});
+      }else{
+        await registerClass(teacher.mode[0].table_name,class_id,teacher.id,teacher.matter[0].id,classQuanty,month);
 
-      const currentFrequency = Number(Object.values(frequency)) + Number(classQuanty);
+        await Log.create({
+          sensor_id: id,
+          mode_id,
+          course_id,
+          class_id,
+          matter_identifier: matterIdentifier
+        });
 
-      await connection.query(`UPDATE ${table_name} SET ${matterIdentifier} = ${currentFrequency} WHERE student_id = ${student.id} AND month = '${month}'`);
+        return res.status(200).json({message: "A aula foi registrada com sucesso"});
+      }
+    }else{
+      const month = getMonth();
 
-      await connection.query(`UPDATE ${table_name} SET ${matterIdentifier} = ${currentFrequency} WHERE student_id = ${student.id} AND month = 'Anual'`);
+      const logs = await Log.findAll({
+        where:{
+          sensor_id: id,
+          mode_id,
+          course_id,
+          class_id,
+          matter_identifier: matterIdentifier
+        }
+      });
 
-      return res.json({message: 'A frequência do aluno foi registrada'});
+      if(logs.length != 0){
+        return res.status(403).json({message: "O usuário já registrou a frequência"});
+      }else{
+        const {table_name} = await SchoolClass.findOne({
+          where:{
+            id: class_id,
+            course_id,
+          }
+        });
+  
+        const frequency = await selectStudent(table_name,student.id,matterIdentifier,month);
+  
+        const currentFrequency = Number(Object.values(frequency)) + Number(classQuanty);
+  
+        await connection.query(`UPDATE ${table_name} SET ${matterIdentifier} = ${currentFrequency} WHERE student_id = ${student.id} AND month = '${month}'`);
+  
+        await connection.query(`UPDATE ${table_name} SET ${matterIdentifier} = ${currentFrequency} WHERE student_id = ${student.id} AND month = 'Anual'`);
+  
+        console.log("ate aqui suave mano")
+
+        await Log.create({
+          sensor_id: id,
+          mode_id,
+          course_id,
+          class_id,
+          matter_identifier: matterIdentifier
+        });
+
+        return res.json({message: 'A frequência do aluno foi registrada'});
+      }
     }
   } 
 }
