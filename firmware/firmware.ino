@@ -39,11 +39,11 @@ RTC_DS3231 rtc;               // Define uma instânica do RTC
 LiquidCrystal_I2C lcd(0x27, 2,1,0,4,5,6,7,3, POSITIVE); 
 
 // Configurações da Ethernet Shield
-byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };     // Endereço MAC
-IPAddress ip(192,168,0,90);                             // Endereço IP
-IPAddress myDns(192, 168, 0, 4);                        // DNS
-IPAddress server(192,168,0,102);                        // IP do servidor                               
-EthernetClient client;                                  // Define um instância de um cliente
+byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };       // Endereço MAC
+IPAddress ip(192,168,0,90);                               // Endereço IP
+IPAddress myDns(192, 168, 0, 4);                          // DNS
+char server[] = "frequecy-record-backend.herokuapp.com";  // Endereço do servidor                              
+EthernetClient client;                                    // Define um instância de um cliente
 
 // Configurações do teclado de membrana
 const byte ROWS = 4;          // Linhas
@@ -65,7 +65,7 @@ const int SDCard = 4;
 int buzzer = 8;
 
 // Variáveis globais;
-String requestBody = "GET /PCC/PHPServer/sendData.php?";
+String requestBody = "GET /";
 String schoolSubjects[] = {"historia","espanhol","sociologia","filosofia","construcao_de_sites","pcc",
 "eletronica_aplicada","hst","portugues","geografia","asor","instalacoes_eletricas","seguranca_da_informacao",
 "programacao_web"};
@@ -82,8 +82,7 @@ String schoolClass;
 String course;
 String mode;
 
-int classNumber = 2; // Quantidade de aulas, Como o horário utilizado para a criação do firmware foi o da minha turma, todas as disciplinas possuíam 2 ou um numéro de aulas divisível por 2, por isso resolvi deixar esse valor como uma variável no código
-int id;
+int id = 0;
 
 void setup() {
   // Os códigos deste bloco serão executados apenas na inicialização do Arduino
@@ -120,8 +119,16 @@ void setup() {
       // A linha a seguir demonstra o exemplo utilizado para definir a data e hora do RTC
       //rtc.adjust(DateTime(2020, 9, 12, 14, 18, 0));         // Esta linha pode ser comentada após a primeira execução
     }
+
+    Serial.println("RTC iniciado com sucesso!");
     
-    Serial.println("RTC iniciado com sucesso!"); 
+    DateTime now = rtc.now();
+    int dataHour = now.hour();
+    int dataMinute = now.minute();
+    int dataDay = now.day();
+    int dataMonth = now.month();
+
+    Serial.println(String(dataHour) + "/" + String(dataMinute) + " do dia " + String(dataDay) + "/" + String(dataMonth));
   }
   delay(500);
 
@@ -205,156 +212,236 @@ void loop() {
 
 void registerFrequency(){
   DateTime now = rtc.now();
-
   int currentDay = now.dayOfTheWeek();
 
   switch(currentDay){
-    case 1:
+    case 0:
       DateTime now = rtc.now();
       int currentHour = now.hour();
+      int currentMinute = now.minute();
+      int control = 0;
 
       switch(currentHour){
         case 7:
-          DateTime now = rtc.now();
-          int currentMinute = now.minute();
-          
-          if(currentMinute >= 30 && currentMinute <= 50){
-            Serial.println("Frequência padrão habilitada");
+          currentMinute = now.minute();
+  
+          while(currentMinute >= 30 && currentMinute <= 40){
+            if(control == 0){
+              Serial.println("Frequência padrão habilitada");
             
-            lcd.clear();
-            lcd.setCursor(3,0);
-            lcd.print("Frequencia");
-            lcd.setCursor(3,1);
-            lcd.print("habilitada");
-            
-            id = getId();
-
-            if(id != -1){
-              processId(id,modes[2],courses[0],schoolClassCode[0],schoolSubjects[13],classNumber);
-              request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[13] + "&curso=" + courses[0] + "&turma=" + schoolClassCode[0] + "&modalidade=" + modes[2] + "&aulas=2";
-              sendRequest(request);
+              lcd.clear();
+              lcd.setCursor(3,0);
+              lcd.print("Frequencia");
+              lcd.setCursor(3,1);
+              lcd.print("habilitada");
+  
+              control = 1;
             }
             
-          }else{
-            Serial.println("Frequência extra habilitada");
+            id = getId();
+  
+            if(id != -1){
+              request = requestBody + "register/" + String(id) + "/" + modes[2] + "/" + courses[0] + "/" + schoolClassCode[0] + "/" + schoolSubjects[13] + "/1";
+              processId(request);
+            }
             
-            lcd.clear();
-            lcd.setCursor(3,0);
-            lcd.print("Frequencia");
-            lcd.print(5,1);
-            lcd.print("extra");
-            
-            getUserInput();
-            registerExtraFrequency();
+            DateTime now = rtc.now();
+            currentMinute = now.minute();
           }
+  
+          Serial.println("Frequência extra habilitada");
+            
+          lcd.clear();
+          lcd.setCursor(3,0);
+          lcd.print("Frequencia");
+          lcd.print(5,1);
+          lcd.print("extra");
+       
+          getUserInput();
+          registerExtraFrequency();
         break;
         
         case 8:
-          if(now.minute() >= 15 && now.minute() <= 25){
-            id = getId();
-
-            if(id != -1){
-              processId(id,modes[2],courses[0],schoolClassCode[0],schoolSubjects[13],classNumber);
-              request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[13] + "&curso=" + courses[0] + "&turma=" + schoolClassCode[0] + "&modalidade=" + modes[2] + "&aulas=2";
-              sendRequest(request);
+          currentMinute = now.minute();
+  
+          while(currentMinute >= 15 && currentMinute <= 25){
+            if(control == 0){
+              Serial.println("Frequência padrão habilitada");
+            
+              lcd.clear();
+              lcd.setCursor(3,0);
+              lcd.print("Frequencia");
+              lcd.setCursor(3,1);
+              lcd.print("habilitada");
+  
+              control = 1;
             }
             
-          }else{
-            Serial.println("Frequência extra habilitada");
-            
-            lcd.clear();
-            lcd.setCursor(3,0);
-            lcd.print("Frequencia");
-            lcd.print(5,1);
-            lcd.print("extra");
-            
-            getUserInput();
-            registerExtraFrequency();
+            id = getId();
+  
+            if(id != -1){
+              request = requestBody + "register/" + String(id) + "/" + modes[2] + "/" + courses[0] + "/" + schoolClassCode[0] + "/" + schoolSubjects[13] + "/1";
+              processId(request);
+            }
+  
+            DateTime now = rtc.now();
+            currentMinute = now.minute();
           }
+          
+          Serial.println("Frequência extra habilitada");
+          
+          lcd.clear();
+          lcd.setCursor(3,0);
+          lcd.print("Frequencia");
+          lcd.print(5,1);
+          lcd.print("extra");
+          
+          getUserInput();
+          registerExtraFrequency();
         break;
         
         case 9:
-          if(now.minute() >= 0 && now.minute() <= 10){
-            id = getId();
-
-            if(id != -1){
-              processId(id,modes[2],courses[0],schoolClassCode[0],schoolSubjects[13],classNumber);
-              request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[13] + "&curso=" + courses[0] + "&turma=" + schoolClassCode[0] + "&modalidade=" + modes[2] + "&aulas=2";
-              sendRequest(request);
+          currentMinute = now.minute();
+  
+          while(currentMinute >= 0 && currentMinute <= 10){
+            if(control == 0){
+              Serial.println("Frequência padrão habilitada");
+            
+              lcd.clear();
+              lcd.setCursor(3,0);
+              lcd.print("Frequencia");
+              lcd.setCursor(3,1);
+              lcd.print("habilitada");
+  
+              control = 1;
             }
-            
-          }else{
-            Serial.println("Frequência extra habilitada");
-            
-            lcd.clear();
-            lcd.setCursor(3,0);
-            lcd.print("Frequencia");
-            lcd.print(5,1);
-            lcd.print("extra");
-            
-            getUserInput();
-            registerExtraFrequency();
+          
+            id = getId();
+  
+            if(id != -1){
+              request = requestBody + "register/" + String(id) + "/" + modes[2] + "/" + courses[0] + "/" + schoolClassCode[0] + "/" + schoolSubjects[13] + "/1";
+              processId(request);
+            }
+  
+            DateTime now = rtc.now();
+            currentMinute = now.minute();
           }
+         
+          Serial.println("Frequência extra habilitada");
+          
+          lcd.clear();
+          lcd.setCursor(3,0);
+          lcd.print("Frequencia");
+          lcd.print(5,1);
+          lcd.print("extra");
+          
+          getUserInput();
+          registerExtraFrequency();
         break;
         
         case 10:
-          if(now.minute() >= 0 && now.minute() <= 10){
-            id = getId();
-
-            if(id != -1){
-              processId(id,modes[2],courses[0],schoolClassCode[0],schoolSubjects[13],classNumber);
-              request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[13] + "&curso=" + courses[0] + "&turma=" + schoolClassCode[0] + "&modalidade=" + modes[2] + "&aulas=2";
-              sendRequest(request);
+          currentMinute = now.minute();
+          
+          while(currentMinute >= 0 && currentMinute <= 10){
+            if(control == 0){
+              Serial.println("Frequência padrão habilitada");
+            
+              lcd.clear();
+              lcd.setCursor(3,0);
+              lcd.print("Frequencia");
+              lcd.setCursor(3,1);
+              lcd.print("habilitada");
+  
+              control = 1;
             }
-            
-          }else if(now.minute() >= 45 && now.minute() <= 55){
+  
             id = getId();
-
-              if(id != -1){
-                processId(id,modes[2],courses[0],schoolClassCode[0],schoolSubjects[0],classNumber);
-                request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[0] + "&curso=" + courses[0] + "&turma=" + schoolClassCode[0] + "&modalidade=" + modes[2] + "&aulas=2";
-                sendRequest(request);
-              }
-          }else{
-            Serial.println("Frequência extra habilitada");
-            
-            lcd.clear();
-            lcd.setCursor(3,0);
-            lcd.print("Frequencia");
-            lcd.print(5,1);
-            lcd.print("extra");
-            
-            getUserInput();
-            registerExtraFrequency();
+  
+            if(id != -1){
+              request = requestBody + "register/" + String(id) + "/" + modes[2] + "/" + courses[0] + "/" + schoolClassCode[0] + "/" + schoolSubjects[13] + "/1";
+              processId(request);
+            }
+  
+            DateTime now = rtc.now();
+            currentMinute = now.minute();
           }
+  
+          while(currentMinute >= 45 && currentMinute <= 55){
+            if(control == 0){
+              Serial.println("Frequência padrão habilitada");
+            
+              lcd.clear();
+              lcd.setCursor(3,0);
+              lcd.print("Frequencia");
+              lcd.setCursor(3,1);
+              lcd.print("habilitada");
+  
+              control = 1;
+            }
+  
+            id = getId();
+            
+            if(id != -1){
+              request = requestBody + "register/" + String(id) + "/" + modes[2] + "/" + courses[0] + "/" + schoolClassCode[0] + "/" + schoolSubjects[13] + "/1";
+              processId(request);
+            }
+  
+            DateTime now = rtc.now();
+            currentMinute = now.minute();
+          }
+  
+          Serial.println("Frequência extra habilitada");
+          
+          lcd.clear();
+          lcd.setCursor(3,0);
+          lcd.print("Frequencia");
+          lcd.print(5,1);
+          lcd.print("extra");
+          
+          getUserInput();
+          registerExtraFrequency();
         break;
         
-        case 11:
-          if(now.minute() >= 30 && now.minute() <= 40){
-            id = getId();
-
-            if(id != -1){
-              processId(id,modes[2],courses[0],schoolClassCode[3],schoolSubjects[0],classNumber);
-              request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[0] + "&curso=" + courses[0] + "&turma=" + schoolClassCode[0] + "&modalidade=" + modes[2] + "&aulas=2";
-              sendRequest(request);
+        case 12:
+          currentMinute = now.minute();
+          
+          while(currentMinute >= 00 && currentMinute <= 18){
+            if(control == 0){
+              Serial.println("Frequência padrão habilitada");
+            
+              lcd.clear();
+              lcd.setCursor(3,0);
+              lcd.print("Frequencia");
+              lcd.setCursor(3,1);
+              lcd.print("habilitada");
+  
+              control = 1;
             }
             
-          }else{
-            Serial.println("Frequência extra habilitada");
-            
-            lcd.clear();
-            lcd.setCursor(3,0);
-            lcd.print("Frequencia");
-            lcd.print(5,1);
-            lcd.print("extra");
-            
-            getUserInput();
-            registerExtraFrequency();
-          }
-        break;
-      }
-  }
+            id = getId();
   
+            if(id != -1){
+              request = requestBody + "register/" + String(id) + "/" + modes[2] + "/" + courses[0] + "/" + schoolClassCode[0] + "/" + schoolSubjects[10] + "/1";
+              processId(request);
+            }
+  
+            DateTime now = rtc.now();
+            currentMinute = now.minute();
+          }
+        
+          Serial.println("Frequência extra habilitada");
+          
+          lcd.clear();
+          lcd.setCursor(3,0);
+          lcd.print("Frequencia");
+          lcd.print(5,1);
+          lcd.print("extra");
+          
+          getUserInput();
+          registerExtraFrequency();
+        break;
+    }
+  }
 }
 
 boolean registerExtraFrequency(){
@@ -365,7 +452,7 @@ boolean registerExtraFrequency(){
 
     switch(schoolSubjectCode){
       case 5500:
-        Serial.println("História");
+        Serial.println("Sociologia");
         
         DateTime now = rtc.now();
         int currentMinute = now.minute();
@@ -381,9 +468,8 @@ boolean registerExtraFrequency(){
           id = getId();
 
           if(id != -1){
-            processId(id,mode,course,schoolClass,schoolSubjects[0],classNumber);
-            request = requestBody + "id=" + String(id) + "&materia=" + schoolSubjects[0] + "&curso=" + course + "&turma=" + schoolClass + "&modalidade=" + mode + "&aulas=" + numberOfClasses;
-            sendRequest(request);
+            request = requestBody + "register/" + String(id) + "/" + modes[2] + "/" + courses[0] + "/" + schoolClassCode[0] + "/" + schoolSubjects[13] + "/1";
+            processId(request);
           }
 
           DateTime now = rtc.now();
@@ -436,12 +522,8 @@ int getId(){        // Função que reconhece a digital e retorna o id dela
   return finger.fingerID;         // Retorna o id caso a digital seja reconhecida 
 }
 
-void processId(int id, String modeId, String courseId, String classId, String matter, int classNumber){         // Função que recebe o id do usuário é responsável por indicar que a digital foi reconhecida e armazenar essa informação no cartão SD
-  DateTime now = rtc.now();
-
-  registerData = "-> O id " + String(id) + " registrou frequência em " + String(classNumber) + " aula(s) de " + matter + " , na turma de id " + String(classId) + ", pertencente ao curso de id " + String(courseId) + ", da modalidade de ensino de id " + String(modeId) + ". Hora do registro: " + String(now.hour()) + ":" + String(now.minute()) + ":" + String(now.second());
-
-  setRegister(registerData);
+void processId(String request){         // Função que recebe o id do usuário é responsável por indicar que a digital foi reconhecida e armazenar essa informação no cartão SD
+  sendFrequencyRequest(request);
   
   lcd.clear();
   lcd.setCursor(1,0);
@@ -454,11 +536,10 @@ void processId(int id, String modeId, String courseId, String classId, String ma
   pinMode(buzzer,INPUT);
   lcd.clear();
   setColor(0,0,0);
-    
 }
 
 void setRegister(String registerData){          // Função que faz o registro no arquivo do cartão SD
-  File dataStorage = SD.open("registro.txt", FILE_WRITE);
+  File dataStorage = SD.open("logs.txt", FILE_WRITE);
   
   if(dataStorage){
     dataStorage.println(registerData);
@@ -470,10 +551,14 @@ void setRegister(String registerData){          // Função que faz o registro n
 
 void sendRequest(String request){           // Função que faz a requisição ao servidor 
   if(client.connect(server, 80)){
+    Serial.println("Realizando envio dos logs");
+    readSDLogs();         //Envia as requests armazenadas para o servidor
+    
     Serial.print("connected to ");
     Serial.println(client.remoteIP());
     
-    client.println(request);     // Faz a requisição HTTP
+    client.println(request + " HTTP/1.1");     // Faz a requisição HTTP
+    client.println("Host: frequecy-record-backend.herokuapp.com");
     client.println("Connection: close");
     client.println();
     
@@ -499,7 +584,8 @@ void sendFrequencyRequest(String request){           // Função que faz a requi
     Serial.print("connected to ");
     Serial.println(client.remoteIP());
     
-    client.println(request);     // Faz a requisição HTTP
+    client.println(request + " HTTP/1.1");     // Faz a requisição HTTP
+    client.println("Host: frequecy-record-backend.herokuapp.com");
     client.println("Connection: close");
     client.println();
     
@@ -514,9 +600,10 @@ void sendFrequencyRequest(String request){           // Função que faz a requi
 
     delay(2000);
     lcd.clear();
-    
   }else{
-    Serial.println("Não foi possível conectar-se ao servidor");
+    Serial.println("Não foi possível conectar-se ao servidor, armazenando no cartão SD...");
+    
+    setRegister(request);
   }
 }
 
@@ -531,7 +618,7 @@ void setColor(int red, int green, int blue){
 }
 
 void getUserInput(){
-  int count = 1;
+  int control = 0;
 
   lcd.setCursor(1,0);
   lcd.print("Tecla A: Habi-");
@@ -555,9 +642,9 @@ void getUserInput(){
     while(key != '#'){
       key = myKeypad.getKey();
       if(key){
-        if(count == 1){
+        if(control == 0){
           lcd.clear();
-          count = 2;
+          control = 1;
         }
         
         if(key == '*'){
@@ -732,12 +819,6 @@ void alertBeginningEndClass(){          // Função que vai alertar o começo e 
   int currentDay = now.dayOfTheWeek();
   
   switch(currentDay){
-    case 1:
-    break;
-    case 2:
-    break;
-    case 3:
-    break;
     case 4:
       DateTime now = rtc.now();
       int currentHour = now.hour();
@@ -748,7 +829,6 @@ void alertBeginningEndClass(){          // Função que vai alertar o começo e 
           int currentMinute = now.minute();
           
           while(currentMinute == 4 || currentMinute == 6){
-            DateTime now = rtc.now();
             Serial.println("Sinalizando horário");
             
             if(currentMinute == 4){
@@ -766,13 +846,12 @@ void alertBeginningEndClass(){          // Função que vai alertar o começo e 
               pinMode(buzzer,INPUT);
               delay(2000);
             }
-            
+
+            DateTime now = rtc.now();
             currentMinute = now.minute();
           }
         break;
       }
-    break;
-    case 5:
     break;
   }
 }
@@ -782,7 +861,33 @@ void updateTime(){
   int currentHour = now.hour();
   int currentMinute = now.minute();
 
-  request = requestBody + "/logs/" + String(currentHour) + "/" + String(currentMinute);
+  request = requestBody + "logs/" + String(currentHour) + "/" + String(currentMinute);
 
   sendRequest(request);
+}
+
+void readSDLogs(){          //Função que irá ler linha a linha do arquivo SD e armazenar a requisição numa variável para enviá-la ao servidor
+  File dataStorage = SD.open("logs.txt");
+
+  if(dataStorage){
+    while (dataStorage.available()){         
+      char c;
+      String storageRequest;
+      
+      while ((c = dataStorage.read()) != '\n'){
+        storageRequest += c;
+      }
+
+      Serial.println("Enviando request...");
+      sendFrequencyRequest(storageRequest);
+      Serial.println(storageRequest);
+
+      delay(500);
+    }
+
+    Serial.println("Apagando registros do cartão SD...");
+    SD.remove("logs.txt");
+  }else{
+    Serial.println("Não foi possível encontrar o arquivo");
+  }
 }
