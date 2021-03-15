@@ -76,7 +76,7 @@ String schoolClassCode[] = {"1","2","3","4"};
 String password = "40028922";
 String registerData;
 String request;
-String inputPassword = " ";
+String inputPassword;
 String inputSchoolSubjectCode;
 String numberOfClasses;
 String schoolClass;
@@ -114,6 +114,8 @@ void setup() {
     
     while (1);
   }else{
+    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+    
     if (rtc.lostPower()) {         // Verifica se a bateria do RTC está com pouca carga
       // A linha a seguir define o modelo para ajuste da data e hora do módulo RTC
       rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
@@ -121,7 +123,7 @@ void setup() {
       //rtc.adjust(DateTime(2020, 9, 12, 14, 18, 0));         // Esta linha pode ser comentada após a primeira execução
     }
 
-    //rtc.adjust(DateTime(2021, 2, 15, 10, 42, 0));
+    //rtc.adjust(DateTime(2021, 3, 14, 00, 28, 0));
     Serial.println("RTC iniciado com sucesso!");
     
     DateTime now = rtc.now();
@@ -131,6 +133,7 @@ void setup() {
     int dataMonth = now.month();
 
     Serial.println(String(dataHour) + "/" + String(dataMinute) + " do dia " + String(dataDay) + "/" + String(dataMonth));
+    Serial.println("Dia da semana: " + String( now.dayOfTheWeek())); 
   }
   delay(500);
 
@@ -207,9 +210,9 @@ void setup() {
 
 void loop() {
   // Os códigos deste bloco serão executados repetidamente
-  updateTime();
-  sendSDLogs();
-  alertBeginningEndClass();
+  //updateTime();
+  //sendSDLogs();
+  //alertBeginningEndClass();
   registerFrequency();
 }
 
@@ -218,7 +221,7 @@ void registerFrequency(){
   int currentDay = now.dayOfTheWeek();
 
   switch(currentDay){
-    case 1:
+    case 0:
       DateTime now = rtc.now();
       int currentHour = now.hour();
       int currentMinute = now.minute();
@@ -307,7 +310,7 @@ void registerFrequency(){
          
           Serial.println("Frequência extra habilitada");
           extrafrequencyDisplayAlert();
-          
+
           getUserInput();
           registerExtraFrequency();
         break;
@@ -360,7 +363,7 @@ void registerFrequency(){
           registerExtraFrequency();
         break;
         
-        case 12:
+        case 00:
           currentMinute = now.minute();
           
           while(currentMinute >= 00 && currentMinute <= 59){
@@ -374,7 +377,7 @@ void registerFrequency(){
             id = getId();
   
             if(id != -1){
-              request = "/register/" + String(id) + "/" + modes[2] + "/" + courses[0] + "/" + schoolClassCode[0] + "/" + schoolSubjects[10] + "/1";
+              request = "/register/" + String(id) + "/" + modes[2] + "/" + courses[2] + "/" + schoolClassCode[3] + "/quimica/1";
               processId(request);
             }
   
@@ -384,6 +387,8 @@ void registerFrequency(){
         
           Serial.println("Frequência extra habilitada");
           extrafrequencyDisplayAlert();
+
+          delay(1000);
           
           getUserInput();
           registerExtraFrequency();
@@ -393,8 +398,10 @@ void registerFrequency(){
 }
 
 void registerExtraFrequency(){
-  if(inputPassword != " "){
+  if(inputPassword != ""){
     Serial.println("Registrando aula extra");
+
+    Serial.println(inputPassword);
     
     if(password == inputPassword){
       int schoolSubjectCode = inputSchoolSubjectCode.toInt();
@@ -405,7 +412,7 @@ void registerExtraFrequency(){
           
           DateTime now = rtc.now();
           int currentMinute = now.minute();
-          int count = (now.minute() + 1);
+          int count = (now.minute() + 2);
   
           frequencyDisplayAlert();
   
@@ -413,7 +420,7 @@ void registerExtraFrequency(){
             id = getId();
   
             if(id != -1){
-              request = "/register/" + String(id) + "/" + modes[2] + "/" + courses[0] + "/" + schoolClassCode[0] + "/" + schoolSubjects[13] + "/1";
+              request = "/register/" + String(id) + "/" + modes[2] + "/" + courses[0] + "/" + schoolClassCode[0] + "/" + schoolSubjects[11] + "/" + numberOfClasses;
               processId(request);
             }
   
@@ -444,8 +451,10 @@ void registerExtraFrequency(){
       lcd.print("Senha errada");
       lcd.setCursor(0,1);
       lcd.print("Tente novamente");
+
+      inputPassword="";
       
-      delay(3000);
+      delay(1000);
     }
   }
 }
@@ -564,11 +573,12 @@ void setColor(int red, int green, int blue){
 void getUserInput(){
   int control = 0;
 
+  lcd.clear();
   lcd.setCursor(1,0);
   lcd.print("Tecla A: Habi-");
   lcd.setCursor(2,1);
   lcd.print("litar teclado");
-  
+
   char key = myKeypad.getKey();
 
   if(key == 'A'){
@@ -596,7 +606,7 @@ void getUserInput(){
         }
         
         inputPassword += String(key);
-        Serial.print("*");
+        Serial.print(String(key));
         lcd.print("*");
       }
     }
@@ -756,23 +766,27 @@ void getUserInput(){
     delay(3000);
     lcd.clear();
   }
+
+  delay(1000);
 }
 
 void alertBeginningEndClass(){          // Função que vai alertar o começo e fim de cada aula
   DateTime now = rtc.now();
   int currentDay = now.dayOfTheWeek();
+
+  Serial.println(currentDay);
   
   switch(currentDay){
-    case 4:
+    case 2:
       DateTime now = rtc.now();
       int currentHour = now.hour();
       
       switch(currentHour){
-        case 15:
+        case 22:
           DateTime now = rtc.now();
           int currentMinute = now.minute();
           
-          while(currentMinute == 4 || currentMinute == 6){
+          while(currentMinute == 49 || currentMinute == 59){
             Serial.println("Sinalizando horário");
             
             if(currentMinute == 4){
@@ -846,6 +860,6 @@ void extrafrequencyDisplayAlert(){
   lcd.clear();
   lcd.setCursor(3,0);
   lcd.print("Frequencia");
-  lcd.print(5,1);
+  lcd.setCursor(5,1);
   lcd.print("extra");
 }
